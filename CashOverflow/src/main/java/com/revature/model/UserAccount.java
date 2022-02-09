@@ -13,16 +13,15 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 /**
- * 
- * @author rasco
- *
+ * Model for user accounts
+ * @author Colin Knox, Parker Mace, Tyler Rondeau
  */
 @Entity
-@Table(name = "users")
+@Table(name = "user_accounts")
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
-public class User {
+public class UserAccount {
 
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
