@@ -11,7 +11,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.ResponseStatus;
 
-import com.revature.dao.UserRepo;
+import com.revature.dao.UserAccountRepo;
 import com.revature.model.AccountType;
 import com.revature.model.BankAccount;
 import com.revature.model.UserAccount;
@@ -22,45 +22,38 @@ public class AccountController {
 
 
 	private BankAccountService bankAccServ;
-	private UserRepo temp;
+	private UserAccountRepo temp;
 	
 	@Autowired
-	public AccountController(BankAccountService bankAccServ,  UserRepo temp) {
+	public AccountController(BankAccountService bankAccServ,  UserAccountRepo temp) {
 		this.bankAccServ = bankAccServ;
 		this.temp = temp;
 	}
 	
 	/**
-	 * 
 	 * @param newAccount
-	 * @return
+	 * @apiNote json params:
+	 * 			name,
+	 * 			description,
+	 * 			accountTypeId,
+	 * 			"user": jwt
+	 *
+	 * @return BankAccount
 	 * 
-	 * @author Parker Mace
+	 * @author Parker Mace, Henry Harvil, Andre Long
 	 */
-	// TODO: we will need to generate a user object using a jwt instead of passing in the object as a part of the json
 	@PostMapping("/api/account/createAccount")
 	@ResponseStatus(HttpStatus.CREATED)
 	public @ResponseBody BankAccount createAccount(@RequestBody BankAccount newAccount) {
+		/* TODO: we will need to generate a user object using a jwt 
+		 * instead of passing in the object as a part of the json.
+		 * this means we will have to set `"user": UserAccount` in the
+		 * request body within this method
+		 */
 		
 		// here we will be using a jwt to assign Account.user to a com.revature.model.User object
-		Instant time = Instant.now();
-		AccountType type = new AccountType(1,"checking");
 		
-		List<UserAccount> userlist = temp.findAll();
-		UserAccount user = userlist.get(0);
-		
-		BankAccount acc = new BankAccount();
-		
-		System.out.println(acc);
-
-		
-		return null;
-//		List<Transaction> list = new ArrayList<Transaction>();
-//		Account acc = new Account(1,"hi",12.12,"hello",time,type,user,list);
-//		
-//		System.out.println(acc);
-		
-//		return acc;
+		return bankAccServ.createAccount(newAccount);
 	}
 
 }
