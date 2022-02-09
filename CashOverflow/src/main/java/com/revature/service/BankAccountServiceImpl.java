@@ -1,9 +1,13 @@
 package com.revature.service;
 
 import java.time.Instant;
+import java.util.List;
+
+import javax.servlet.http.HttpServletRequest;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.revature.dao.BankAccountRepo;
 import com.revature.model.BankAccount;
@@ -37,5 +41,15 @@ public class BankAccountServiceImpl implements BankAccountService {
 		return strippedData;
 	}
 
+	/**
+	 * @return List<BankAccount>
+	 * 
+	 * @author Parker Mace, Henry Harvil, Andre Long
+	 */
+	public List<BankAccount> getBankAccounts(HttpServletRequest req) {
+
+		return bankRepo.findAllByUserId(Integer.parseInt(req.getParameter("id")));
+		
+	}
 	
 }
