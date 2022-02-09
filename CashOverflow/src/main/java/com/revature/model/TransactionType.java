@@ -11,9 +11,8 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 /**
- * 
- * @author rasco
- *
+ * Model for transaction type lookup table
+ * @author Colin Knox, Parker Mace, Tyler Rondeau
  */
 @Entity
 @Table(name = "tx_types")
