@@ -12,5 +12,12 @@ import com.revature.model.User;
  */
 @Repository
 public interface UserRepo extends JpaRepository<User, Integer> {
-
+	
+	/***
+	 * Method to login to the application
+	 * @param username - username enter to log in
+	 * @param password - password enter to log in
+	 * @return - User object
+	 */
+	public User findByUsernameAndPassword(String username, String password);
 }
