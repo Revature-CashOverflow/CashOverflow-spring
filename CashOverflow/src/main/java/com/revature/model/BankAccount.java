@@ -33,10 +33,7 @@ public class BankAccount {
 	Double balance;
 	String description;
 	Instant creationDate;
-	
-	@ManyToOne
-	@JoinColumn(referencedColumnName = "id")
-	AccountType accountType;
+	Integer accountTypeId;
 	
 	@ManyToOne
 	@JoinColumn(referencedColumnName = "id")
@@ -45,4 +42,14 @@ public class BankAccount {
 	@OneToMany
 	@JoinColumn(referencedColumnName = "id")
 	List<Transaction> txs;
+	
+
+	public BankAccount(String name, String description, Instant creationDate, Integer accountTypeId,
+			UserAccount user) {
+		this.name = name;
+		this.description = description;
+		this.creationDate = creationDate;
+		this.accountTypeId = accountTypeId;
+		this.user = user;
+	}
 }
