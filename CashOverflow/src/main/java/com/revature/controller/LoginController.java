@@ -11,9 +11,9 @@ import com.revature.service.LoginService;
 @RestController
 public class LoginController {
 
+	@Autowired
 	LoginService serv;
 
-	@Autowired
 	public LoginController(LoginService serv) {
 		this.serv = serv;
 	}

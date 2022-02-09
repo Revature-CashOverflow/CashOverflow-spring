@@ -9,9 +9,9 @@ import com.revature.model.UserAccount;
 @Service
 public class LoginServiceImpl implements LoginService {
 
-	private UserAccountRepo repo;
-
 	@Autowired
+	private UserAccountRepo repo;
+	
 	public LoginServiceImpl(UserAccountRepo repo) {
 		this.repo = repo;
 	}
