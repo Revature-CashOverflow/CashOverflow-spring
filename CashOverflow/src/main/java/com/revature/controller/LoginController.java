@@ -6,7 +6,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.revature.model.User;
+import com.revature.model.UserAccount;
 import com.revature.service.LoginService;
 
 @RestController
@@ -15,8 +15,8 @@ public class LoginController {
 	LoginService serv;
 	
 	@GetMapping("/login")
-	public @ResponseBody User login(@RequestParam ("loginUsername") String username, @RequestParam("loginPassword") String password) {
-		User output = serv.login(username, password);
+	public @ResponseBody UserAccount login(@RequestParam ("loginUsername") String username, @RequestParam("loginPassword") String password) {
+		UserAccount output = serv.login(username, password);
 		System.out.println(output);
 		
 		return output;
