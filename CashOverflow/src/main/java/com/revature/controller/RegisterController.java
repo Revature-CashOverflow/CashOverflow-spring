@@ -6,13 +6,13 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.ResponseStatus;
 
-import com.revature.model.User;
-import com.revature.service.UserService;
+import com.revature.model.UserAccount;
+import com.revature.service.UserAccountService;
 
 @Controller
 public class RegisterController {
 	
-	private UserService userServ;
+	private UserAccountService userServ;
 	
 //	@Autowired
 //	public RegisterController(RegisterService regServ) {
@@ -25,9 +25,9 @@ public class RegisterController {
 	 */
 	@PostMapping("/newUser")
 	@ResponseStatus(HttpStatus.CREATED)
-	public User newUser(@RequestBody User user) {
+	public UserAccount newUser(@RequestBody UserAccount user) {
 		
-		return userServ.insertUser(user); //expecting the service method to return null if their is duplicate data
+		return userServ.insertUserAccount(user); //expecting the service method to return null if their is duplicate data
 		
 	}
 	
