@@ -19,17 +19,28 @@ import com.revature.service.LoginService;
 @RestController
 public class LoginController {
 
-	@Autowired
+	
 	LoginService serv;
 
-	 @GetMapping("/login")
-	    public User login(@RequestParam ("loginUsername") String username, @RequestParam ("loginPassword") String password) {
-	        System.out.println("username===>" + username);
-	        System.out.println("password===>" + password);
+	public LoginController(LoginService serv) {
+		this.serv = serv;
+	}
 
-	        User user = serv.login(username, password);
-	        return user;
-	    }
+	
+	/**
+	 * Checks if the User name & password matches credential in the database
+	 * 
+	 * @param username
+	 * @param password
+	 * @return login User
+	 */
+	@GetMapping(value = "/login")
+	public User login(@RequestParam("loginUsername") String username,@RequestParam("loginPassword") String password) {
+		User user = serv.login(username,password);
+		
+			return user;
+			
+	}
 
 	}
 

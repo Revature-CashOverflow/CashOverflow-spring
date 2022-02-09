@@ -9,8 +9,13 @@ import com.revature.model.User;
 @Service
 public class LoginServiceImpl implements LoginService {
 
-	@Autowired
+	
 	private UserRepo repo;
+	
+	@Autowired
+	public LoginServiceImpl(UserRepo repo) {
+		this.repo = repo;
+	}
 	
 	@Override
 	public User login(String username, String password) {
