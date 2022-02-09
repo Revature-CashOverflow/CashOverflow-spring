@@ -50,6 +50,8 @@ public class AccountController {
 		UserAccount user = userlist.get(0);
 		
 		BankAccount acc = new BankAccount();
+		
+		System.out.println(acc);
 
 		
 		return null;
