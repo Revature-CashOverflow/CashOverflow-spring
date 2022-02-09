@@ -6,9 +6,8 @@ import javax.persistence.AttributeConverter;
 import javax.persistence.Converter;
 
 /**
- * 
- * @author rasco
- *
+ * Model for converting NotiMessage objects to predefined message strings
+ * @author Colin Knox, Parker Mace, Tyler Rondeau
  */
 @Converter(autoApply = true)
 public class NotiMessageConverter implements AttributeConverter<NotiMessage, String> {

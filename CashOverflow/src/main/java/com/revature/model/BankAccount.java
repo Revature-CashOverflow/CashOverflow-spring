@@ -17,16 +17,15 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 /**
- * 
- * @author rasco
- *
+ * Model for bank accounts
+ * @author Colin Knox, Parker Mace, Tyler Rondeau
  */
 @Entity
-@Table(name = "accounts")
+@Table(name = "bank_accounts")
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
-public class Account {
+public class BankAccount {
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	Integer id;
@@ -41,7 +40,7 @@ public class Account {
 	
 	@ManyToOne
 	@JoinColumn(referencedColumnName = "id")
-	User user;
+	UserAccount user;
 	
 	@OneToMany
 	@JoinColumn(referencedColumnName = "id")

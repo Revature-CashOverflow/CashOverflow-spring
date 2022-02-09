@@ -1,5 +1,6 @@
 package com.revature.controller;
 
-public class LoginController {
+import java.sql.Timestamp;
 
+public class LoginController {
 }

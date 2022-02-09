@@ -1,5 +1,7 @@
 package com.revature.model;
 
+import java.time.Instant;
+
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
@@ -11,9 +13,8 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 /**
- * 
- * @author rasco
- *
+ * Model for notifications
+ * @author Colin Knox, Parker Mace, Tyler Rondeau
  */
 @Entity
 @Table(name = "notifications")
@@ -25,6 +26,8 @@ public class Notification {
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	Integer id;
+	
+	Instant creationDate;
 	
 	NotiMessage notiMessage;
 	
