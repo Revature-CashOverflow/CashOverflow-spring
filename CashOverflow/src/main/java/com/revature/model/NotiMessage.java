@@ -1,9 +1,8 @@
 package com.revature.model;
 
 /**
- * 
- * @author rasco
- *
+ * Enum for notification messages
+ * @author Colin Knox, Parker Mace, Tyler Rondeau
  */
 public enum NotiMessage {
 	

@@ -15,9 +15,8 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 /**
- * 
- * @author rasco
- *
+ * Model for transactions
+ * @author Colin Knox, Parker Mace, Tyler Rondeau
  */
 @Entity
 @Table(name = "transactions")
