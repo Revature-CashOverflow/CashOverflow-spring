@@ -1,19 +1,11 @@
 package com.revature.controller;
 
-import java.security.NoSuchAlgorithmException;
-import java.security.spec.InvalidKeySpecException;
-
-import javax.servlet.http.HttpSession;
-
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.revature.model.User;
+import com.revature.model.UserAccount;
 import com.revature.service.LoginService;
 
 @RestController
@@ -21,7 +13,8 @@ public class LoginController {
 
 	
 	LoginService serv;
-
+	
+	@Autowired
 	public LoginController(LoginService serv) {
 		this.serv = serv;
 	}
@@ -35,8 +28,8 @@ public class LoginController {
 	 * @return login User
 	 */
 	@GetMapping(value = "/login")
-	public User login(@RequestParam("loginUsername") String username,@RequestParam("loginPassword") String password) {
-		User user = serv.login(username,password);
+	public UserAccount login(@RequestParam("loginUsername") String username,@RequestParam("loginPassword") String password) {
+		UserAccount user = serv.login(username,password);
 		
 			return user;
 			

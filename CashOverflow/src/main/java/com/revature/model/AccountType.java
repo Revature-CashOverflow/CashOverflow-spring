@@ -11,9 +11,8 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 /**
- * 
- * @author rasco
- *
+ * Model for types of bank accounts (checking, savings)
+ * @author Colin Knox, Parker Mace, Tyler Rondeau
  */
 @Entity
 @Table(name = "account_types")

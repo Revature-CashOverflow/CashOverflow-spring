@@ -14,9 +14,8 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 /**
- * 
- * @author rasco
- *
+ * Model for the object that is the reason for the notification
+ * @author Colin Knox, Parker Mace, Tyler Rondeau
  */
 @Entity
 @Table(name = "noti_entity")
@@ -31,7 +30,7 @@ public class NotiEntity {
 	
 	@ManyToOne
 	@JoinColumn(name = "account_id")
-	Account account;
+	BankAccount account;
 	
 	@OneToOne
 	@JoinColumn(name = "tx_id")

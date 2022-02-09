@@ -1,9 +1,10 @@
 package com.revature.dao;
 
+
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 
-import com.revature.model.User;
+import com.revature.model.UserAccount;
 
 /**
  * 
@@ -11,7 +12,7 @@ import com.revature.model.User;
  *
  */
 @Repository
-public interface UserRepo extends JpaRepository<User, Integer> {
+public interface UserAccountRepo extends JpaRepository<UserAccount, Integer> {
 	
 	/***
 	 * Method to login to the application
@@ -19,5 +20,5 @@ public interface UserRepo extends JpaRepository<User, Integer> {
 	 * @param password - password enter to log in
 	 * @return - User object
 	 */
-	public User findByUsernameAndPassword(String username, String password);
+	public UserAccount findByUsernameAndPassword(String username, String password);
 }
