@@ -7,7 +7,7 @@ pipeline {
     
     tools {
         maven 'maven-default'
-        jdk 'jdk-11'
+        jdk 'built-in'
     }
     
     environment {
