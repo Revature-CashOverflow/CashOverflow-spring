@@ -1,9 +1,9 @@
 pipeline {
     agent any
     
-    // options {
-    //     skipDefaultCheckout(true)
-    // }
+    options {
+        skipDefaultCheckout(true)
+    }
     
     tools {
         maven 'maven-default'
@@ -20,10 +20,10 @@ pipeline {
         stage('Clean workspace') {
             steps {
                 cleanWs()
-                // checkout scm
-                git branch: 'main',
-                    credentialsId: 'jenkins-integration-user',
-                    url: 'https://github.com/Revature-CashOverflow/CashOverflow-spring.git'
+                checkout scm
+                // git branch: 'main',
+                //     credentialsId: 'jenkins-integration-user',
+                //     url: 'https://github.com/Revature-CashOverflow/CashOverflow-spring.git'
                 echo "Building ${env.JOB_NAME}..."
             }
         }
