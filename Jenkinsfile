@@ -11,6 +11,8 @@ pipeline {
     }
     
     environment {
+        DATE = new Date().format('yy.M')
+        TAG = "${DATE}.${BUILD_NUMBER}"
         AWS_DB_ENDPOINT = credentials('AWS_DB_ENDPOINT')
         AWS_USERNAME = credentials('AWS_USERNAME')
         AWS_PASSWORD = credentials('AWS_PASSWORD')
@@ -39,6 +41,30 @@ pipeline {
             //         archiveArtifacts 'target/*.jar'
             //     }
             // }
+        }
+        stage('Docker Build') {
+            steps {
+                script {
+                    docker.build("rasc0l/cashoverflow-spring:${TAG}")
+                }
+            }
+        }
+        stage('Pushing Docker Image') {
+            steps {
+                script {
+                    docker.withRegistry('https://registry.hub.docker.com', credentials('docker-creds')) {
+                        docker.image("rasc0l/cashoverflow-spring:${TAG}").push()
+                        docker.image("rasc0l/cashoverflow-spring:${TAG}").push("latest")
+                    }
+                }
+            }
+        }
+        stage('Deploy') {
+            steps {
+                sh "docker stop cashoverflow-spring | true"
+                sh "docker rm cashoverflow-spring | true"
+                sh "docker run --name cashoverflow-spring -d -p 9001:9001 rasc0l/cashoverflow-spring:${TAG}"
+            }
         }
     }
     // Clean workspace with options
