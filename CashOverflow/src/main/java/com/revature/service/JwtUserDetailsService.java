@@ -33,6 +33,7 @@ public class JwtUserDetailsService implements UserDetailsService {
 		UserAccount temp = userRepo.findByUsername(username);
 		if(temp != null) {
 			return new User(username, temp.getPassword(), new ArrayList<>());
+			
 		} else throw new UsernameNotFoundException("User does not exist.");		
 	}
 

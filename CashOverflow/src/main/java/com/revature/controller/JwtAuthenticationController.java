@@ -28,6 +28,7 @@ import com.revature.util.JwtUtil;
 @CrossOrigin
 public class JwtAuthenticationController {
 
+	
 	private JwtUtil util;
 	private JwtUserDetailsService serv;
 	private AuthenticationManager manager;
