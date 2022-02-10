@@ -16,6 +16,7 @@ pipeline {
         AWS_DB_ENDPOINT = credentials('AWS_DB_ENDPOINT')
         AWS_USERNAME = credentials('AWS_USERNAME')
         AWS_PASSWORD = credentials('AWS_PASSWORD')
+        SONAR_TOKEN = credentials('SONAR_TOKEN')
     }
 
     stages {
