@@ -1,6 +1,7 @@
 package com.revature.controller;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
@@ -18,6 +19,7 @@ public class LoginController {
 		this.serv = serv;
 	}
 
+	@CrossOrigin(origins="http://localhost:4200")
 	/**
 	 * Checks if the UserAccount name & password matches credential in the database
 	 * 
@@ -28,6 +30,7 @@ public class LoginController {
 	@GetMapping(value = "/login")
 	public UserAccount login(@RequestParam("loginUsername") String username,
 			@RequestParam("loginPassword") String password) {
+		System.out.println("in back end");
 		UserAccount user = serv.login(username, password);
 
 		return user;
