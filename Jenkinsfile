@@ -53,7 +53,7 @@ pipeline {
         stage('Pushing Docker Image') {
             steps {
                 script {
-                    docker.withRegistry('https://registry.hub.docker.com', credentials('docker-creds')) {
+                    docker.withRegistry('https://registry.hub.docker.com', 'docker-creds') {
                         docker.image("rasc0l/cashoverflow-spring:${TAG}").push()
                         docker.image("rasc0l/cashoverflow-spring:${TAG}").push("latest")
                     }
