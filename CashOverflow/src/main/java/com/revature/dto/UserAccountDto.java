@@ -1,35 +1,36 @@
-package com.revature.model;
+package com.revature.dto;
 
 import java.time.Instant;
 
-import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
-import javax.persistence.Table;
 
-import lombok.AllArgsConstructor;
+import com.revature.model.UserAccount;
+
 import lombok.Data;
-import lombok.NoArgsConstructor;
 
 /**
  * Model for user accounts
+ * 
  * @author Colin Knox, Parker Mace, Tyler Rondeau
  */
-@Entity
-@Table(name = "user_accounts")
 @Data
-@NoArgsConstructor
-@AllArgsConstructor
-public class UserAccount {
+public class UserAccountDto {
 
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	Integer id;
-	String email;
 	String username;
 	String firstName;
 	String lastName;
-	String password;
 	Instant creationDate;
+
+	public UserAccountDto(UserAccount user) {
+		this.id = user.getId();
+		this.username = user.getUsername();
+		this.firstName = user.getFirstName();
+		this.lastName = user.getLastName();
+		this.creationDate = user.getCreationDate();
+	}
 }
