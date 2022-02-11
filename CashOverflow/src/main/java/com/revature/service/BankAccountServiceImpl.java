@@ -7,16 +7,15 @@ import javax.servlet.http.HttpServletRequest;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.revature.dao.BankAccountRepo;
 import com.revature.model.BankAccount;
 
 @Service
 public class BankAccountServiceImpl implements BankAccountService {
-	
+
 	private BankAccountRepo bankRepo;
-	
+
 	@Autowired
 	private BankAccountServiceImpl(BankAccountRepo bankRepo) {
 		this.bankRepo = bankRepo;
@@ -32,13 +31,8 @@ public class BankAccountServiceImpl implements BankAccountService {
 		// here we will be timestamping the acc creation and setting the balance to 0
 		newAccount.setCreationDate(Instant.now());
 		newAccount.setBalance(0.0);
-		
-		BankAccount strippedData = bankRepo.save(newAccount);
-		
-		// here we are stripping the user object to hide user data from the frontend
-		strippedData.setUser(null);
-		
-		return strippedData;
+
+		return bankRepo.save(newAccount);
 	}
 
 	/**
@@ -49,7 +43,7 @@ public class BankAccountServiceImpl implements BankAccountService {
 	public List<BankAccount> getBankAccounts(HttpServletRequest req) {
 
 		return bankRepo.findAllByUserId(Integer.parseInt(req.getParameter("id")));
-		
+
 	}
-	
+
 }
