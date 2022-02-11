@@ -52,7 +52,7 @@ pipeline {
         stage('Docker Build') {
             steps {
                 script {
-                    if (${ env.BRANCH_NAME } == 'main') {
+                    if (env.BRANCH_NAME  == 'main') {
                         docker.build("rasc0l/${DOCKER_REPO}:${env.BRANCH_NAME}-${TAG}")
                     }
                 }
@@ -61,7 +61,7 @@ pipeline {
         stage('Pushing Docker Image') {
             steps {
                 script {
-                    if (${ env.BRANCH_NAME } == 'main') {
+                    if (env.BRANCH_NAME == 'main') {
                         docker.withRegistry('https://registry.hub.docker.com', 'docker-creds') {
                             docker.image("rasc0l/${DOCKER_REPO}:${env.BRANCH_NAME}-${TAG}").push()
                             docker.image("rasc0l/${DOCKER_REPO}:${env.BRANCH_NAME}-${TAG}").push('latest')
@@ -73,7 +73,7 @@ pipeline {
         stage('Deploy') {
             steps {
                 script {
-                    if (${ env.BRANCH_NAME } == 'main') {
+                    if (env.BRANCH_NAME == 'main') {
                         sh "docker stop ${env.BRANCH_NAME}-${DOCKER_REPO} | true"
                         sh "docker rm ${env.BRANCH_NAME}-${DOCKER_REPO} | true"
                         sh "docker run --env-file ${AWS_ENV} --name ${env.BRANCH_NAME}-${DOCKER_REPO} -d -p 9001:9001 rasc0l/${DOCKER_REPO}:${env.BRANCH_NAME}-${TAG}"
