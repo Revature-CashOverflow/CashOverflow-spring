@@ -1,4 +1,4 @@
-package com.revature.controller;
+package com.revature.service;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
@@ -7,15 +7,11 @@ import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.security.authentication.DisabledException;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.userdetails.UserDetails;
-import org.springframework.web.bind.annotation.CrossOrigin;
+import org.springframework.stereotype.Service;
 import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.RestController;
 
 import com.revature.model.JwtRequest;
 import com.revature.model.JwtResponse;
-import com.revature.service.JwtUserDetailsService;
 import com.revature.util.JwtUtil;
 
 /**
@@ -24,23 +20,20 @@ import com.revature.util.JwtUtil;
  * @author Tyler Rondeau, Luis Estevez, Luis Rivera
  *
  */
-@RestController
-@CrossOrigin
-public class JwtAuthenticationController {
+@Service
+public class JwtAuthenticationService {
 
-	
 	private JwtUtil util;
 	private JwtUserDetailsService serv;
 	private AuthenticationManager manager;
 
 	@Autowired
-	public JwtAuthenticationController(JwtUtil util, JwtUserDetailsService serv, AuthenticationManager manager) {
+	public JwtAuthenticationService(JwtUtil util, JwtUserDetailsService serv, AuthenticationManager manager) {
 		this.util = util;
 		this.serv = serv;
 		this.manager = manager;
 	}
 
-	@RequestMapping(value = "/authenticate", method = RequestMethod.POST)
 	public ResponseEntity<?> createAuthenticationToken(@RequestBody JwtRequest authenticationRequest) throws Exception {
 
 		authenticate(authenticationRequest.getUsername(), authenticationRequest.getPassword());
@@ -61,5 +54,4 @@ public class JwtAuthenticationController {
 			throw new Exception("INVALID_CREDENTIALS", e);
 		}
 	}
-
 }
