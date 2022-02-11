@@ -8,7 +8,10 @@ import javax.persistence.Id;
 
 import com.revature.model.UserAccount;
 
+import lombok.AllArgsConstructor;
 import lombok.Data;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
 
 /**
  * Model for user accounts to send to the client
@@ -16,6 +19,9 @@ import lombok.Data;
  * @author Colin Knox, Parker Mace, Tyler Rondeau
  */
 @Data
+@NoArgsConstructor
+@AllArgsConstructor
+@Getter
 public class UserAccountDto {
 
 	@Id
