@@ -16,6 +16,7 @@ pipeline {
         AWS_USERNAME = credentials('AWS_USERNAME')
         AWS_PASSWORD = credentials('AWS_PASSWORD')
         SONAR_TOKEN = credentials('SONAR_TOKEN')
+        DOCKER_REPO = 'cashoverflow-spring'
     }
 
     stages {
@@ -46,7 +47,7 @@ pipeline {
         stage('Docker Build') {
             steps {
                 script {
-                    docker.build("rasc0l/cashoverflow-spring:${TAG}")
+                    docker.build("rasc0l/${DOCKER_REPO}:${TAG}")
                 }
             }
         }
@@ -54,29 +55,30 @@ pipeline {
             steps {
                 script {
                     docker.withRegistry('https://registry.hub.docker.com', 'docker-creds') {
-                        docker.image("rasc0l/cashoverflow-spring:${TAG}").push()
-                        docker.image("rasc0l/cashoverflow-spring:${TAG}").push("latest")
+                        docker.image("rasc0l/${DOCKER_REPO}:${TAG}").push()
+                        docker.image("rasc0l/${DOCKER_REPO}:${TAG}").push("latest")
                     }
                 }
             }
         }
         stage('Deploy') {
             steps {
-                sh "docker stop cashoverflow-spring | true"
-                sh "docker rm cashoverflow-spring | true"
-                sh "docker run -e AWS_DB_ENDPOINT=${AWS_DB_ENDPOINT} -e AWS_USERNAME=${AWS_USERNAME} -e AWS_PASSWORD=${AWS_PASSWORD} --name cashoverflow-spring -d -p 9001:9001 rasc0l/cashoverflow-spring:${TAG}"
+                sh "docker stop ${DOCKER_REPO} | true"
+                sh "docker rm ${DOCKER_REPO} | true"
+                sh "docker run -e AWS_DB_ENDPOINT=${AWS_DB_ENDPOINT} -e AWS_USERNAME=${AWS_USERNAME} -e AWS_PASSWORD=${AWS_PASSWORD} --name ${DOCKER_REPO} -d -p 9001:9001 rasc0l/${DOCKER_REPO}:${TAG}"
+                sh "docker start ${DOCKER_REPO}"
             }
         }
     }
     // Clean workspace with options
-    post {
-        always {
-            cleanWs(cleanWhenNotBuilt: false,
-                    deleteDirs: true,
-                    disableDeferredWipeout: true,
-                    notFailBuild: true,
-                    patterns: [[pattern: '.gitignore', type: 'INCLUDE'],
-                               [pattern: '.propsfile', type: 'EXCLUDE']])
-        }
-    }
+    // post {
+    //     always {
+    //         cleanWs(cleanWhenNotBuilt: false,
+    //                 deleteDirs: true,
+    //                 disableDeferredWipeout: true,
+    //                 notFailBuild: true,
+    //                 patterns: [[pattern: '.gitignore', type: 'INCLUDE'],
+    //                            [pattern: '.propsfile', type: 'EXCLUDE']])
+    //     }
+    // }
 }
