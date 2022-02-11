@@ -33,7 +33,6 @@ pipeline {
         }
         stage('Build') {
             steps {
-                // sh 'mvn -f CashOverflow/pom.xml verify org.sonarsource.scanner.maven:sonar-maven-plugin:sonar -Dsonar.projectKey=Revature-CashOverflow_CashOverflow-spring'
                 sh 'mvn -f CashOverflow/pom.xml -Dmaven.test.failure.ignore=true clean package'
             }
             // post {
@@ -44,6 +43,11 @@ pipeline {
             //         archiveArtifacts 'target/*.jar'
             //     }
             // }
+        }
+        stage('Sonar Build') {
+            steps {
+                sh 'mvn -f CashOverflow/pom.xml verify org.sonarsource.scanner.maven:sonar-maven-plugin:sonar -Dsonar.projectKey=Revature-CashOverflow_CashOverflow-spring'
+            }
         }
         stage('Docker Build') {
             steps {
@@ -66,7 +70,7 @@ pipeline {
             steps {
                 sh "docker stop ${DOCKER_REPO} | true"
                 sh "docker rm ${DOCKER_REPO} | true"
-                sh "docker run --env-file ${AWS_ENV} --name ${DOCKER_REPO} -d -p 9001:9001 rasc0l/${DOCKER_REPO}:${TAG}"
+                sh "docker run --env-file ${AWS_ENV} --name ${ENV.JOB_NAME}-${DOCKER_REPO} -d -p 9001:9001 rasc0l/${DOCKER_REPO}:${TAG}"
             }
         }
     }
