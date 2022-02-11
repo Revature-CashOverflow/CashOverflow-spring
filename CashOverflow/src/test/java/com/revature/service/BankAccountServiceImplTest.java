@@ -117,7 +117,6 @@ class BankAccountServiceImplTest {
 		expectedList.addAll(initialList);
 		when(dao.findAllByUserId(1)).thenReturn(initialList);
 
-		
 		List<BankAccount> test = serv.getBankAccounts(1);
 		
 		verify(dao, times(1)).findAllByUserId(initialTestBankAccount.getUser().getId());
