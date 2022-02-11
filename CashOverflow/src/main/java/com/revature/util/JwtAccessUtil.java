@@ -9,6 +9,9 @@ import org.springframework.beans.factory.annotation.Autowired;
  */
 public class JwtAccessUtil {
 
+	private JwtAccessUtil() {
+	}
+
 	@Autowired
 	static JwtUtil util;
 

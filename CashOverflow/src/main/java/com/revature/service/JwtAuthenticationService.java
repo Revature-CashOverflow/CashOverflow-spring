@@ -8,7 +8,6 @@ import org.springframework.security.authentication.DisabledException;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Service;
-import org.springframework.web.bind.annotation.RequestBody;
 
 import com.revature.model.JwtRequest;
 import com.revature.model.JwtResponse;
@@ -41,7 +40,7 @@ public class JwtAuthenticationService {
 	 * @return - Response to front-end
 	 * @throws Exception
 	 */
-	public ResponseEntity<?> createAuthenticationToken(@RequestBody JwtRequest authenticationRequest) throws Exception {
+	public ResponseEntity<JwtResponse> createAuthenticationToken(JwtRequest authenticationRequest) throws DisabledException, BadCredentialsException {
 
 		authenticate(authenticationRequest.getUsername(), authenticationRequest.getPassword());
 
@@ -59,13 +58,13 @@ public class JwtAuthenticationService {
 	 * @param password - password of user to authenticate
 	 * @throws Exception
 	 */
-	private void authenticate(String username, String password) throws Exception {
+	private void authenticate(String username, String password) throws DisabledException, BadCredentialsException {
 		try {
 			manager.authenticate(new UsernamePasswordAuthenticationToken(username, password));
 		} catch (DisabledException e) {
-			throw new Exception("USER_DISABLED", e);
+			throw new DisabledException("USER_DISABLED", e);
 		} catch (BadCredentialsException e) {
-			throw new Exception("INVALID_CREDENTIALS", e);
+			throw new BadCredentialsException("INVALID_CREDENTIALS", e);
 		}
 	}
 }
