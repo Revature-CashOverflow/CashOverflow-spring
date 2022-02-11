@@ -1,8 +1,6 @@
 package com.revature.login;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.mockito.Mockito.times;
-import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
 import org.junit.jupiter.api.BeforeEach;
@@ -16,15 +14,17 @@ import com.revature.dao.UserAccountRepo;
 import com.revature.model.UserAccount;
 import com.revature.service.LoginService;
 import com.revature.service.LoginServiceImpl;
+
 /**
- * this is a test to check if the LoginController.login() method
- * work as it should
+ * this is a test to check if the LoginController.login() method work as it
+ * should
+ * 
  * @author Emmanuel Sosa, Liliya Sherstobitova, Delane Chen
  *
  */
 @SpringBootTest
 @ExtendWith(MockitoExtension.class)
-public class LoginServiceImplTest {
+class LoginServiceImplTest {
 
 	@Mock
 	private UserAccountRepo repo;
@@ -45,7 +45,6 @@ public class LoginServiceImplTest {
 		when(repo.findByUsernameAndPassword("dummy", "password")).thenReturn(initial);
 
 		UserAccount works = serv.login("dummy", "password");
-		System.out.println(works);
 		assertEquals(works, expected);
 
 	};

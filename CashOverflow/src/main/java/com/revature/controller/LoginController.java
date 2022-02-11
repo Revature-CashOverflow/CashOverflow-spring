@@ -1,7 +1,5 @@
 package com.revature.controller;
 
-import javax.servlet.http.HttpServletRequest;
-
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.CrossOrigin;
@@ -41,7 +39,6 @@ public class LoginController {
 	 */
 	@PostMapping(value = "/login")
 	public UserAccountDto login(@RequestBody UserAccount req) {
-		System.out.println(req.getUsername());
 		UserAccount user = serv.login(req.getUsername(), req.getPassword());
 		if (user == null) {
 			throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Invalid Credentials");
@@ -50,5 +47,3 @@ public class LoginController {
 
 	}
 }
-
-
