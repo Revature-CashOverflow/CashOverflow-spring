@@ -62,7 +62,6 @@ class BankAccountServiceImplTest {
 				1,
 				initialTestUser);
 		initialTestBankAccount.setBalance(2000000.0);
-		
 		UserAccount expectedTestUser = new UserAccount(
 				1000,
 				"testuseremail@emailprovider.com",
@@ -80,16 +79,12 @@ class BankAccountServiceImplTest {
 				1,
 				expectedTestUser);
 		expectedTestBankAccount.setBalance(0.0);
-
+		//sending BankAccount object with balance US$2,000,000.00
 		when(dao.save(initialTestBankAccount)).thenReturn(initialTestBankAccount);
-		System.out.println("initia: "+initialTestBankAccount);
 		BankAccount test = serv.createAccount(initialTestBankAccount);
-		System.out.println("test: "+ test);
 		verify(dao, times(1)).save(initialTestBankAccount);
-		assertEquals(test, initialTestBankAccount);
-		
-		
-		
+		//verifying if we got a saved to the database an account with balance US$0.00
+		assertEquals(test.getBalance(), expectedTestBankAccount.getBalance());
 	}
 	
 	/**
@@ -121,12 +116,9 @@ class BankAccountServiceImplTest {
 		List<BankAccount> expectedList = new ArrayList<>();
 		expectedList.addAll(initialList);
 		when(dao.findAllByUserId(1)).thenReturn(initialList);
+
 		
-		MockHttpServletRequest req = new MockHttpServletRequest();
-		req.setParameter("id", "1");
-		
-		List<BankAccount> test = serv.getBankAccounts(req);
-		System.out.println("test list: "+test);
+		List<BankAccount> test = serv.getBankAccounts(1);
 		
 		verify(dao, times(1)).findAllByUserId(initialTestBankAccount.getUser().getId());
 		assertEquals(expectedList, test);

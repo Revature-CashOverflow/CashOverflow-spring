@@ -3,8 +3,6 @@ package com.revature.service;
 import java.time.Instant;
 import java.util.List;
 
-import javax.servlet.http.HttpServletRequest;
-
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -39,10 +37,9 @@ public class BankAccountServiceImpl implements BankAccountService {
 	 * 
 	 * @author Parker Mace, Henry Harvil, Andre Long
 	 */
-	public List<BankAccount> getBankAccounts(HttpServletRequest req) {
-		
-		return bankRepo.findAllByUserId(Integer.parseInt(req.getParameter("id")));
+	public List<BankAccount> getBankAccounts(int id) {
 
+		return bankRepo.findAllByUserId(id);
 	}
 
 }
