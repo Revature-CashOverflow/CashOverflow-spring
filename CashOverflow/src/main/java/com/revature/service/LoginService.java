@@ -3,7 +3,7 @@ package com.revature.service;
 import com.revature.model.UserAccount;
 /**
  * This Class takes form data and checks the database for existing credentials
- * @author Emmanuel Sosa
+ * @author Emmanuel Sosa, Liliya Sherstobitova, Delane Chen
  *
  */
 public interface LoginService {

@@ -17,7 +17,7 @@ import com.revature.service.LoginService;
 /**
  * This Class is use to handle login functionality
  * 
- * @author Emmanuel Sosa
+ * @author Emmanuel Sosa, Liliya Sherstobitova, Delane Chen
  *
  */
 @RestController
@@ -37,7 +37,7 @@ public class LoginController {
 	 * @param password
 	 * @return login User
 	 * 
-	 * @author Emmanuel Sosa
+	 * @author Emmanuel Sosa, Liliya Sherstobitova, Delane Chen
 	 */
 	@PostMapping(value = "/login")
 	public UserAccountDto login(@RequestBody UserAccount req) {

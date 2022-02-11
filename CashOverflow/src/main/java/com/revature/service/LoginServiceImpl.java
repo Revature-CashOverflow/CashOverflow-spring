@@ -10,7 +10,7 @@ import com.revature.model.UserAccount;
  * This Class Implements the LoginService Class and add functionality to the
  * methods
  * 
- * @author Emmanuel Sosa
+ * @author Emmanuel Sosa, Liliya Sherstobitova, Delane Chen
  *
  */
 @Service
