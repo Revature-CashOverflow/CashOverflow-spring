@@ -64,7 +64,7 @@ pipeline {
             steps {
                 sh "docker stop cashoverflow-spring | true"
                 sh "docker rm cashoverflow-spring | true"
-                sh "docker run --name cashoverflow-spring -d -p 9001:9001 rasc0l/cashoverflow-spring:${TAG}"
+                sh "docker run -e AWS_DB_ENDPOINT=${AWS_DB_ENDPOINT} -e AWS_USERNAME=${AWS_USERNAME} -e AWS_PASSWORD=${AWS_PASSWORD} --name cashoverflow-spring -d -p 9001:9001 rasc0l/cashoverflow-spring:${TAG}"
             }
         }
     }
