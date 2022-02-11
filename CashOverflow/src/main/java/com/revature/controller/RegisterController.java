@@ -11,9 +11,27 @@ import org.springframework.web.bind.annotation.ResponseStatus;
 import com.revature.model.UserAccount;
 import com.revature.service.RegisterService;
 
+import lombok.AllArgsConstructor;
+
 @CrossOrigin(value = "http://localhost:4200")
 @Controller
 public class RegisterController {
+	
+	/**
+	 * 
+	 * @author cam77 + scrummybois
+	 *
+	 */
+	@AllArgsConstructor
+	private class UserDto {
+		String email;
+		String username;
+		String firstName;
+		String lastName;
+		String password;
+		
+	}
+	
 	
 	
 	private RegisterService regServ;
@@ -25,13 +43,19 @@ public class RegisterController {
 	
 	
 	/**
+	 * TODO: explain dto thing, password mismatch, error handling, + controller testing
 	 * 
 	 * @authors Cameron, Amir, Chandra
 	 */
 	@PostMapping("/register")
 	@ResponseStatus(HttpStatus.CREATED)
-	public void newUser(@RequestBody UserAccount user) {
-		
+	public void newUser(@RequestBody UserDto userDto) {
+		UserAccount user = new UserAccount();
+		user.setEmail(userDto.email);
+		user.setUsername(userDto.username);
+		user.setFirstName(userDto.firstName);
+		user.setLastName(userDto.lastName);
+		user.setPassword(userDto.password);
 		regServ.insertUserAccount(user);
 		
 	}

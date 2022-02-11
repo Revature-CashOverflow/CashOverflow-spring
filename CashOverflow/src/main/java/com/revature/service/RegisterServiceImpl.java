@@ -8,8 +8,6 @@ import org.springframework.stereotype.Service;
 import com.revature.dao.UserAccountRepo;
 import com.revature.model.UserAccount;
 
-import lombok.NoArgsConstructor;
-
 @Service
 public class RegisterServiceImpl implements RegisterService {
 	
