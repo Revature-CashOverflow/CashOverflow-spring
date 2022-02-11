@@ -3,20 +3,20 @@ package com.revature.controller;
 import java.util.List;
 import java.util.stream.Collectors;
 
-import javax.servlet.http.HttpServletRequest;
-
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestHeader;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.ResponseStatus;
 
 import com.revature.dto.BankAccountDto;
 import com.revature.model.BankAccount;
 import com.revature.service.BankAccountService;
+import com.revature.util.JwtAccessUtil;
 
 @Controller
 public class AccountController {
@@ -32,23 +32,22 @@ public class AccountController {
 	 * @param newAccount
 	 * @apiNote json params: name, description, accountTypeId, "user": jwt
 	 *
-	 * @return BankAccount
+	 * @return BankAccountDto
 	 * 
 	 * @author Parker Mace, Henry Harvil, Andre Long
 	 */
 	@PostMapping("/api/account/createBankAccount")
 	@ResponseStatus(HttpStatus.CREATED)
-	public @ResponseBody BankAccountDto createBankAccount(@RequestBody BankAccount newAccount) {
-		/*
-		 * TODO: we will need to generate a user object using a jwt instead of passing
-		 * in the object as a part of the json. this means we will have to set `"user":
-		 * UserAccount` in the request body within this method
-		 */
+	public @ResponseBody BankAccountDto createBankAccount(@RequestBody BankAccountDto dtoAccount,
+			@RequestHeader("Authorization") String token) {
 
-		// here we will be using a jwt to assign Account.user to a
-		// com.revature.model.User object
+		BankAccount account = new BankAccount();
+		account.setName(dtoAccount.getName());
+		account.setDescription(dtoAccount.getDescription());
+		account.setAccountTypeId(dtoAccount.getAccountTypeId());
+		account.setUser(JwtAccessUtil.getUserFromToken(token));
 
-		return new BankAccountDto(bankAccServ.createAccount(newAccount));
+		return new BankAccountDto(bankAccServ.createAccount(account));
 	}
 
 	/**
@@ -59,18 +58,12 @@ public class AccountController {
 	 */
 	@GetMapping("/api/account/getBankAccounts")
 	@ResponseStatus(HttpStatus.OK)
-	public @ResponseBody List<BankAccountDto> getBankAccounts(HttpServletRequest req) {
-		/*
-		 * TODO: we will generate a user object from their jwt and check to ensure
-		 * req.getParameter("id") == UserAccount.getId(); If it does not, tell them to
-		 * go away
-		 */
+	public @ResponseBody List<BankAccountDto> getBankAccounts(@RequestHeader("Authorization") String token) {
 
-		/*
-		 * This strips sensitive info out of the List<BankAccount> return in order to
-		 * return List<BankAccountDto>
-		 */
-		return bankAccServ.getBankAccounts(req).stream().map(BankAccount -> new BankAccountDto(BankAccount))
-				.collect(Collectors.toList());
+		// This strips sensitive info out of the List<BankAccount> return in order to
+		// return List<BankAccountDto>
+
+		return bankAccServ.getBankAccounts(JwtAccessUtil.getUserFromToken(token).getId()).stream()
+				.map(BankAccountDto::new).collect(Collectors.toList());
 	}
 }
