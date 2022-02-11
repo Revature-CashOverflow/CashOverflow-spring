@@ -20,6 +20,13 @@ import com.revature.util.JwtUtil;
 
 import io.jsonwebtoken.ExpiredJwtException;
 
+/**
+ * Filter for all traffic entering the server that allows us to authenticate
+ * tokens
+ * 
+ * @author Tyler Rondeau, Luis Estevez, Luis Rivera
+ *
+ */
 @Component
 public class JwtRequestFilter extends OncePerRequestFilter {
 

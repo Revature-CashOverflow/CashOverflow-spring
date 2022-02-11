@@ -34,6 +34,13 @@ public class JwtAuthenticationService {
 		this.manager = manager;
 	}
 
+	/**
+	 * Method to create an AutheticationToken (to be called when the user logs in)
+	 * 
+	 * @param authenticationRequest - Incoming request
+	 * @return - Response to front-end
+	 * @throws Exception
+	 */
 	public ResponseEntity<?> createAuthenticationToken(@RequestBody JwtRequest authenticationRequest) throws Exception {
 
 		authenticate(authenticationRequest.getUsername(), authenticationRequest.getPassword());
@@ -45,6 +52,13 @@ public class JwtAuthenticationService {
 		return ResponseEntity.ok(new JwtResponse(token));
 	}
 
+	/**
+	 * Create the authentication itself
+	 * 
+	 * @param username - Username of user to authenticate
+	 * @param password - password of user to authenticate
+	 * @throws Exception
+	 */
 	private void authenticate(String username, String password) throws Exception {
 		try {
 			manager.authenticate(new UsernamePasswordAuthenticationToken(username, password));

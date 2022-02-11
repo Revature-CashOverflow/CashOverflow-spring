@@ -17,8 +17,13 @@ import org.springframework.security.web.authentication.UsernamePasswordAuthentic
 
 import com.revature.service.JwtUserDetailsService;
 
-
-
+/**
+ * Configuration for web security
+ * 
+ * @author Tyler Rondeau, Luis Estevez, Luis Rivera
+ *
+ */
+@SuppressWarnings("deprecation")
 @Configuration
 @EnableWebSecurity
 @EnableGlobalMethodSecurity(prePostEnabled = true)
@@ -42,8 +47,12 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
 		// Use BCryptPasswordEncoder
 		auth.userDetailsService(serv).passwordEncoder(passwordEncoder());
 	}
-	
-	@SuppressWarnings("deprecation")
+
+	/**
+	 * Password encoding for the application (currently none)
+	 * 
+	 * @return - PasswordEncoder being used
+	 */
 	@Bean
 	public PasswordEncoder passwordEncoder() {
 		return NoOpPasswordEncoder.getInstance();
@@ -65,8 +74,7 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
 				anyRequest().authenticated()
 				// make sure we use stateless session; session won't be used to
 				// store user's state.
-				.and().exceptionHandling().authenticationEntryPoint(entry)
-				.and().sessionManagement()
+				.and().exceptionHandling().authenticationEntryPoint(entry).and().sessionManagement()
 				.sessionCreationPolicy(SessionCreationPolicy.STATELESS);
 
 		// Add a filter to validate the tokens with every request
