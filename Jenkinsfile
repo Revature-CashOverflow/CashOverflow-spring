@@ -12,9 +12,7 @@ pipeline {
     environment {
         DATE = new Date().format('yy.M')
         TAG = "${DATE}.${BUILD_NUMBER}"
-        AWS_DB_ENDPOINT = credentials('AWS_DB_ENDPOINT')
-        AWS_USERNAME = credentials('AWS_USERNAME')
-        AWS_PASSWORD = credentials('AWS_PASSWORD')
+        AWS_ENV = credentials('aws-env')
         SONAR_TOKEN = credentials('SONAR_TOKEN')
         DOCKER_REPO = 'cashoverflow-spring'
     }
@@ -65,7 +63,7 @@ pipeline {
             steps {
                 sh "docker stop ${DOCKER_REPO} | true"
                 sh "docker rm ${DOCKER_REPO} | true"
-                sh "docker run -e AWS_DB_ENDPOINT=${AWS_DB_ENDPOINT} -e AWS_USERNAME=${AWS_USERNAME} -e AWS_PASSWORD=${AWS_PASSWORD} --name ${DOCKER_REPO} -d -p 9001:9001 rasc0l/${DOCKER_REPO}:${TAG}"
+                sh "docker run --env-file ${AWS_ENV} --name ${DOCKER_REPO} -d -p 9001:9001 rasc0l/${DOCKER_REPO}:${TAG}"
             }
         }
     }
