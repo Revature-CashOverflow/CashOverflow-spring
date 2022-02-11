@@ -66,7 +66,6 @@ pipeline {
                 sh "docker stop ${DOCKER_REPO} | true"
                 sh "docker rm ${DOCKER_REPO} | true"
                 sh "docker run -e AWS_DB_ENDPOINT=${AWS_DB_ENDPOINT} -e AWS_USERNAME=${AWS_USERNAME} -e AWS_PASSWORD=${AWS_PASSWORD} --name ${DOCKER_REPO} -d -p 9001:9001 rasc0l/${DOCKER_REPO}:${TAG}"
-                sh "docker start ${DOCKER_REPO}"
             }
         }
     }
