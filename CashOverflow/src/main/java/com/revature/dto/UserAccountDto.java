@@ -8,9 +8,7 @@ import javax.persistence.Id;
 
 import com.revature.model.UserAccount;
 
-import lombok.AllArgsConstructor;
 import lombok.Data;
-import lombok.Getter;
 
 /**
  * Model for user accounts to send to the client
