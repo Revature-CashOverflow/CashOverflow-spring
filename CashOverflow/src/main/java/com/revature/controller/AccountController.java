@@ -2,6 +2,7 @@ package com.revature.controller;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.stream.Collectors;
 
 import javax.servlet.http.HttpServletRequest;
 
@@ -14,6 +15,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.ResponseStatus;
 
+import com.revature.dto.BankAccountDto;
 import com.revature.model.BankAccount;
 import com.revature.service.BankAccountService;
 
@@ -42,7 +44,7 @@ public class AccountController {
 	 */
 	@PostMapping("/api/account/createBankAccount")
 	@ResponseStatus(HttpStatus.CREATED)
-	public @ResponseBody BankAccount createBankAccount(@RequestBody BankAccount newAccount) {
+	public @ResponseBody BankAccountDto createBankAccount(@RequestBody BankAccount newAccount) {
 		/* TODO: we will need to generate a user object using a jwt 
 		 * instead of passing in the object as a part of the json.
 		 * this means we will have to set `"user": UserAccount` in the
@@ -51,24 +53,26 @@ public class AccountController {
 		
 		// here we will be using a jwt to assign Account.user to a com.revature.model.User object
 		
-		return bankAccServ.createAccount(newAccount);
+		return new BankAccountDto(bankAccServ.createAccount(newAccount));
 	}
 	
 	
 	@GetMapping("/api/account/getBankAccounts")
 	@ResponseStatus(HttpStatus.OK)
-	public @ResponseBody List<BankAccount> getBankAccounts(HttpServletRequest req) {
+	public @ResponseBody List<BankAccountDto> getBankAccounts(HttpServletRequest req) {
 		/*
 		 * TODO: we will generate a user object from their jwt and check
 		 * to ensure req.getParameter("id") == UserAccount.getId();
 		 * If it does not, tell them to go away
 		 */
 		
-		List<BankAccount> accounts = new ArrayList<BankAccount>();
-		
-		accounts = bankAccServ.getBankAccounts(req);
-		
-		return accounts;
+		/*
+		 * This strips sensitive info out of the List<BankAccount> return
+		 * in order to return List<BankAccountDto>
+		 */
+		return bankAccServ.getBankAccounts(req)
+				.stream().map(BankAccount -> new BankAccountDto(BankAccount))
+				.collect(Collectors.toList());
 	}
 }
 
