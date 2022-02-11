@@ -1,5 +1,7 @@
 package com.revature.service;
 
+import java.time.Instant;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -23,6 +25,7 @@ public class RegisterServiceImpl implements RegisterService {
 	 */
 	@Override
 	public UserAccount insertUserAccount(UserAccount user) {
+		user.setCreationDate(Instant.now());
 		return userAccountRepo.save(user);
 	}
 	

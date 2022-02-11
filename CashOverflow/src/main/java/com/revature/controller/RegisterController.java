@@ -23,15 +23,16 @@ public class RegisterController {
 		this.regServ = regServ;
 	}
 	
+	
 	/**
 	 * 
 	 * @authors Cameron, Amir, Chandra
 	 */
 	@PostMapping("/register")
 	@ResponseStatus(HttpStatus.CREATED)
-	public UserAccount newUser(@RequestBody UserAccount user) {
-		System.out.println(user);
-		return regServ.insertUserAccount(user); //expecting the service method to return null if their is duplicate data
+	public String newUser(@RequestBody UserAccount user) {
+		regServ.insertUserAccount(user); //expecting the service method to return null if their is duplicate data
+		return "User created!";
 		
 	}
 	
