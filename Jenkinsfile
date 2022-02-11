@@ -33,7 +33,7 @@ pipeline {
         }
         stage('Build') {
             steps {
-                sh 'mvn -f CashOverflow/pom.xml verify org.sonarsource.scanner.maven:sonar-maven-plugin:sonar -Dsonar.projectKey=Revature-CashOverflow_CashOverflow-spring'
+                // sh 'mvn -f CashOverflow/pom.xml verify org.sonarsource.scanner.maven:sonar-maven-plugin:sonar -Dsonar.projectKey=Revature-CashOverflow_CashOverflow-spring'
                 sh 'mvn -f CashOverflow/pom.xml -Dmaven.test.failure.ignore=true clean package'
             }
             // post {
