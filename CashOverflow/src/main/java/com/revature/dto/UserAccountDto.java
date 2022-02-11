@@ -11,7 +11,7 @@ import com.revature.model.UserAccount;
 import lombok.Data;
 
 /**
- * Model for user accounts
+ * Model for user accounts to send to the client
  * 
  * @author Colin Knox, Parker Mace, Tyler Rondeau
  */

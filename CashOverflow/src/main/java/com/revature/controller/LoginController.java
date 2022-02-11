@@ -1,5 +1,7 @@
 package com.revature.controller;
 
+import javax.servlet.http.HttpServletRequest;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -10,10 +12,15 @@ import com.revature.dto.UserAccountDto;
 import com.revature.model.UserAccount;
 import com.revature.service.LoginService;
 
+/**
+ * This Class is use to handle login functionality
+ * 
+ * @author Emmanuel Sosa, Liliya Sherstobitova, Delane Chen
+ *
+ */
 @RestController
-@CrossOrigin(origins = { "http://localhost:4200", "http://3.92.176.100"})
+@CrossOrigin(origins = { "http://localhost:4200", "http://3.92.176.100" })
 public class LoginController {
-
 	LoginService serv;
 
 	@Autowired
@@ -28,21 +35,18 @@ public class LoginController {
 	 * @param password
 	 * @return login User
 	 * 
-	 * @author Emmanuel Sosa
+	 * @author Emmanuel Sosa, Liliya Sherstobitova, Delane Chen
 	 */
 	@PostMapping(value = "/login")
-	public UserAccountDto login(@RequestBody UserAccount user ) {
-		System.out.println(user);
-		
-		UserAccountDto userDto = new UserAccountDto( user);
-
-		//		System.out.println("loginUser.getUsername()===>" + userAccount.getUsername());
-//		UserAccount user = serv.login(userAccount.getUsername(), userAccount.getPassword());
-//		if (user == null) {
-//			throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Invalid Credentials");
-//		}
-		return userDto;
+	public UserAccountDto login(@RequestBody UserAccount req) {
+		System.out.println(req.getUsername());
+		UserAccount user = serv.login(req.getUsername(), req.getPassword());
+		if (user == null) {
+			throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Invalid Credentials");
+		}
+		return new UserAccountDto(user);
 
 	}
-
 }
+
+
