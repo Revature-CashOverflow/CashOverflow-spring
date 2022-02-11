@@ -68,8 +68,8 @@ pipeline {
         }
         stage('Deploy') {
             steps {
-                sh "docker stop ${DOCKER_REPO} | true"
-                sh "docker rm ${DOCKER_REPO} | true"
+                sh "docker stop ${ENV.JOB_NAME}-${DOCKER_REPO} | true"
+                sh "docker rm ${ENV.JOB_NAME}-${DOCKER_REPO} | true"
                 sh "docker run --env-file ${AWS_ENV} --name ${ENV.JOB_NAME}-${DOCKER_REPO} -d -p 9001:9001 rasc0l/${DOCKER_REPO}:${TAG}"
             }
         }
