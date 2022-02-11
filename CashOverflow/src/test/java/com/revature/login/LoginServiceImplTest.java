@@ -45,7 +45,6 @@ class LoginServiceImplTest {
 		when(repo.findByUsernameAndPassword("dummy", "password")).thenReturn(initial);
 
 		UserAccount works = serv.login("dummy", "password");
-		System.out.println(works);
 		assertEquals(works, expected);
 
 	};
