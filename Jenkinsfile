@@ -74,6 +74,7 @@ pipeline {
             steps {
                 script {
                     if (env.BRANCH_NAME == 'main') {
+                        sh "docker stop devops-${DOCKER_REPO} | true"
                         sh "docker stop ${env.BRANCH_NAME}-${DOCKER_REPO} | true"
                         sh "docker rm ${env.BRANCH_NAME}-${DOCKER_REPO} | true"
                         sh "docker run --env-file ${AWS_ENV} --name ${env.BRANCH_NAME}-${DOCKER_REPO} -d -p 9001:9001 rasc0l/${DOCKER_REPO}:${env.BRANCH_NAME}-${TAG}"
