@@ -14,15 +14,17 @@ import com.revature.dao.UserAccountRepo;
 import com.revature.model.UserAccount;
 import com.revature.service.LoginService;
 import com.revature.service.LoginServiceImpl;
+
 /**
- * this is a test to check if the LoginController.login() method
- * work as it should
+ * this is a test to check if the LoginController.login() method work as it
+ * should
+ * 
  * @author Emmanuel Sosa, Liliya Sherstobitova, Delane Chen
  *
  */
 @SpringBootTest
 @ExtendWith(MockitoExtension.class)
-public class LoginServiceImplTest {
+class LoginServiceImplTest {
 
 	@Mock
 	private UserAccountRepo repo;
