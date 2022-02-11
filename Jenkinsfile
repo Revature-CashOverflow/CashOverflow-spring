@@ -52,7 +52,7 @@ pipeline {
         stage('Docker Build') {
             steps {
                 script {
-                    docker.build("rasc0l/${DOCKER_REPO}:${TAG}")
+                    docker.build("rasc0l/${DOCKER_REPO}:${ENV.JOB_NAME}-${TAG}")
                 }
             }
         }
@@ -60,8 +60,8 @@ pipeline {
             steps {
                 script {
                     docker.withRegistry('https://registry.hub.docker.com', 'docker-creds') {
-                        docker.image("rasc0l/${DOCKER_REPO}:${TAG}").push()
-                        docker.image("rasc0l/${DOCKER_REPO}:${TAG}").push("latest")
+                        docker.image("rasc0l/${DOCKER_REPO}:${ENV.JOB_NAME}-${TAG}").push()
+                        docker.image("rasc0l/${DOCKER_REPO}:${ENV.JOB_NAME}-${TAG}").push("latest")
                     }
                 }
             }
@@ -70,7 +70,7 @@ pipeline {
             steps {
                 sh "docker stop ${ENV.JOB_NAME}-${DOCKER_REPO} | true"
                 sh "docker rm ${ENV.JOB_NAME}-${DOCKER_REPO} | true"
-                sh "docker run --env-file ${AWS_ENV} --name ${ENV.JOB_NAME}-${DOCKER_REPO} -d -p 9001:9001 rasc0l/${DOCKER_REPO}:${TAG}"
+                sh "docker run --env-file ${AWS_ENV} --name ${ENV.JOB_NAME}-${DOCKER_REPO} -d -p 9001:9001 rasc0l/${DOCKER_REPO}:${ENV.JOB_NAME}-${TAG}"
             }
         }
     }
