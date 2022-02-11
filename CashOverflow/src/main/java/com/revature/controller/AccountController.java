@@ -8,6 +8,7 @@ import javax.servlet.http.HttpServletRequest;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Controller;
+import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -17,6 +18,7 @@ import org.springframework.web.bind.annotation.ResponseStatus;
 import com.revature.model.BankAccount;
 import com.revature.service.BankAccountService;
 
+@CrossOrigin(origins = "*")
 @Controller
 public class AccountController {
 
@@ -50,8 +52,10 @@ public class AccountController {
 		 */
 		
 		// here we will be using a jwt to assign Account.user to a com.revature.model.User object
-		
-		return bankAccServ.createAccount(newAccount);
+		BankAccount aux = bankAccServ.createAccount(newAccount);
+		BankAccount responseBankAccount = new BankAccount();
+		responseBankAccount.setName(aux.getName());
+		return responseBankAccount;
 	}
 	
 	
