@@ -1,14 +1,14 @@
 pipeline {
     agent any
-    
+
     options {
         skipDefaultCheckout(true)
     }
-    
+
     tools {
         maven 'maven-default'
     }
-    
+
     environment {
         DATE = new Date().format('yy.M')
         TAG = "${DATE}.${BUILD_NUMBER}"
@@ -35,14 +35,14 @@ pipeline {
             steps {
                 sh 'mvn -f CashOverflow/pom.xml -Dmaven.test.failure.ignore=true clean package'
             }
-            // post {
-            //     // If Maven was able to run the tests, even if some of the test
-            //     // failed, record the test results and archive the jar file.
-            //     success {
-            //         junit '**/target/surefire-reports/TEST-*.xml'
-            //         archiveArtifacts 'target/*.jar'
-            //     }
-            // }
+        // post {
+        //     // If Maven was able to run the tests, even if some of the test
+        //     // failed, record the test results and archive the jar file.
+        //     success {
+        //         junit '**/target/surefire-reports/TEST-*.xml'
+        //         archiveArtifacts 'target/*.jar'
+        //     }
+        // }
         }
         stage('Sonar Build') {
             steps {
@@ -52,25 +52,33 @@ pipeline {
         stage('Docker Build') {
             steps {
                 script {
-                    docker.build("rasc0l/${DOCKER_REPO}:${env.BRANCH_NAME}-${TAG}")
+                    if (${ env.BRANCH_NAME } == 'main') {
+                        docker.build("rasc0l/${DOCKER_REPO}:${env.BRANCH_NAME}-${TAG}")
+                    }
                 }
             }
         }
         stage('Pushing Docker Image') {
             steps {
                 script {
-                    docker.withRegistry('https://registry.hub.docker.com', 'docker-creds') {
-                        docker.image("rasc0l/${DOCKER_REPO}:${env.BRANCH_NAME}-${TAG}").push()
-                        docker.image("rasc0l/${DOCKER_REPO}:${env.BRANCH_NAME}-${TAG}").push("latest")
+                    if (${ env.BRANCH_NAME } == 'main') {
+                        docker.withRegistry('https://registry.hub.docker.com', 'docker-creds') {
+                            docker.image("rasc0l/${DOCKER_REPO}:${env.BRANCH_NAME}-${TAG}").push()
+                            docker.image("rasc0l/${DOCKER_REPO}:${env.BRANCH_NAME}-${TAG}").push('latest')
+                        }
                     }
                 }
             }
         }
         stage('Deploy') {
             steps {
-                sh "docker stop ${env.BRANCH_NAME}-${DOCKER_REPO} | true"
-                sh "docker rm ${env.BRANCH_NAME}-${DOCKER_REPO} | true"
-                sh "docker run --env-file ${AWS_ENV} --name ${env.BRANCH_NAME}-${DOCKER_REPO} -d -p 9001:9001 rasc0l/${DOCKER_REPO}:${env.BRANCH_NAME}-${TAG}"
+                script {
+                    if (${ env.BRANCH_NAME } == 'main') {
+                        sh "docker stop ${env.BRANCH_NAME}-${DOCKER_REPO} | true"
+                        sh "docker rm ${env.BRANCH_NAME}-${DOCKER_REPO} | true"
+                        sh "docker run --env-file ${AWS_ENV} --name ${env.BRANCH_NAME}-${DOCKER_REPO} -d -p 9001:9001 rasc0l/${DOCKER_REPO}:${env.BRANCH_NAME}-${TAG}"
+                    }
+                }
             }
         }
     }
