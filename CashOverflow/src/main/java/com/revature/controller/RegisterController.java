@@ -30,9 +30,9 @@ public class RegisterController {
 	 */
 	@PostMapping("/register")
 	@ResponseStatus(HttpStatus.CREATED)
-	public String newUser(@RequestBody UserAccount user) {
-		regServ.insertUserAccount(user); //expecting the service method to return null if their is duplicate data
-		return "User created!";
+	public void newUser(@RequestBody UserAccount user) {
+		
+		regServ.insertUserAccount(user);
 		
 	}
 	
