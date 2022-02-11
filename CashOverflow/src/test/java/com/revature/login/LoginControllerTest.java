@@ -24,7 +24,7 @@ import com.revature.service.LoginServiceImpl;
  */
 @SpringBootTest
 @ExtendWith(MockitoExtension.class)
-class LoginServiceImplTest {
+class LoginControllerTest {
 
 	@Mock
 	private UserAccountRepo repo;
@@ -45,8 +45,8 @@ class LoginServiceImplTest {
 		when(repo.findByUsernameAndPassword("dummy", "password")).thenReturn(initial);
 
 		UserAccount works = serv.login("dummy", "password");
-		System.out.println(works);
 		assertEquals(works, expected);
 
 	};
+	
 }

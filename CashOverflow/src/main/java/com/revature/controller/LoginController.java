@@ -41,7 +41,7 @@ public class LoginController {
 	@PostMapping(value = "/login")
 	public UserAccountDto login(@RequestBody LoginRequestDto req) {
 		UserAccount user = serv.login(req.getUsername(), req.getPassword());
-		if (user == null) {
+		if (user.getUsername() == null || user.getPassword() == null) {
 			throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Invalid Credentials");
 		}
 		return new UserAccountDto(user);
