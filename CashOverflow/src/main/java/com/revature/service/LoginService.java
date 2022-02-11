@@ -1,6 +1,6 @@
 package com.revature.service;
 
-import com.revature.model.UserAccount;
+import com.revature.dto.UserAccountDto;
 /**
  * 
  * @author emmanuel
@@ -14,5 +14,5 @@ public interface LoginService {
 	 * @param password - password enter to log in
 	 * @return - User object
 	 */
-	public UserAccount login(String username, String password);
+	public UserAccountDto login(String username, String password);
 }

@@ -1,12 +1,10 @@
 package com.revature.controller;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
-import org.springframework.web.server.ResponseStatusException;
 
 import com.revature.dto.UserAccountDto;
 import com.revature.model.UserAccount;
@@ -33,12 +31,17 @@ public class LoginController {
 	 * @author Emmanuel Sosa
 	 */
 	@PostMapping(value = "/login")
-	public UserAccountDto login(UserAccount loginUser) {
-		UserAccount user = serv.login(username, password);
-		if (user == null) {
-			throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Invalid Credentials");
-		}
-		return new UserAccountDto(user);
+	public UserAccountDto login(@RequestBody UserAccount user ) {
+		System.out.println(user);
+		
+		UserAccountDto userDto = new UserAccountDto( user);
+
+		//		System.out.println("loginUser.getUsername()===>" + userAccount.getUsername());
+//		UserAccount user = serv.login(userAccount.getUsername(), userAccount.getPassword());
+//		if (user == null) {
+//			throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Invalid Credentials");
+//		}
+		return userDto;
 
 	}
 
