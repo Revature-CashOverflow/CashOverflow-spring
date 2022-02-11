@@ -31,22 +31,9 @@ pipeline {
                 echo "Building ${env.BRANCH_NAME}..."
             }
         }
-        stage('Build') {
-            steps {
-                sh 'mvn -f CashOverflow/pom.xml -Dmaven.test.failure.ignore=true clean package'
-            }
-        // post {
-        //     // If Maven was able to run the tests, even if some of the test
-        //     // failed, record the test results and archive the jar file.
-        //     success {
-        //         junit '**/target/surefire-reports/TEST-*.xml'
-        //         archiveArtifacts 'target/*.jar'
-        //     }
-        // }
-        }
         stage('Sonar Build') {
             steps {
-                sh 'mvn -f CashOverflow/pom.xml verify org.sonarsource.scanner.maven:sonar-maven-plugin:sonar -Dsonar.projectKey=Revature-CashOverflow_CashOverflow-spring'
+                sh "mvn -f CashOverflow/pom.xml verify org.sonarsource.scanner.maven:sonar-maven-plugin:sonar -Dsonar.projectKey=Revature-CashOverflow_CashOverflow-spring -Dsonar.branch.name=${env.BRANCH_NAME}"
             }
         }
         stage('Docker Build') {
