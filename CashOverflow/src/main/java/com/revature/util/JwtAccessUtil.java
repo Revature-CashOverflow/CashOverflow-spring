@@ -2,6 +2,9 @@ package com.revature.util;
 
 import org.springframework.beans.factory.annotation.Autowired;
 
+import com.revature.model.UserAccount;
+import com.revature.service.UserAccountService;
+
 /**
  * Utility class to statically get a username from a token
  * 
@@ -14,6 +17,9 @@ public class JwtAccessUtil {
 
 	@Autowired
 	static JwtUtil util;
+	
+	@Autowired
+	static UserAccountService serv;
 
 	/**
 	 * Get the username of the user tied to a given token
@@ -23,5 +29,9 @@ public class JwtAccessUtil {
 	 */
 	public static String getUsernameFromToken(String token) {
 		return util.getUsernameFromToken(token);
+	}
+	
+	public static UserAccount getUserFromToken(String token) {
+		return serv.getUserFromUsername(getUsernameFromToken(token));
 	}
 }
