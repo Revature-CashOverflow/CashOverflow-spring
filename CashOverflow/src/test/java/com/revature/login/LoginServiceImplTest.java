@@ -19,7 +19,7 @@ import com.revature.service.LoginServiceImpl;
 /**
  * this is a test to check if the LoginController.login() method
  * work as it should
- * @author Emmanuel Sosa
+ * @author Emmanuel Sosa, Liliya Sherstobitova, Delane Chen
  *
  */
 @SpringBootTest
