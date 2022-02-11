@@ -15,6 +15,7 @@ import lombok.NoArgsConstructor;
 
 /**
  * Model for user accounts
+ * 
  * @author Colin Knox, Parker Mace, Tyler Rondeau
  */
 @Entity
@@ -34,4 +35,10 @@ public class UserAccount {
 	String lastName;
 	String password;
 	Instant creationDate;
+	public UserAccount(String username, String password) {
+		super();
+		this.username = username;
+		this.password = password;
+	}
+	
 }

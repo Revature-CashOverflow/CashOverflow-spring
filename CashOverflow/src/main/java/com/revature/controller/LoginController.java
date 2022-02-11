@@ -14,8 +14,14 @@ import com.revature.dto.UserAccountDto;
 import com.revature.model.UserAccount;
 import com.revature.service.LoginService;
 
+/**
+ * This Class is use to handle login functionality
+ * 
+ * @author Emmanuel Sosa
+ *
+ */
 @RestController
-@CrossOrigin(origins = { "http://localhost:4200", "http://3.92.176.100"})
+@CrossOrigin(origins = { "http://localhost:4200", "http://3.92.176.100" })
 public class LoginController {
 	LoginService serv;
 
