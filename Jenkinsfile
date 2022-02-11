@@ -12,6 +12,9 @@ pipeline {
     environment {
         DATE = new Date().format('yy.M')
         TAG = "${DATE}.${BUILD_NUMBER}"
+        AWS_DB_ENDPOINT = credentials('AWS_DB_ENDPOINT')
+        AWS_USERNAME = credentials('AWS_USERNAME')
+        AWS_PASSWORD = credentials('AWS_PASSWORD')
         AWS_ENV = credentials('aws-env')
         SONAR_TOKEN = credentials('SONAR_TOKEN')
         DOCKER_REPO = 'cashoverflow-spring'
