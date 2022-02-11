@@ -13,8 +13,8 @@ import org.springframework.http.HttpStatus;
 import com.revature.model.JwtRequest;
 import com.revature.service.JwtAuthenticationService;
 
-@SpringBootTest
-public class SessionManagementTests {
+@SpringBootTest 
+class SessionManagementTests {
 
 	@Autowired
 	JwtAuthenticationService serv;
@@ -34,7 +34,7 @@ public class SessionManagementTests {
 	@Test
 	void createAuthenticationToken() {
 		try {
-			assertEquals(serv.createAuthenticationToken(req).getStatusCode(), HttpStatus.OK);
+			assertEquals(HttpStatus.OK, serv.createAuthenticationToken(req).getStatusCode());
 		}catch(Exception e) {
 			fail();
 		}
