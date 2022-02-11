@@ -12,8 +12,14 @@ import com.revature.dto.UserAccountDto;
 import com.revature.model.UserAccount;
 import com.revature.service.LoginService;
 
+/**
+ * This Class is use to handle login functionality
+ * 
+ * @author Emmanuel Sosa
+ *
+ */
 @RestController
-@CrossOrigin(origins = { "http://localhost:4200", "http://3.92.176.100"})
+@CrossOrigin(origins = { "http://localhost:4200", "http://3.92.176.100" })
 public class LoginController {
 
 	LoginService serv;
@@ -34,7 +40,7 @@ public class LoginController {
 	 */
 	@PostMapping(value = "/login")
 	public UserAccountDto login(UserAccount loginUser) {
-		UserAccount user = serv.login(username, password);
+		UserAccount user = serv.login(loginUser.getUsername(), loginUser.getPassword());
 		if (user == null) {
 			throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Invalid Credentials");
 		}
