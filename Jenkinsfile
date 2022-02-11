@@ -33,7 +33,7 @@ pipeline {
         }
         stage('Sonar Build') {
             steps {
-                sh "mvn -f CashOverflow/pom.xml verify org.sonarsource.scanner.maven:sonar-maven-plugin:sonar -Dsonar.projectKey=Revature-CashOverflow_CashOverflow-spring -Dsonar.branch.name=${env.BRANCH_NAME} -Dsonar.coverage.jacoco.xmlReportPaths=${project.build.directory}/site/jacoco/jacoco.xml"
+                sh "mvn -f CashOverflow/pom.xml verify org.sonarsource.scanner.maven:sonar-maven-plugin:sonar org.jacoco:jacoco-maven-plugin:0.8.5:prepare-agent  -Dsonar.projectKey=Revature-CashOverflow_CashOverflow-spring -Dsonar.branch.name=${env.BRANCH_NAME} -Dsonar.coverage.jacoco.xmlReportPaths=${project.build.directory}/site/jacoco/jacoco.xml"
             }
         }
         stage('Docker Build') {
