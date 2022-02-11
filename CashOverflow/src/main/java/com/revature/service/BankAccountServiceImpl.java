@@ -16,8 +16,7 @@ public class BankAccountServiceImpl implements BankAccountService {
 
 	private BankAccountRepo bankRepo;
 
-	@Autowired
-	private BankAccountServiceImpl(BankAccountRepo bankRepo) {
+	@Autowired BankAccountServiceImpl(BankAccountRepo bankRepo) {
 		this.bankRepo = bankRepo;
 	}
 
@@ -41,7 +40,7 @@ public class BankAccountServiceImpl implements BankAccountService {
 	 * @author Parker Mace, Henry Harvil, Andre Long
 	 */
 	public List<BankAccount> getBankAccounts(HttpServletRequest req) {
-
+		
 		return bankRepo.findAllByUserId(Integer.parseInt(req.getParameter("id")));
 
 	}
