@@ -33,12 +33,7 @@ public class BankAccountServiceImpl implements BankAccountService {
 		newAccount.setCreationDate(Instant.now());
 		newAccount.setBalance(0.0);
 		
-		BankAccount strippedData = bankRepo.save(newAccount);
-		
-		// here we are stripping the user object to hide user data from the frontend
-		strippedData.setUser(null);
-		
-		return strippedData;
+		return bankRepo.save(newAccount);
 	}
 
 	/**
