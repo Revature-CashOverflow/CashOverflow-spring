@@ -18,6 +18,7 @@ pipeline {
         AWS_ENV = credentials('aws-env')
         SONAR_TOKEN = credentials('SONAR_TOKEN')
         DOCKER_REPO = 'cashoverflow-spring'
+        DOCKER_USER = 'rasc0l'
     }
 
     stages {
@@ -40,7 +41,7 @@ pipeline {
             steps {
                 script {
                     if (env.BRANCH_NAME  == 'main') {
-                        docker.build("rasc0l/${DOCKER_REPO}:${env.BRANCH_NAME}-${TAG}")
+                        docker.build("${DOCKER_USER}/${DOCKER_REPO}:${env.BRANCH_NAME}-${TAG}")
                     }
                 }
             }
@@ -50,8 +51,8 @@ pipeline {
                 script {
                     if (env.BRANCH_NAME == 'main') {
                         docker.withRegistry('https://registry.hub.docker.com', 'docker-creds') {
-                            docker.image("rasc0l/${DOCKER_REPO}:${env.BRANCH_NAME}-${TAG}").push()
-                            docker.image("rasc0l/${DOCKER_REPO}:${env.BRANCH_NAME}-${TAG}").push('latest')
+                            docker.image("${DOCKER_USER}/${DOCKER_REPO}:${env.BRANCH_NAME}-${TAG}").push()
+                            docker.image("${DOCKER_USER}/${DOCKER_REPO}:${env.BRANCH_NAME}-${TAG}").push('latest')
                         }
                     }
                 }
@@ -63,7 +64,7 @@ pipeline {
                     if (env.BRANCH_NAME == 'main') {
                         sh "docker stop ${env.BRANCH_NAME}-${DOCKER_REPO} | true"
                         sh "docker rm ${env.BRANCH_NAME}-${DOCKER_REPO} | true"
-                        sh "docker run --env-file ${AWS_ENV} --name ${env.BRANCH_NAME}-${DOCKER_REPO} -d -p 9001:9001 rasc0l/${DOCKER_REPO}:${env.BRANCH_NAME}-${TAG}"
+                        sh "docker run --env-file ${AWS_ENV} --name ${env.BRANCH_NAME}-${DOCKER_REPO} -d -p 9001:9001 ${DOCKER_USER}/${DOCKER_REPO}:${env.BRANCH_NAME}-${TAG}"
                     }
                 }
             }
