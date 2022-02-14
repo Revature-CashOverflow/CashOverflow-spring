@@ -68,14 +68,14 @@ INDEX VERSION 1.131+C:\revature\projects\project3\CashOverflow-spring\.metadata\
 827602274.index
 120320604.index
 1284236930.index
-3416149911.index
 3027259108.index
+3416149911.index
 556076187.index
 4267356851.index
 2411810541.index
 1221866050.index
-2535714970.index
 1865797976.index
+2535714970.index
 2171663982.index
 4145723381.index
 3976333500.index
@@ -84,7 +84,7 @@ INDEX VERSION 1.131+C:\revature\projects\project3\CashOverflow-spring\.metadata\
 2937374630.index
 111677076.index
 1869201393.index
-2158467696.index
-846618637.index
-3684824797.index
 3165974811.index
+2158467696.index
+3684824797.index
+846618637.index

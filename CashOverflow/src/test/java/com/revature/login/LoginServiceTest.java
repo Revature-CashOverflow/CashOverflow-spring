@@ -24,20 +24,24 @@ import com.revature.service.LoginServiceImpl;
  */
 @SpringBootTest
 @ExtendWith(MockitoExtension.class)
-class LoginServiceImplTest {
+class LoginServiceTest {
 
 	@Mock
 	private UserAccountRepo repo;
-	@Mock
+	
 	private LoginService serv;
-	@Mock
+	
 	private UserAccount initial, expected;
 
 	@BeforeEach
 	void setUp() throws Exception {
 		serv = new LoginServiceImpl(repo);
-		initial = new UserAccount("dummy", "password");
-		expected = new UserAccount("dummy", "password");
+		initial = new UserAccount();
+		initial.setUsername("dummy");
+		initial.setPassword("password");
+		expected = new UserAccount();
+		expected.setUsername("dummy");
+		expected.setPassword("password");
 	}
 
 	@Test
@@ -48,4 +52,5 @@ class LoginServiceImplTest {
 		assertEquals(works, expected);
 
 	};
+
 }

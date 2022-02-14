@@ -35,10 +35,5 @@ public class UserAccount {
 	String lastName;
 	String password;
 	Instant creationDate;
-	public UserAccount(String username, String password) {
-		super();
-		this.username = username;
-		this.password = password;
-	}
 	
 }

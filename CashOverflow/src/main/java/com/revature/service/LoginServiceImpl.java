@@ -34,9 +34,4 @@ public class LoginServiceImpl implements LoginService {
 	public UserAccount login(String username, String password) {
 		return repo.findByUsernameAndPassword(username, password);
 	}
-
-	@Override
-	public UserAccount login(UserAccount loginUser) {
-		return repo.findByUsernameAndPassword(loginUser.getUsername(), loginUser.getPassword());
-	}
 }

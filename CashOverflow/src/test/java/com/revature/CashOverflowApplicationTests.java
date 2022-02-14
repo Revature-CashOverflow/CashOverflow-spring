@@ -25,8 +25,12 @@ class CashOverflowApplicationTests {
 		assertThat(loginServiceImpl).isNotNull();
 	}
 
+<<<<<<< HEAD
 	@Test
 	public void contextLoads() throws Exception {
 		assertThat(controller).isNotNull();
 	}
+=======
+	
+>>>>>>> f60eb5864783b472b01a0907b17ef8cc46f7e88b
 }
