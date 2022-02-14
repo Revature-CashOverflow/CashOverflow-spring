@@ -1,5 +1,6 @@
 package com.revature.controller;
 
+import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Controller;
@@ -9,43 +10,27 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.server.ResponseStatusException;
 
+import com.revature.dto.RegUserAccountDto;
 import com.revature.model.UserAccount;
 import com.revature.service.RegisterService;
 
-import lombok.AllArgsConstructor;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-
-@CrossOrigin(value = "http://localhost:4200")
+@CrossOrigin(value = {"http://localhost:4200", "http://d3nlmo2v0fs5mq.cloudfront.net"})
 @Controller
 public class RegisterController {
 	
-	/**
-	 * 
-	 * @author cam77 + scrummybois
-	 *
-	 */
-	@Getter
-	@NoArgsConstructor
-	@AllArgsConstructor
-	public static class UserDto {
-		String email;
-		String username;
-		String firstName;
-		String lastName;
-		String password;
-		
-	}
-	
-	
-	
 	private RegisterService regServ;
+	private ModelMapper mapper;
+	
 	
 	@Autowired
-	public RegisterController(RegisterService regServ) {
+	public RegisterController(RegisterService regServ, ModelMapper mapper) {
 		this.regServ = regServ;
+		this.mapper = mapper;
 	}
 	
+	private UserAccount convertToEntity(RegUserAccountDto dto) {
+		return mapper.map(dto, UserAccount.class);
+	}
 	
 	/**
 	 * TODO: password mismatch, error handling, + controller testing
@@ -54,16 +39,11 @@ public class RegisterController {
 	 */
 	@PostMapping("/register")
 	@ResponseStatus(HttpStatus.CREATED)
-	public void newUser(@RequestBody UserDto userDto) {
-		if (userDto.email == null || userDto.username == null || userDto.firstName == null || userDto.lastName == null || userDto.password == null) {
+	public void newUser(@RequestBody RegUserAccountDto dto) {
+		if (dto.getEmail() == null || dto.getUsername() == null || dto.getFirstName() == null || dto.getLastName() == null || dto.getPassword() == null) {
 			throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Missing registration info");
 		}
-		UserAccount user = new UserAccount();
-		user.setEmail(userDto.email);
-		user.setUsername(userDto.username);
-		user.setFirstName(userDto.firstName);
-		user.setLastName(userDto.lastName);
-		user.setPassword(userDto.password);
+		UserAccount user = convertToEntity(dto);
 		regServ.insertUserAccount(user);
 		
 	}

@@ -1,6 +1,8 @@
 package com.revature;
 
+import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
@@ -10,10 +12,14 @@ import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
+import org.modelmapper.ModelMapper;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.http.HttpStatus;
+import org.springframework.web.server.ResponseStatusException;
 
 import com.revature.controller.RegisterController;
 import com.revature.dao.UserAccountRepo;
+import com.revature.dto.RegUserAccountDto;
 import com.revature.model.UserAccount;
 import com.revature.service.RegisterService;
 import com.revature.service.RegisterServiceImpl;
@@ -31,20 +37,20 @@ class RegisterTests {
 	@Mock
 	private RegisterService mockServ;
 	
+	@Mock
+	private ModelMapper mockMapper;
+	
 	
 	@BeforeEach
 	public void setUp() {
 		regServ = new RegisterServiceImpl(mockRepo);
-		regCont = new RegisterController(mockServ);
-		
+		regCont = new RegisterController(mockServ, mockMapper);
 		
 	}
 
 	@Test
 	void serviceTest() {
 		UserAccount test = new UserAccount(3, "email@gmail.com", "username", "firstname", "lastname", "password", null);
-		UserAccount expected = new UserAccount(3, "email@gmail.com", "username", "firstname", "lastname", "password",
-				null);
 		
 		when(mockRepo.save(test)).thenReturn(test);
 		UserAccount result = regServ.insertUserAccount(test);
@@ -55,8 +61,26 @@ class RegisterTests {
 	
 	@Test
 	void controllerTest() {
-		RegisterController.UserDto test = new RegisterController.UserDto("email@gmail.com", "username", "firstname", "lastname", "password");
+		RegUserAccountDto test = new RegUserAccountDto("email@gmail.com", "username", "firstname", "lastname", "password");
+	
+		UserAccount user = new UserAccount();
+		user.setEmail(test.getEmail());
+		user.setUsername(test.getUsername());
+		user.setFirstName(test.getFirstName());
+		user.setLastName(test.getLastName());
+		user.setPassword(test.getPassword());
+		when(mockMapper.map(test, UserAccount.class)).thenReturn(user);
+		regCont.newUser(test);
 		
+		verify(mockServ, times(1)).insertUserAccount(user);
+		verify(mockMapper, times(1)).map(test, UserAccount.class);
+		
+	}
+	
+	@Test
+	void controllerTestMissingArg() {
+		RegUserAccountDto test = new RegUserAccountDto(null, "username", "firstname", "lastname", "password");
+	
 		UserAccount user = new UserAccount();
 		user.setEmail(test.getEmail());
 		user.setUsername(test.getUsername());
@@ -64,7 +88,19 @@ class RegisterTests {
 		user.setLastName(test.getLastName());
 		user.setPassword(test.getPassword());
 		
-		verify(regServ, times(1)).insertUserAccount(user);
+		ResponseStatusException e = assertThrows(ResponseStatusException.class, () -> {
+			regCont.newUser(test);
+		});
+		
+		String expectedReason = "Missing registration info";
+		HttpStatus expectedStatus = HttpStatus.BAD_REQUEST;
+		Integer expectedCode = 400;
+		assertEquals(expectedReason, e.getReason());
+		assertEquals(expectedStatus, e.getStatus());
+		assertEquals(expectedCode, e.getRawStatusCode());
+		
+		verify(mockServ, times(0)).insertUserAccount(user);
+		verify(mockMapper, times(0)).map(test, UserAccount.class);
 		
 	}
 	
