@@ -40,10 +40,14 @@ public class LoginController {
 	 */
 	@PostMapping(value = "/login")
 	public UserAccountDto login(@RequestBody LoginRequestDto req) {
+		if(req.getUsername() == null || req.getPassword() == null) {
+			throw new ResponseStatusException(HttpStatus.BAD_REQUEST,"missing Credential");
+		}
 		UserAccount user = serv.login(req.getUsername(), req.getPassword());
 		if (user.getUsername() == null || user.getPassword() == null) {
 			throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Invalid Credentials");
-		}
+		}//test notes
+		
 		return new UserAccountDto(user);
 
 	}
