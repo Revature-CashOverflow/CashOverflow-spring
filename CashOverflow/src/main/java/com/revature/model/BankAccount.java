@@ -3,6 +3,7 @@ package com.revature.model;
 import java.time.Instant;
 import java.util.List;
 
+import javax.persistence.CascadeType;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
@@ -41,7 +42,7 @@ public class BankAccount {
 	@JoinColumn(referencedColumnName = "id")
 	UserAccount user;
 	
-	@OneToMany
+	@OneToMany(cascade = CascadeType.REMOVE, orphanRemoval = true)
 	@JsonIgnore
 	@JoinColumn(referencedColumnName = "id")
 	List<Transaction> txs;

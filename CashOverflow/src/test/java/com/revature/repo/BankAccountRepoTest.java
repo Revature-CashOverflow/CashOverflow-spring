@@ -23,7 +23,7 @@ class BankAccountRepoTest {
 
 	@Autowired
 	private BankAccountRepo dao;
-	
+
 	@BeforeAll
 	static void setUpBeforeClass() throws Exception {
 	}
@@ -41,44 +41,35 @@ class BankAccountRepoTest {
 	}
 
 	/**
-	 * This method tests the BankAccountRepo method findAllByUserId.
-	 * This method should be returning a list of BankAccounts associated
-	 * with a UserAccount.
+	 * This method tests the BankAccountRepo method findAllByUserId. This method
+	 * should be returning a list of BankAccounts associated with a UserAccount.
 	 * Note: Need to comfirm if return can be null
 	 * 
 	 */
 	@Test
 	void findAllByUserIdTest() {
-		
+
 		List<BankAccount> test = dao.findAllByUserId(1);
 		assertTrue(test.size() >= 1);
-		
+
 	}
-	
+	/**
+	 * This method tests the BankAccountRepo method save. This method
+	 * should be returning a BankAccount with the same information as the one saved.
+	 * Note: Need to be able to delete the BankAccount afterwards. Having issues with that.
+	 */
 	@Test
 	void saveTest() {
-		UserAccount initialTestUser = new UserAccount(
-				1,
-				"testuseremail@emailprovider.com",
-				"testUserUsername",
-				"testUserFirstName",
-				"testUserLastName",
-				"testUserPassword",
-				null
-				);
-		
-		BankAccount initialTestBankAccount = new BankAccount(
-				"myBankAccountName2",
-				"myBankAccountDescription2",
-				Instant.now(),
-				1,
-				initialTestUser);
+
+		UserAccount initialTestUser = new UserAccount(1, "testuseremail@emailprovider.com", "testUserUsername",
+				"testUserFirstName", "testUserLastName", "testUserPassword", null);
+		BankAccount initialTestBankAccount = new BankAccount("myBankAccountName2", "myBankAccountDescription2",
+				Instant.now(), 1, initialTestUser);
 		initialTestBankAccount.setBalance(0.0);
-		
+
 		BankAccount test = dao.save(initialTestBankAccount);
 		assertEquals(test.getName(), initialTestBankAccount.getName());
-		dao.delete(test);
-		
+
 	}
 
 }
