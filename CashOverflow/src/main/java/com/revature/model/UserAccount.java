@@ -10,10 +10,12 @@ import javax.persistence.Table;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;
+import lombok.Getter;
 import lombok.NoArgsConstructor;
 
 /**
  * Model for user accounts
+ * 
  * @author Colin Knox, Parker Mace, Tyler Rondeau
  */
 @Entity
@@ -21,6 +23,7 @@ import lombok.NoArgsConstructor;
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
+@Getter
 public class UserAccount {
 
 	@Id
@@ -32,4 +35,5 @@ public class UserAccount {
 	String lastName;
 	String password;
 	Instant creationDate;
+	
 }
