@@ -20,6 +20,14 @@ import com.revature.dto.LoginUserAccountDto;
 import com.revature.model.UserAccount;
 import com.revature.service.LoginService;
 
+/**
+ * 
+ * Tests login controller functionality.
+ * 
+ * @author Delane Chen, Liliya Sherstobitova, Emmanuel Sosa
+ *
+ */
+
 @SpringBootTest
 @ExtendWith(MockitoExtension.class)
 public class LoginControllerTest {
