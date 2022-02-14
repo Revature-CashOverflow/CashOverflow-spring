@@ -23,7 +23,7 @@ import com.revature.model.UserAccount;
 
 @SpringBootTest
 @ExtendWith(MockitoExtension.class)
-public class JwtUserDetailsServiceTest {
+class JwtUserDetailsServiceTest {
 
 	@Mock
 	private UserAccountRepo userRepo;
@@ -60,7 +60,7 @@ public class JwtUserDetailsServiceTest {
 		expected.setPassword("pas");
 		
 		when(userRepo.findByUsername(initial.getUsername())).thenReturn(null);
-		
-		assertThrows(UsernameNotFoundException.class, () -> serv.loadUserByUsername(initial.getUsername()));
+		String usernameForSonar = initial.getUsername();
+		assertThrows(UsernameNotFoundException.class, () -> serv.loadUserByUsername(usernameForSonar));
 	}
 }

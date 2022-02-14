@@ -12,11 +12,10 @@ import org.springframework.http.HttpStatus;
 import org.springframework.security.authentication.BadCredentialsException;
 
 import com.revature.model.JwtRequest;
-import com.revature.service.JwtAuthenticationService;
 
 
 @SpringBootTest
-public class JwtAuthenticationServiceTest {
+class JwtAuthenticationServiceTest {
 
 	@Autowired
 	JwtAuthenticationService serv;
