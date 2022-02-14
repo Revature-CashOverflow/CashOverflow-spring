@@ -13,8 +13,9 @@ import org.springframework.http.HttpStatus;
 import com.revature.model.JwtRequest;
 import com.revature.service.JwtAuthenticationService;
 
-@SpringBootTest 
-class SessionManagementTests {
+
+@SpringBootTest
+public class JwtAuthenticationServiceTest {
 
 	@Autowired
 	JwtAuthenticationService serv;
