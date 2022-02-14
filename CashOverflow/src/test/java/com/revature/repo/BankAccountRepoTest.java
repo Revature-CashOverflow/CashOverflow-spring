@@ -1,6 +1,7 @@
 package com.revature.repo;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
 import java.time.Instant;
 import java.util.List;
@@ -43,14 +44,14 @@ class BankAccountRepoTest {
 	 * This method tests the BankAccountRepo method findAllByUserId.
 	 * This method should be returning a list of BankAccounts associated
 	 * with a UserAccount.
-	 * Note: Currently this test is using a hardcoded value to work.
+	 * Note: Need to comfirm if return can be null
 	 * 
 	 */
 	@Test
 	void findAllByUserIdTest() {
 		
 		List<BankAccount> test = dao.findAllByUserId(1);
-		assertEquals(13, test.size());
+		assertTrue(test.size() >= 1);
 		
 	}
 	
@@ -67,18 +68,16 @@ class BankAccountRepoTest {
 				);
 		
 		BankAccount initialTestBankAccount = new BankAccount(
-				17,
-				"myBankAccountName",
-				0.0,
-				"myBankAccountDescription",
+				"myBankAccountName2",
+				"myBankAccountDescription2",
 				Instant.now(),
 				1,
-				initialTestUser,
-				null);
+				initialTestUser);
+		initialTestBankAccount.setBalance(0.0);
 		
 		BankAccount test = dao.save(initialTestBankAccount);
-		assertEquals(test, initialTestBankAccount);
-		dao.delete(initialTestBankAccount);
+		assertEquals(test.getName(), initialTestBankAccount.getName());
+		dao.delete(test);
 		
 	}
 
