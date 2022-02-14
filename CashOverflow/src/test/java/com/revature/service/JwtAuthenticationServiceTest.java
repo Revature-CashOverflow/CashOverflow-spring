@@ -35,7 +35,7 @@ class JwtAuthenticationServiceTest {
 	@Test
 	void createAuthenticationToken() {
 		try {
-			assertEquals(HttpStatus.OK, serv.createAuthenticationToken(req).getStatusCode());
+			assertEquals(HttpStatus.OK, serv.createAuthenticationToken("user", "password").getStatusCode());
 		}catch(Exception e) {
 			fail();
 		}
@@ -44,7 +44,7 @@ class JwtAuthenticationServiceTest {
 	@Test
 	void createAuthenicationTokenBadPassword() {
 		try {
-			assertThrows(BadCredentialsException.class, ()->{serv.createAuthenticationToken(badPasswordReq);});
+			assertThrows(BadCredentialsException.class, ()->{serv.createAuthenticationToken("user", "pasword");});
 		}catch(Exception e) {
 			fail();
 		}
@@ -53,7 +53,7 @@ class JwtAuthenticationServiceTest {
 	@Test
 	void createAuthenicationTokenBadUsername() {
 		try {
-			assertThrows(BadCredentialsException.class, ()->{serv.createAuthenticationToken(badUsernameReq);});
+			assertThrows(BadCredentialsException.class, ()->{serv.createAuthenticationToken("li", "password");});
 		}catch(Exception e) {
 			fail();
 		}
@@ -62,7 +62,7 @@ class JwtAuthenticationServiceTest {
 	@Test
 	void badRequestEmpty() {
 		try {
-			assertThrows(BadCredentialsException.class, ()->{serv.createAuthenticationToken(emptyReq);});
+			assertThrows(BadCredentialsException.class, ()->{serv.createAuthenticationToken(null, null);});
 		}catch(Exception e) {
 			fail();
 		}
