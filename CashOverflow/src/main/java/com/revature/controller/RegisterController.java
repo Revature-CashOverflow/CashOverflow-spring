@@ -33,8 +33,8 @@ public class RegisterController {
 	}
 	
 	/**
-	 * TODO: password mismatch, error handling, + controller testing
-	 * In order to guard against SQL injection we have created a data transfer object to act as a buffer 
+	 * Takes the data from angular puts it into a dto object, throws a 400 exception if any values are null.
+	 * Then passes the data to the service layer to write to the database.
 	 * @authors Cameron, Amir, Chandra
 	 */
 	@PostMapping("/register")

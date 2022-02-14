@@ -24,6 +24,13 @@ import com.revature.model.UserAccount;
 import com.revature.service.RegisterService;
 import com.revature.service.RegisterServiceImpl;
 
+
+/**
+ * Tests for RegisterController(positive and negative) and Service layer.
+ * In the future we will put tests for different classes in different testing files.
+ * @author Cameron, Amir, Chandra
+ *
+ */
 @SpringBootTest
 @ExtendWith(MockitoExtension.class)
 class RegisterTests {
@@ -60,7 +67,7 @@ class RegisterTests {
 	}
 	
 	@Test
-	void controllerTest() {
+	void RegisterControllerTest() {
 		RegUserAccountDto test = new RegUserAccountDto("email@gmail.com", "username", "firstname", "lastname", "password");
 	
 		UserAccount user = new UserAccount();
@@ -78,7 +85,7 @@ class RegisterTests {
 	}
 	
 	@Test
-	void controllerTestMissingArg() {
+	void RegisterControllerTestMissingArg() {
 		RegUserAccountDto test = new RegUserAccountDto(null, "username", "firstname", "lastname", "password");
 	
 		UserAccount user = new UserAccount();

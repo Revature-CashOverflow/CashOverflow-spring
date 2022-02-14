@@ -19,7 +19,7 @@ public class RegisterServiceImpl implements RegisterService {
 	}
 	
 	/**
-	 * 
+	 * Uses the Java Instant class to add the creation date to the new UserAccount object.
 	 * @authors Cameron, Amir, Chandra
 	 */
 	@Override

@@ -12,6 +12,10 @@ public class CashOverflowApplication {
 		SpringApplication.run(CashOverflowApplication.class, args);
 	}
 	
+	/**
+	 * Spring requires this Bean to run
+	 * @author Cameron, Amir, Chandra
+	 */
 	@Bean
 	public ModelMapper modelMapper() {
 		return new ModelMapper();
