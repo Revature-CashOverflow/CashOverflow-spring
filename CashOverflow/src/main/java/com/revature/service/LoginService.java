@@ -17,6 +17,5 @@ public interface LoginService {
 	 */
 	public UserAccount login(String username, String password);
 
-	public UserAccount login(UserAccount loginUser);
 
 }
