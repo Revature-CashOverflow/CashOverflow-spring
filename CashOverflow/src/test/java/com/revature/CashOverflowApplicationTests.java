@@ -24,4 +24,5 @@ class CashOverflowApplicationTests {
 		assertThat(loginServiceImpl).isNotNull();
 	}
 
+	
 }
