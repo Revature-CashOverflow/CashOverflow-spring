@@ -20,8 +20,9 @@ import com.revature.service.BankAccountService;
 import com.revature.util.JwtAccessUtil;
 
 //@CrossOrigin(origins = "http://localhost:9001")
-@CrossOrigin(origins = "*")
+
 @Controller
+@CrossOrigin(origins = "*")
 public class AccountController {
 
 	private BankAccountService bankAccServ;

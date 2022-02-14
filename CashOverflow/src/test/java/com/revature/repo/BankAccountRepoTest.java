@@ -13,12 +13,16 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.test.annotation.Rollback;
+import org.springframework.transaction.annotation.Transactional;
 
 import com.revature.dao.BankAccountRepo;
 import com.revature.model.BankAccount;
 import com.revature.model.UserAccount;
 
+
 @SpringBootTest
+@Transactional
 class BankAccountRepoTest {
 
 	@Autowired
@@ -56,14 +60,14 @@ class BankAccountRepoTest {
 	/**
 	 * This method tests the BankAccountRepo method save. This method
 	 * should be returning a BankAccount with the same information as the one saved.
-	 * Note: Need to be able to delete the BankAccount afterwards. Having issues with that.
 	 */
 	@Test
+	@Rollback(true)
 	void saveTest() {
 
 		UserAccount initialTestUser = new UserAccount(1, "testuseremail@emailprovider.com", "testUserUsername",
 				"testUserFirstName", "testUserLastName", "testUserPassword", null);
-		BankAccount initialTestBankAccount = new BankAccount("myBankAccountName2", "myBankAccountDescription2",
+		BankAccount initialTestBankAccount = new BankAccount("myBankAccountTEST", "myBankAccountDescription2",
 				Instant.now(), 1, initialTestUser);
 		initialTestBankAccount.setBalance(0.0);
 

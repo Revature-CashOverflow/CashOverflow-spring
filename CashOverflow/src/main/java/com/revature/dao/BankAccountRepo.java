@@ -15,5 +15,6 @@ import com.revature.model.BankAccount;
 public interface BankAccountRepo extends JpaRepository<BankAccount, Integer> {
 	
 	public List<BankAccount> findAllByUserId(Integer id);
+	
 
 }
