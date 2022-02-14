@@ -18,6 +18,7 @@ pipeline {
         AWS_ENV = credentials('aws-env')
         SONAR_TOKEN = credentials('SONAR_TOKEN')
         DOCKER_REPO = 'cashoverflow-spring'
+        DOCKER_USER = 'rasc0l'
     }
 
     stages {
@@ -31,29 +32,16 @@ pipeline {
                 echo "Building ${env.BRANCH_NAME}..."
             }
         }
-        stage('Build') {
-            steps {
-                sh 'mvn -f CashOverflow/pom.xml -Dmaven.test.failure.ignore=true clean package'
-            }
-        // post {
-        //     // If Maven was able to run the tests, even if some of the test
-        //     // failed, record the test results and archive the jar file.
-        //     success {
-        //         junit '**/target/surefire-reports/TEST-*.xml'
-        //         archiveArtifacts 'target/*.jar'
-        //     }
-        // }
-        }
         stage('Sonar Build') {
             steps {
-                sh 'mvn -f CashOverflow/pom.xml verify org.sonarsource.scanner.maven:sonar-maven-plugin:sonar -Dsonar.projectKey=Revature-CashOverflow_CashOverflow-spring'
+                sh "mvn -f CashOverflow/pom.xml verify org.sonarsource.scanner.maven:sonar-maven-plugin:sonar org.jacoco:jacoco-maven-plugin:0.8.5:prepare-agent  -Dsonar.projectKey=Revature-CashOverflow_CashOverflow-spring -Dsonar.branch.name=${env.BRANCH_NAME} -Dsonar.coverage.jacoco.xmlReportPaths=${env.WORKSPACE}/site/jacoco/jacoco.xml"
             }
         }
         stage('Docker Build') {
             steps {
                 script {
                     if (env.BRANCH_NAME  == 'main') {
-                        docker.build("rasc0l/${DOCKER_REPO}:${env.BRANCH_NAME}-${TAG}")
+                        docker.build("${DOCKER_USER}/${DOCKER_REPO}:${env.BRANCH_NAME}-${TAG}")
                     }
                 }
             }
@@ -63,8 +51,8 @@ pipeline {
                 script {
                     if (env.BRANCH_NAME == 'main') {
                         docker.withRegistry('https://registry.hub.docker.com', 'docker-creds') {
-                            docker.image("rasc0l/${DOCKER_REPO}:${env.BRANCH_NAME}-${TAG}").push()
-                            docker.image("rasc0l/${DOCKER_REPO}:${env.BRANCH_NAME}-${TAG}").push('latest')
+                            docker.image("${DOCKER_USER}/${DOCKER_REPO}:${env.BRANCH_NAME}-${TAG}").push()
+                            docker.image("${DOCKER_USER}/${DOCKER_REPO}:${env.BRANCH_NAME}-${TAG}").push('latest')
                         }
                     }
                 }
@@ -76,7 +64,7 @@ pipeline {
                     if (env.BRANCH_NAME == 'main') {
                         sh "docker stop ${env.BRANCH_NAME}-${DOCKER_REPO} | true"
                         sh "docker rm ${env.BRANCH_NAME}-${DOCKER_REPO} | true"
-                        sh "docker run --env-file ${AWS_ENV} --name ${env.BRANCH_NAME}-${DOCKER_REPO} -d -p 9001:9001 rasc0l/${DOCKER_REPO}:${env.BRANCH_NAME}-${TAG}"
+                        sh "docker run --env-file ${AWS_ENV} --name ${env.BRANCH_NAME}-${DOCKER_REPO} -d -p 9001:9001 ${DOCKER_USER}/${DOCKER_REPO}:${env.BRANCH_NAME}-${TAG}"
                     }
                 }
             }
