@@ -1,4 +1,4 @@
-package com.revature.security;
+package com.revature.service;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertThrows;
@@ -9,6 +9,7 @@ import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.http.HttpStatus;
+import org.springframework.security.authentication.BadCredentialsException;
 
 import com.revature.model.JwtRequest;
 import com.revature.service.JwtAuthenticationService;
@@ -44,7 +45,7 @@ public class JwtAuthenticationServiceTest {
 	@Test
 	void createAuthenicationTokenBadPassword() {
 		try {
-			assertThrows(Exception.class, ()->{serv.createAuthenticationToken(badPasswordReq);});
+			assertThrows(BadCredentialsException.class, ()->{serv.createAuthenticationToken(badPasswordReq);});
 		}catch(Exception e) {
 			fail();
 		}
@@ -53,7 +54,7 @@ public class JwtAuthenticationServiceTest {
 	@Test
 	void createAuthenicationTokenBadUsername() {
 		try {
-			assertThrows(Exception.class, ()->{serv.createAuthenticationToken(badUsernameReq);});
+			assertThrows(BadCredentialsException.class, ()->{serv.createAuthenticationToken(badUsernameReq);});
 		}catch(Exception e) {
 			fail();
 		}
@@ -62,9 +63,11 @@ public class JwtAuthenticationServiceTest {
 	@Test
 	void badRequestEmpty() {
 		try {
-			assertThrows(Exception.class, ()->{serv.createAuthenticationToken(emptyReq);});
+			assertThrows(BadCredentialsException.class, ()->{serv.createAuthenticationToken(emptyReq);});
 		}catch(Exception e) {
 			fail();
 		}
 	}
+	
+	
 }
