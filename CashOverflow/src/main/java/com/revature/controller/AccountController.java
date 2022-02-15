@@ -36,7 +36,7 @@ public class AccountController {
 
 	/**
 	 * @param newAccount
-	 * @apiNote json params: name, description, accountTypeId, "user": jwt
+	 * @apiNote json params: name, description, accountTypeId
 	 *
 	 * @return BankAccountDto
 	 * 
@@ -54,7 +54,6 @@ public class AccountController {
 	}
 
 	/**
-	 * 
 	 * @return List<BankAccountDto>
 	 * 
 	 * @author Parker Mace
