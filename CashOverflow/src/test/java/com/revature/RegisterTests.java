@@ -15,10 +15,8 @@ import org.mockito.junit.jupiter.MockitoExtension;
 import org.modelmapper.ModelMapper;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.http.HttpStatus;
-<<<<<<< HEAD
-=======
+
 import org.springframework.security.crypto.password.PasswordEncoder;
->>>>>>> 9947c665a6b513402242ec7b8faf17fba86cb84b
 import org.springframework.web.server.ResponseStatusException;
 
 import com.revature.controller.RegisterController;
@@ -28,17 +26,15 @@ import com.revature.model.UserAccount;
 import com.revature.service.RegisterService;
 import com.revature.service.RegisterServiceImpl;
 
-<<<<<<< HEAD
-
-/**
- * Tests for RegisterController(positive and negative) and Service layer.
- * In the future we will put tests for different classes in different testing files.
-=======
 /**
  * Tests for RegisterController(positive and negative) and Service layer. In the
  * future we will put tests for different classes in different testing files.
+ * ======= /** Tests for RegisterController(positive and negative) and Service
+ * layer. In the future we will put tests for different classes in different
+ * testing files.
  * 
->>>>>>> 9947c665a6b513402242ec7b8faf17fba86cb84b
+ * >>>>>>> 9947c665a6b513402242ec7b8faf17fba86cb84b
+ * 
  * @author Cameron, Amir, Chandra
  *
  */
@@ -93,7 +89,6 @@ class RegisterTests {
 		when(mockMapper.map(test, UserAccount.class)).thenReturn(user);
 		regCont.newUser(test);
 
-
 		verify(mockServ, times(1)).insertUserAccount(user);
 		verify(mockMapper, times(1)).map(test, UserAccount.class);
 
@@ -110,7 +105,6 @@ class RegisterTests {
 		user.setLastName(test.getLastName());
 		user.setPassword(test.getPassword());
 
-
 		ResponseStatusException e = assertThrows(ResponseStatusException.class, () -> {
 			regCont.newUser(test);
 		});
@@ -121,7 +115,6 @@ class RegisterTests {
 		assertEquals(expectedReason, e.getReason());
 		assertEquals(expectedStatus, e.getStatus());
 		assertEquals(expectedCode, e.getRawStatusCode());
-
 
 		verify(mockServ, times(0)).insertUserAccount(user);
 		verify(mockMapper, times(0)).map(test, UserAccount.class);
