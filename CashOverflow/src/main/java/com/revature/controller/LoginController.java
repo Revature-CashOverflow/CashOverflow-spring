@@ -1,8 +1,10 @@
 package com.revature.controller;
 
-import org.modelmapper.ModelMapper;
+import javax.servlet.http.HttpServletResponse;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -10,8 +12,9 @@ import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.server.ResponseStatusException;
 
 import com.revature.dto.LoginRequestDto;
-import com.revature.dto.LoginUserAccountDto;
+import com.revature.model.JwtResponse;
 import com.revature.model.UserAccount;
+import com.revature.service.JwtAuthenticationService;
 import com.revature.service.LoginService;
 
 /**
@@ -21,19 +24,18 @@ import com.revature.service.LoginService;
  *
  */
 @RestController
-@CrossOrigin(origins = { "http://localhost:4200", "http://d3nlmo2v0fs5mq.cloudfront.net"})
+@CrossOrigin(origins = { "http://localhost:4200", "http://d3nlmo2v0fs5mq.cloudfront.net" })
 public class LoginController {
-	
-	private ModelMapper mapper;	
-	
+
 	private LoginService serv;
 
+	private JwtAuthenticationService jwtServ;
+
 	@Autowired
-	public LoginController(LoginService serv, ModelMapper mapper) {
+	public LoginController(LoginService serv, JwtAuthenticationService jwtServ) {
 		this.serv = serv;
-		this.mapper = mapper;
+		this.jwtServ = jwtServ;
 	}
-	
 
 	/**
 	 * Checks if the User name & password matches credential in the database
@@ -45,18 +47,16 @@ public class LoginController {
 	 * @author Emmanuel Sosa, Liliya Sherstobitova, Delane Chen
 	 */
 	@PostMapping(value = "/login")
-	public LoginUserAccountDto login(@RequestBody LoginRequestDto req) {
-		if(req.getUsername() == null || req.getPassword() == null) {
-			throw new ResponseStatusException(HttpStatus.BAD_REQUEST,"missing Credential");
+	public ResponseEntity<JwtResponse> login(@RequestBody LoginRequestDto req, HttpServletResponse resp) {
+		if (req.getUsername() == null || req.getPassword() == null) {
+			throw new ResponseStatusException(HttpStatus.NOT_ACCEPTABLE, "missing Credential");
 		}
 		UserAccount user = serv.login(req.getUsername(), req.getPassword());
-		
-		
-		return convertToDto(user);
-
-	}
-	
-	private LoginUserAccountDto convertToDto(UserAccount userAccount) {
-		return mapper.map(userAccount, LoginUserAccountDto.class);
+		if (user == null) {
+			resp.setStatus(406);
+			return null;
+		} else {
+			return jwtServ.createAuthenticationToken(user.getUsername(), user.getPassword());
+		}
 	}
 }
