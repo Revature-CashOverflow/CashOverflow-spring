@@ -3,6 +3,7 @@ package com.revature.controller;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -21,10 +22,14 @@ public class RegisterController {
 	private RegisterService regServ;
 	private ModelMapper mapper;
 
+	private PasswordEncoder enc;
+	
+
 	@Autowired
-	public RegisterController(RegisterService regServ, ModelMapper mapper) {
+	public RegisterController(RegisterService regServ, ModelMapper mapper, PasswordEncoder enc) {
 		this.regServ = regServ;
 		this.mapper = mapper;
+		this.enc = enc;
 	}
 
 	private UserAccount convertToEntity(RegUserAccountDto dto) {
@@ -45,9 +50,9 @@ public class RegisterController {
 				|| dto.getLastName() == null || dto.getPassword() == null) {
 			throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Missing registration info");
 		}
+		dto.setPassword(enc.encode(dto.getPassword()));
 		UserAccount user = convertToEntity(dto);
-		regServ.insertUserAccount(user);
-
+		regServ.insertUserAccount(user);	
 	}
-
 }
+
