@@ -11,7 +11,7 @@ import org.springframework.security.config.annotation.web.configuration.EnableWe
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
 import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.core.userdetails.UserDetailsService;
-import org.springframework.security.crypto.password.NoOpPasswordEncoder;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 
@@ -23,7 +23,6 @@ import com.revature.service.JwtUserDetailsService;
  * @author Tyler Rondeau, Luis Estevez, Luis Rivera
  *
  */
-@SuppressWarnings("deprecation")
 @Configuration
 @EnableWebSecurity
 @EnableGlobalMethodSecurity(prePostEnabled = true)
@@ -49,13 +48,13 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
 	}
 
 	/**
-	 * Password encoding for the application (currently none)
+	 * Password encoding for the application using BCryptPasswordEncoder
 	 * 
 	 * @return - PasswordEncoder being used
 	 */
 	@Bean
 	public PasswordEncoder passwordEncoder() {
-		return NoOpPasswordEncoder.getInstance();
+		return new BCryptPasswordEncoder();
 	}
 
 	@Bean
