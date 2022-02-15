@@ -1,31 +1,19 @@
 package com.revature.controller;
 
 
-import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.fail;
-import static org.mockito.Mockito.times;
-import static org.mockito.Mockito.verify;
-import static org.mockito.Mockito.when;
-
-import java.time.Instant;
-
 import org.junit.jupiter.api.AfterAll;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.BeforeEach;
-import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
+import org.modelmapper.ModelMapper;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.transaction.annotation.Transactional;
 
-import com.revature.dao.BankAccountRepo;
-import com.revature.dto.BankAccountDto;
-import com.revature.model.BankAccount;
-import com.revature.model.UserAccount;
 import com.revature.service.BankAccountService;
-import com.revature.util.JwtAccessUtil;
+import com.revature.service.UserAccountService;
 
 @SpringBootTest
 @Transactional
@@ -33,12 +21,16 @@ import com.revature.util.JwtAccessUtil;
 class AccountControllerTest {
 	
 	@Mock
-	private BankAccountService serv;
+	private BankAccountService bServ;
+	
+	private UserAccountService uServ;
 	
 //	@Mock
 //	private BankAccountRepo dao;
 	
 	private AccountController aCont;
+	
+	private ModelMapper map;
 
 	@BeforeAll
 	static void setUpBeforeClass() throws Exception {
@@ -50,7 +42,7 @@ class AccountControllerTest {
 
 	@BeforeEach
 	void setUp() throws Exception {
-		aCont = new AccountController(serv);
+		aCont = new AccountController(bServ, map, uServ);
 	}
 
 	@AfterEach
