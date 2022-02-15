@@ -16,7 +16,6 @@ import lombok.Data;
  * @author Colin Knox, Parker Mace, Tyler Rondeau
  */
 @Data
-
 public class UserAccountDto {
 
 	@Id
