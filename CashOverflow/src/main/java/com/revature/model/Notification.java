@@ -6,6 +6,8 @@ import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.OneToOne;
 import javax.persistence.Table;
 
 import lombok.AllArgsConstructor;
@@ -31,6 +33,9 @@ public class Notification {
 	
 	NotiMessage notiMessage;
 	
-	Integer notiType;
+	@OneToOne
+	@JoinColumn(referencedColumnName = "id")
+	NotiEntity entity;
+	
 	Integer userId;
 }
