@@ -29,6 +29,8 @@ public class Notification {
 	
 	Instant creationDate;
 	
+	Boolean isRead;
+	
 	NotiMessage notiMessage;
 	
 	Integer notiType;
