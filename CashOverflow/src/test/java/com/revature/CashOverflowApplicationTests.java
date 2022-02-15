@@ -8,7 +8,7 @@ class CashOverflowApplicationTests {
 
 	@Test
 	void contextLoads() {
+
 	}
 
-	
 }
