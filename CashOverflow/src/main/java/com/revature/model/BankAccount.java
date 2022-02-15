@@ -12,6 +12,8 @@ import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -33,16 +35,24 @@ public class BankAccount {
 	Double balance;
 	String description;
 	Instant creationDate;
-	
-	@ManyToOne
-	@JoinColumn(referencedColumnName = "id")
-	AccountType accountType;
+	Integer accountTypeId;
 	
 	@ManyToOne
 	@JoinColumn(referencedColumnName = "id")
 	UserAccount user;
 	
 	@OneToMany
+	@JsonIgnore
 	@JoinColumn(referencedColumnName = "id")
 	List<Transaction> txs;
+	
+
+	public BankAccount(String name, String description, Instant creationDate, Integer accountTypeId,
+			UserAccount user) {
+		this.name = name;
+		this.description = description;
+		this.creationDate = creationDate;
+		this.accountTypeId = accountTypeId;
+		this.user = user;
+	}
 }
