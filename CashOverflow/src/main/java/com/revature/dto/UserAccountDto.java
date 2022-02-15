@@ -24,6 +24,7 @@ public class UserAccountDto {
 	String username;
 	String firstName;
 	String lastName;
+	String password;
 	Instant creationDate;
 
 	public UserAccountDto(UserAccount user) {
@@ -31,6 +32,7 @@ public class UserAccountDto {
 		this.username = user.getUsername();
 		this.firstName = user.getFirstName();
 		this.lastName = user.getLastName();
+		this.password = user.getPassword();
 		this.creationDate = user.getCreationDate();
 	}
 }

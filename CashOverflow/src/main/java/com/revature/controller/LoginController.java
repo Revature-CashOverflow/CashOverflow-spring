@@ -1,5 +1,62 @@
 package com.revature.controller;
 
+import javax.servlet.http.HttpServletResponse;
+
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.CrossOrigin;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.server.ResponseStatusException;
+
+import com.revature.dto.LoginRequestDto;
+import com.revature.model.JwtResponse;
+import com.revature.model.UserAccount;
+import com.revature.service.JwtAuthenticationService;
+import com.revature.service.LoginService;
+
+/**
+ * This Class is use to handle login functionality
+ * 
+ * @author Emmanuel Sosa, Liliya Sherstobitova, Delane Chen
+ *
+ */
+@RestController
+@CrossOrigin(origins = { "http://localhost:4200", "http://d3nlmo2v0fs5mq.cloudfront.net" })
 public class LoginController {
 
+	private LoginService serv;
+
+	private JwtAuthenticationService jwtServ;
+
+	@Autowired
+	public LoginController(LoginService serv, JwtAuthenticationService jwtServ) {
+		this.serv = serv;
+		this.jwtServ = jwtServ;
+	}
+
+	/**
+	 * Checks if the User name & password matches credential in the database
+	 * 
+	 * @param username
+	 * @param password
+	 * @return login User
+	 * 
+	 * @author Emmanuel Sosa, Liliya Sherstobitova, Delane Chen
+	 */
+	@PostMapping(value = "/login")
+	public ResponseEntity<JwtResponse> login(@RequestBody LoginRequestDto req, HttpServletResponse resp) {
+		if (req.getUsername() == null || req.getPassword() == null) {
+			throw new ResponseStatusException(HttpStatus.NOT_ACCEPTABLE, "missing Credential");
+		}
+		UserAccount user = serv.login(req.getUsername(), req.getPassword());
+		if (user == null) {
+			resp.setStatus(406);
+			return null;
+		} else {
+			return jwtServ.createAuthenticationToken(user.getUsername(), user.getPassword());
+		}
+	}
 }

@@ -3,29 +3,35 @@ package com.revature.controller;
 import java.util.List;
 import java.util.stream.Collectors;
 
+import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
-import org.springframework.stereotype.Controller;
+import org.springframework.security.core.Authentication;
+import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestHeader;
-import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.ResponseStatus;
+import org.springframework.web.bind.annotation.RestController;
 
 import com.revature.dto.BankAccountDto;
 import com.revature.model.BankAccount;
 import com.revature.service.BankAccountService;
-import com.revature.util.JwtAccessUtil;
+import com.revature.service.UserAccountService;
 
-@Controller
+@RestController
+@CrossOrigin(origins = "*")
 public class AccountController {
 
 	private BankAccountService bankAccServ;
+	private UserAccountService userAccServ;
+	private ModelMapper mapper;
 
 	@Autowired
-	public AccountController(BankAccountService bankAccServ) {
+	public AccountController(BankAccountService bankAccServ, ModelMapper mapper, UserAccountService userAccServ) {
 		this.bankAccServ = bankAccServ;
+		this.mapper = mapper;
+		this.userAccServ = userAccServ;
 	}
 
 	/**
@@ -38,16 +44,13 @@ public class AccountController {
 	 */
 	@PostMapping("/api/account/createBankAccount")
 	@ResponseStatus(HttpStatus.CREATED)
-	public @ResponseBody BankAccountDto createBankAccount(@RequestBody BankAccountDto dtoAccount,
-			@RequestHeader("Authorization") String token) {
+	public BankAccountDto createBankAccount(Authentication auth, @RequestBody BankAccountDto dtoAccount) {
 
-		BankAccount account = new BankAccount();
-		account.setName(dtoAccount.getName());
-		account.setDescription(dtoAccount.getDescription());
-		account.setAccountTypeId(dtoAccount.getAccountTypeId());
-		account.setUser(JwtAccessUtil.getUserFromToken(token));
+		BankAccount account = convertToEntity(dtoAccount);
 
-		return new BankAccountDto(bankAccServ.createAccount(account));
+		account.setUser(userAccServ.getUserFromUsername(auth.getName()));
+
+		return convertToDto(bankAccServ.createAccount(account));
 	}
 
 	/**
@@ -58,12 +61,18 @@ public class AccountController {
 	 */
 	@GetMapping("/api/account/getBankAccounts")
 	@ResponseStatus(HttpStatus.OK)
-	public @ResponseBody List<BankAccountDto> getBankAccounts(@RequestHeader("Authorization") String token) {
+	public List<BankAccountDto> getBankAccounts(Authentication auth) {
 
-		// This strips sensitive info out of the List<BankAccount> return in order to
-		// return List<BankAccountDto>
-
-		return bankAccServ.getBankAccounts(JwtAccessUtil.getUserFromToken(token).getId()).stream()
-				.map(BankAccountDto::new).collect(Collectors.toList());
+		return bankAccServ.getBankAccounts(userAccServ.getUserFromUsername(auth.getName()).getId()).stream()
+				.map(account -> convertToDto(account)).collect(Collectors.toList());
 	}
+
+	private BankAccount convertToEntity(BankAccountDto dtoAccount) {
+		return mapper.map(dtoAccount, BankAccount.class);
+	}
+
+	private BankAccountDto convertToDto(BankAccount account) {
+		return mapper.map(account, BankAccountDto.class);
+	}
+
 }
