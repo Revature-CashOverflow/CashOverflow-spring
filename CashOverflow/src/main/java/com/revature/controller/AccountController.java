@@ -66,11 +66,11 @@ public class AccountController {
 				.map(this::convertToDto).collect(Collectors.toList());
 	}
 
-	private BankAccount convertToEntity(BankAccountDto dtoAccount) {
+	protected BankAccount convertToEntity(BankAccountDto dtoAccount) {
 		return mapper.map(dtoAccount, BankAccount.class);
 	}
 
-	private BankAccountDto convertToDto(BankAccount account) {
+	protected BankAccountDto convertToDto(BankAccount account) {
 		return mapper.map(account, BankAccountDto.class);
 	}
 
