@@ -1,7 +1,6 @@
 package com.revature.login;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertNull;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.mockito.Mockito.when;
 
@@ -13,8 +12,6 @@ import org.mockito.junit.jupiter.MockitoExtension;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.mock.web.MockHttpServletResponse;
-import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.web.server.ResponseStatusException;
 
 import com.revature.controller.LoginController;
@@ -22,7 +19,7 @@ import com.revature.dto.LoginRequestDto;
 import com.revature.model.JwtResponse;
 import com.revature.model.UserAccount;
 import com.revature.service.JwtAuthenticationService;
-import com.revature.service.UserAccountService;
+import com.revature.service.LoginService;
 
 /**
  * 
@@ -39,20 +36,17 @@ public class LoginControllerTest {
 	LoginController loginController;
 
 	@Mock
-	UserAccountService serv;
+	LoginService serv;
 
 	@Mock
 	JwtAuthenticationService jwtServ;
 	
-	@Mock 
-	PasswordEncoder enc;
 
 	@BeforeEach
 	void setup() {
-		loginController = new LoginController(serv, jwtServ, enc);
+		loginController = new LoginController(serv, jwtServ);
 	}
 
-	//Null credential failure
 	@Test
 	void loginFailTest() {
 		LoginRequestDto req = new LoginRequestDto(null, null);
@@ -69,15 +63,18 @@ public class LoginControllerTest {
 		assertEquals(expectedCode, e.getRawStatusCode());
 	}
 
-	//Bad credential failure
 	@Test
-	void loginFailureTest() {
-		LoginRequestDto req = new LoginRequestDto("dummy", "padsojgfhldsoajord");
-		UserAccount initial = new UserAccount("dummy", enc.encode("password"));
+	void loginSuccessTest() {
+		LoginRequestDto req = new LoginRequestDto("dummy", "password");
+		UserAccount initial = new UserAccount("dummy", "password");
 
-		when(serv.getUserFromUsername("dummy")).thenReturn(initial);
-		ResponseEntity<JwtResponse> result = loginController.login(req, new MockHttpServletResponse());
-		System.out.println(result);
-		assertNull(result);
+		ResponseEntity<JwtResponse> resp = new ResponseEntity<JwtResponse>(new JwtResponse("Words"), HttpStatus.OK);
+		when(serv.login("dummy", "password")).thenReturn(initial);
+		when(jwtServ.createAuthenticationToken(initial.getUsername(), initial.getPassword())).thenReturn(resp);
+		ResponseEntity<JwtResponse> result = loginController.login(req, null);
+
+		assertEquals(result, resp);
+
 	}
+
 }

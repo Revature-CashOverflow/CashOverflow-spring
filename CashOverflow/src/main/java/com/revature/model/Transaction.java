@@ -37,4 +37,16 @@ public class Transaction {
 	TransactionType txType;
 	
 	Integer accountId;
+
+	public Transaction(Double amount, String name, String description, Instant creationDate, TransactionType txType,
+			Integer accountId) {
+		this.amount = amount;
+		this.name = name;
+		this.description = description;
+		this.creationDate = creationDate;
+		this.txType = txType;
+		this.accountId = accountId;
+	}
+	
+	
 }
