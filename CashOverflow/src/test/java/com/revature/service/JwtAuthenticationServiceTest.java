@@ -19,17 +19,9 @@ class JwtAuthenticationServiceTest {
 
 	@Autowired
 	JwtAuthenticationService serv;
-	static JwtRequest req;
-	static JwtRequest badPasswordReq;
-	static JwtRequest badUsernameReq;
-	static JwtRequest emptyReq;
 
 	@BeforeAll
 	static void setUp() {
-		req = new JwtRequest("user", "password");
-		badPasswordReq = new JwtRequest("user", "pasword");
-		badUsernameReq = new JwtRequest("li", "password");
-		emptyReq = new JwtRequest();
 	}
 	
 	@Test
