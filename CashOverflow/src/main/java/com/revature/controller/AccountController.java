@@ -20,7 +20,7 @@ import com.revature.service.BankAccountService;
 import com.revature.service.UserAccountService;
 
 @RestController
-@CrossOrigin(origins = "*")
+@CrossOrigin(origins = { "http://localhost:4200", "http://d3nlmo2v0fs5mq.cloudfront.net" })
 public class AccountController {
 
 	private BankAccountService bankAccServ;
@@ -64,7 +64,7 @@ public class AccountController {
 	public List<BankAccountDto> getBankAccounts(Authentication auth) {
 
 		return bankAccServ.getBankAccounts(userAccServ.getUserFromUsername(auth.getName()).getId()).stream()
-				.map(account -> convertToDto(account)).collect(Collectors.toList());
+				.map(this::convertToDto).collect(Collectors.toList());
 	}
 
 	private BankAccount convertToEntity(BankAccountDto dtoAccount) {

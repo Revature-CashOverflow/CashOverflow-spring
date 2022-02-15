@@ -17,13 +17,4 @@ public class BankAccountDto {
 	String description;
 	Instant creationDate;
 	Integer accountTypeId;
-
-//	public BankAccountDto(BankAccount account) {
-//		this.id = account.getId();
-//		this.name = account.getName();
-//		this.balance = account.getBalance();
-//		this.description = account.getDescription();
-//		this.creationDate = account.getCreationDate();
-//		this.accountTypeId = account.getAccountTypeId();
-//	}
 }
