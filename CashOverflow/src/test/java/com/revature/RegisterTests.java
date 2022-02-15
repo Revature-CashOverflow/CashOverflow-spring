@@ -51,21 +51,6 @@ class RegisterTests {
 
 	@Mock
 	private UserAccountRepo mockRepo;
-<<<<<<< HEAD
-	
-	@Mock
-	private RegisterService mockServ;
-	
-	@Mock
-	private ModelMapper mockMapper;
-	
-	
-	@BeforeEach
-	public void setUp() {
-		regServ = new RegisterServiceImpl(mockRepo);
-		regCont = new RegisterController(mockServ, mockMapper);
-		
-=======
 
 	@Mock
 	private RegisterService mockServ;
@@ -81,30 +66,17 @@ class RegisterTests {
 		regServ = new RegisterServiceImpl(mockRepo);
 		regCont = new RegisterController(mockServ, mockMapper, enc);
 
->>>>>>> 9947c665a6b513402242ec7b8faf17fba86cb84b
 	}
 
 	@Test
 	void serviceTest() {
 		UserAccount test = new UserAccount(3, "email@gmail.com", "username", "firstname", "lastname", "password", null);
-<<<<<<< HEAD
-		
-=======
 
->>>>>>> 9947c665a6b513402242ec7b8faf17fba86cb84b
 		when(mockRepo.save(test)).thenReturn(test);
 		UserAccount result = regServ.insertUserAccount(test);
 		verify(mockRepo, times(1)).save(test);
 		assertNotNull(result.getCreationDate());
-<<<<<<< HEAD
 
-	}
-	
-	@Test
-	void RegisterControllerTest() {
-		RegUserAccountDto test = new RegUserAccountDto("email@gmail.com", "username", "firstname", "lastname", "password");
-	
-=======
 	}
 
 	@Test
@@ -112,7 +84,6 @@ class RegisterTests {
 		RegUserAccountDto test = new RegUserAccountDto("email@gmail.com", "username", "firstname", "lastname",
 				"password");
 
->>>>>>> 9947c665a6b513402242ec7b8faf17fba86cb84b
 		UserAccount user = new UserAccount();
 		user.setEmail(test.getEmail());
 		user.setUsername(test.getUsername());
@@ -121,18 +92,7 @@ class RegisterTests {
 		user.setPassword(test.getPassword());
 		when(mockMapper.map(test, UserAccount.class)).thenReturn(user);
 		regCont.newUser(test);
-<<<<<<< HEAD
-		
-		verify(mockServ, times(1)).insertUserAccount(user);
-		verify(mockMapper, times(1)).map(test, UserAccount.class);
-		
-	}
-	
-	@Test
-	void RegisterControllerTestMissingArg() {
-		RegUserAccountDto test = new RegUserAccountDto(null, "username", "firstname", "lastname", "password");
-	
-=======
+
 
 		verify(mockServ, times(1)).insertUserAccount(user);
 		verify(mockMapper, times(1)).map(test, UserAccount.class);
@@ -143,47 +103,28 @@ class RegisterTests {
 	void RegisterControllerTestMissingArg() {
 		RegUserAccountDto test = new RegUserAccountDto(null, "username", "firstname", "lastname", "password");
 
->>>>>>> 9947c665a6b513402242ec7b8faf17fba86cb84b
 		UserAccount user = new UserAccount();
 		user.setEmail(test.getEmail());
 		user.setUsername(test.getUsername());
 		user.setFirstName(test.getFirstName());
 		user.setLastName(test.getLastName());
 		user.setPassword(test.getPassword());
-<<<<<<< HEAD
-		
-		ResponseStatusException e = assertThrows(ResponseStatusException.class, () -> {
-			regCont.newUser(test);
-		});
-		
-=======
+
 
 		ResponseStatusException e = assertThrows(ResponseStatusException.class, () -> {
 			regCont.newUser(test);
 		});
 
->>>>>>> 9947c665a6b513402242ec7b8faf17fba86cb84b
 		String expectedReason = "Missing registration info";
 		HttpStatus expectedStatus = HttpStatus.BAD_REQUEST;
 		Integer expectedCode = 400;
 		assertEquals(expectedReason, e.getReason());
 		assertEquals(expectedStatus, e.getStatus());
 		assertEquals(expectedCode, e.getRawStatusCode());
-<<<<<<< HEAD
-		
-		verify(mockServ, times(0)).insertUserAccount(user);
-		verify(mockMapper, times(0)).map(test, UserAccount.class);
-		
-	}
-	
-	
 
-}
-=======
 
 		verify(mockServ, times(0)).insertUserAccount(user);
 		verify(mockMapper, times(0)).map(test, UserAccount.class);
 
 	}
 }
->>>>>>> 9947c665a6b513402242ec7b8faf17fba86cb84b
