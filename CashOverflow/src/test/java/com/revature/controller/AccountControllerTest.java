@@ -5,9 +5,6 @@ import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
-import org.junit.jupiter.api.AfterAll;
-import org.junit.jupiter.api.AfterEach;
-import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -35,7 +32,7 @@ class AccountControllerTest {
 
 	@Mock
 	private Authentication auth;
-	
+
 	@Mock
 	private ModelMapper mapper;
 
@@ -61,14 +58,13 @@ class AccountControllerTest {
 		expectedAccount.setDescription("backend test account");
 		expectedAccount.setAccountTypeId(1);
 		UserAccount mockUser = new UserAccount("Awoo", "hasdf");
-		
 
 		when(mapper.map(dtoAccount, BankAccount.class)).thenReturn(initialAccount);
 		when(auth.getName()).thenReturn("^_^");
 		when(accServ.getUserFromUsername("^_^")).thenReturn(mockUser);
 		when(bankServ.createAccount(initialAccount)).thenReturn(initialAccount);
 		when(mapper.map(initialAccount, BankAccountDto.class)).thenReturn(dtoAccount);
-		
+
 		BankAccountDto actualUser = cont.createBankAccount(auth, dtoAccount);
 
 		verify(mapper, times(1)).map(dtoAccount, BankAccount.class);
@@ -76,8 +72,7 @@ class AccountControllerTest {
 		verify(accServ, times(1)).getUserFromUsername("^_^");
 		verify(bankServ, times(1)).createAccount(initialAccount);
 		verify(mapper, times(1)).map(initialAccount, BankAccountDto.class);
-		
+
 		assertEquals(actualUser, expectedAccount);
 	}
-
 }
