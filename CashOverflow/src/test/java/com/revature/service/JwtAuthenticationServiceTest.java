@@ -11,8 +11,6 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.http.HttpStatus;
 import org.springframework.security.authentication.BadCredentialsException;
 
-import com.revature.model.JwtRequest;
-
 
 @SpringBootTest
 class JwtAuthenticationServiceTest {
