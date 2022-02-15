@@ -1,6 +1,7 @@
 package com.revature.login;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertNull;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.mockito.Mockito.when;
 
@@ -9,16 +10,19 @@ import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
-import org.modelmapper.ModelMapper;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
+import org.springframework.mock.web.MockHttpServletResponse;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.web.server.ResponseStatusException;
 
 import com.revature.controller.LoginController;
 import com.revature.dto.LoginRequestDto;
-import com.revature.dto.LoginUserAccountDto;
+import com.revature.model.JwtResponse;
 import com.revature.model.UserAccount;
-import com.revature.service.LoginService;
+import com.revature.service.JwtAuthenticationService;
+import com.revature.service.UserAccountService;
 
 /**
  * 
@@ -31,57 +35,49 @@ import com.revature.service.LoginService;
 @SpringBootTest
 @ExtendWith(MockitoExtension.class)
 public class LoginControllerTest {
-	
+
 	LoginController loginController;
-	
+
 	@Mock
-	LoginService serv;
-	
+	UserAccountService serv;
+
 	@Mock
-	ModelMapper mapper;
+	JwtAuthenticationService jwtServ;
 	
+	@Mock 
+	PasswordEncoder enc;
+
 	@BeforeEach
 	void setup() {
-		loginController = new LoginController(serv,mapper);
+		loginController = new LoginController(serv, jwtServ, enc);
 	}
-	
+
+	//Null credential failure
 	@Test
 	void loginFailTest() {
-		LoginRequestDto req = new LoginRequestDto(null,null);
-		ResponseStatusException e = assertThrows(ResponseStatusException.class,()->{
-			loginController.login(req);
+		LoginRequestDto req = new LoginRequestDto(null, null);
+		ResponseStatusException e = assertThrows(ResponseStatusException.class, () -> {
+			loginController.login(req, null);
 		});
-		
+
 		String expectedReason = "missing Credential";
-		HttpStatus expectedStatus = HttpStatus.BAD_REQUEST;
-		Integer expectedCode = 400;
-		
-		assertEquals(expectedReason,e.getReason());
-		assertEquals(expectedStatus,e.getStatus());
-		assertEquals(expectedCode,e.getRawStatusCode());
+		HttpStatus expectedStatus = HttpStatus.NOT_ACCEPTABLE;
+		Integer expectedCode = 406;
+
+		assertEquals(expectedReason, e.getReason());
+		assertEquals(expectedStatus, e.getStatus());
+		assertEquals(expectedCode, e.getRawStatusCode());
 	}
-	
+
+	//Bad credential failure
 	@Test
-	void loginSuccessTest() {
-		LoginRequestDto req = new LoginRequestDto("dummy","password");
-		UserAccount fake = new UserAccount();
-		fake.setUsername("dummy");
-		fake.setPassword("password");
-		LoginUserAccountDto initial = new LoginUserAccountDto();
-		initial.setUsername("dummy");
-		LoginUserAccountDto expected = new LoginUserAccountDto();
-		expected.setUsername("dummy");
-		
-		when(serv.login("dummy","password")).thenReturn(fake);
-		when(mapper.map(fake, LoginUserAccountDto.class)).thenReturn(initial);
-		
-		LoginUserAccountDto actual = loginController.login(req);
-		
-		assertEquals(actual,expected);
-		
-		
+	void loginFailureTest() {
+		LoginRequestDto req = new LoginRequestDto("dummy", "padsojgfhldsoajord");
+		UserAccount initial = new UserAccount("dummy", enc.encode("password"));
+
+		when(serv.getUserFromUsername("dummy")).thenReturn(initial);
+		ResponseEntity<JwtResponse> result = loginController.login(req, new MockHttpServletResponse());
+		System.out.println(result);
+		assertNull(result);
 	}
-	
-	
-	
 }
