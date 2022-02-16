@@ -5,6 +5,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 
 import org.springframework.security.crypto.password.PasswordEncoder;
+import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -16,14 +17,12 @@ import com.revature.dto.RegUserAccountDto;
 import com.revature.model.UserAccount;
 import com.revature.service.RegisterService;
 
-
 @CrossOrigin(origins = { "http://localhost:4200", "http://d3nlmo2v0fs5mq.cloudfront.net" })
 @RestController
 public class RegisterController {
 
 	private RegisterService regServ;
 	private ModelMapper mapper;
-
 	private PasswordEncoder enc;
 
 	@Autowired
@@ -55,4 +54,5 @@ public class RegisterController {
 		UserAccount user = convertToEntity(dto);
 		regServ.insertUserAccount(user);
 	}
+
 }

@@ -5,7 +5,6 @@ import javax.servlet.http.HttpServletResponse;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -17,7 +16,6 @@ import com.revature.dto.LoginRequestDto;
 import com.revature.model.JwtResponse;
 import com.revature.model.UserAccount;
 import com.revature.service.JwtAuthenticationService;
-
 import com.revature.service.UserAccountService;
 
 /**
@@ -55,7 +53,6 @@ public class LoginController {
 		if (req.getUsername() == null || req.getPassword() == null) {
 			throw new ResponseStatusException(HttpStatus.NOT_ACCEPTABLE, "missing Credential");
 		}
-
 		UserAccount user = serv.getUserFromUsername(req.getUsername());
 		if (user == null || !enc.matches(req.getPassword(), user.getPassword())) {
 			resp.setStatus(420);

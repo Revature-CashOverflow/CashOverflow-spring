@@ -1,7 +1,6 @@
 package com.revature.login;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
-
 import static org.junit.jupiter.api.Assertions.assertNull;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.mockito.Mockito.when;
@@ -14,7 +13,6 @@ import org.mockito.junit.jupiter.MockitoExtension;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-
 import org.springframework.mock.web.MockHttpServletResponse;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.web.server.ResponseStatusException;
@@ -24,7 +22,6 @@ import com.revature.dto.LoginRequestDto;
 import com.revature.model.JwtResponse;
 import com.revature.model.UserAccount;
 import com.revature.service.JwtAuthenticationService;
-
 import com.revature.service.UserAccountService;
 
 /**

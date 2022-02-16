@@ -20,7 +20,6 @@ import com.revature.model.BankAccount;
 import com.revature.service.BankAccountService;
 import com.revature.service.UserAccountService;
 
-
 @RestController
 @CrossOrigin(origins = { "http://localhost:4200", "http://d3nlmo2v0fs5mq.cloudfront.net" })
 public class AccountController {
@@ -68,12 +67,11 @@ public class AccountController {
 				.map(this::convertToDto).collect(Collectors.toList());
 	}
 
-
-	private BankAccount convertToEntity(BankAccountDto dtoAccount) {
+	protected BankAccount convertToEntity(BankAccountDto dtoAccount) {
 		return mapper.map(dtoAccount, BankAccount.class);
 	}
 
-	private BankAccountDto convertToDto(BankAccount account) {
+	protected BankAccountDto convertToDto(BankAccount account) {
 		return mapper.map(account, BankAccountDto.class);
 	}
 

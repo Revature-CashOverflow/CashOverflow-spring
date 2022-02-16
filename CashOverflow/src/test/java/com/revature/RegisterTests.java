@@ -15,7 +15,6 @@ import org.mockito.junit.jupiter.MockitoExtension;
 import org.modelmapper.ModelMapper;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.http.HttpStatus;
-
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.web.server.ResponseStatusException;
 
@@ -72,7 +71,6 @@ class RegisterTests {
 		UserAccount result = regServ.insertUserAccount(test);
 		verify(mockRepo, times(1)).save(test);
 		assertNotNull(result.getCreationDate());
-
 	}
 
 	@Test
