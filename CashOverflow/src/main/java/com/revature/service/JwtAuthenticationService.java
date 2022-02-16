@@ -9,7 +9,6 @@ import org.springframework.security.authentication.UsernamePasswordAuthenticatio
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Service;
 
-import com.revature.model.JwtRequest;
 import com.revature.model.JwtResponse;
 import com.revature.util.JwtUtil;
 
@@ -40,11 +39,11 @@ public class JwtAuthenticationService {
 	 * @return - Response to front-end
 	 * @throws Exception
 	 */
-	public ResponseEntity<JwtResponse> createAuthenticationToken(JwtRequest authenticationRequest) throws DisabledException, BadCredentialsException {
+	public ResponseEntity<JwtResponse> createAuthenticationToken(String username, String password) throws DisabledException, BadCredentialsException {
 
-		authenticate(authenticationRequest.getUsername(), authenticationRequest.getPassword());
+		authenticate(username, password);
 
-		final UserDetails userDetails = serv.loadUserByUsername(authenticationRequest.getUsername());
+		final UserDetails userDetails = serv.loadUserByUsername(username);
 
 		final String token = util.generateToken(userDetails);
 
