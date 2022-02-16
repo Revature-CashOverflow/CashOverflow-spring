@@ -55,13 +55,11 @@ class RegisterTests {
 	public void setUp() {
 		regServ = new RegisterServiceImpl(mockRepo);
 		regCont = new RegisterController(mockServ, mockMapper, enc);
-
 	}
 
 	@Test
 	void serviceTest() {
 		UserAccount test = new UserAccount(3, "email@gmail.com", "username", "firstname", "lastname", "password", null);
-
 		when(mockRepo.save(test)).thenReturn(test);
 		UserAccount result = regServ.insertUserAccount(test);
 		verify(mockRepo, times(1)).save(test);
@@ -72,7 +70,6 @@ class RegisterTests {
 	void RegisterControllerTest() {
 		RegUserAccountDto test = new RegUserAccountDto("email@gmail.com", "username", "firstname", "lastname",
 				"password");
-
 		UserAccount user = new UserAccount();
 		user.setEmail(test.getEmail());
 		user.setUsername(test.getUsername());
@@ -90,7 +87,7 @@ class RegisterTests {
 	@Test
 	void RegisterControllerTestMissingArg() {
 		RegUserAccountDto test = new RegUserAccountDto(null, "username", "firstname", "lastname", "password");
-
+    
 		UserAccount user = new UserAccount();
 		user.setEmail(test.getEmail());
 		user.setUsername(test.getUsername());
