@@ -1,3 +1,5 @@
+[![Quality Gate Status](https://sonarcloud.io/api/project_badges/measure?project=Revature-CashOverflow_CashOverflow-spring&metric=alert_status)](https://sonarcloud.io/summary/new_code?id=Revature-CashOverflow_CashOverflow-spring)
+
 # CashOverflow-spring  
 This is a Spring Boot stateless resource/authentication server.  It is one part of a multi server application, the other being an Angular front end.  
 
