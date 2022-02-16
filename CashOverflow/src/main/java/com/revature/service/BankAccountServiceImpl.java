@@ -14,7 +14,8 @@ public class BankAccountServiceImpl implements BankAccountService {
 
 	private BankAccountRepo bankRepo;
 
-	@Autowired BankAccountServiceImpl(BankAccountRepo bankRepo) {
+	@Autowired
+	protected BankAccountServiceImpl(BankAccountRepo bankRepo) {
 		this.bankRepo = bankRepo;
 	}
 

@@ -6,7 +6,6 @@ import java.util.stream.Collectors;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
-import org.springframework.stereotype.Controller;
 import org.springframework.security.core.Authentication;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -19,7 +18,6 @@ import com.revature.dto.BankAccountDto;
 import com.revature.model.BankAccount;
 import com.revature.service.BankAccountService;
 import com.revature.service.UserAccountService;
-
 
 @RestController
 @CrossOrigin(origins = { "http://localhost:4200", "http://d3nlmo2v0fs5mq.cloudfront.net" })
@@ -68,12 +66,11 @@ public class AccountController {
 				.map(this::convertToDto).collect(Collectors.toList());
 	}
 
-
-	private BankAccount convertToEntity(BankAccountDto dtoAccount) {
+	protected BankAccount convertToEntity(BankAccountDto dtoAccount) {
 		return mapper.map(dtoAccount, BankAccount.class);
 	}
 
-	private BankAccountDto convertToDto(BankAccount account) {
+	protected BankAccountDto convertToDto(BankAccount account) {
 		return mapper.map(account, BankAccountDto.class);
 	}
 

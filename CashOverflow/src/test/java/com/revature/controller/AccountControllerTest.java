@@ -1,85 +1,78 @@
 package com.revature.controller;
 
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.mockito.Mockito.times;
+import static org.mockito.Mockito.verify;
+import static org.mockito.Mockito.when;
 
-import org.junit.jupiter.api.AfterAll;
-import org.junit.jupiter.api.AfterEach;
-import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 import org.modelmapper.ModelMapper;
 import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.transaction.annotation.Transactional;
+import org.springframework.security.core.Authentication;
 
+import com.revature.dto.BankAccountDto;
+import com.revature.model.BankAccount;
+import com.revature.model.UserAccount;
 import com.revature.service.BankAccountService;
 import com.revature.service.UserAccountService;
 
 @SpringBootTest
-@Transactional
 @ExtendWith(MockitoExtension.class)
 class AccountControllerTest {
-	
+
 	@Mock
-	private BankAccountService bServ;
-	
-	private UserAccountService uServ;
-	
-//	@Mock
-//	private BankAccountRepo dao;
-	
-	private AccountController aCont;
-	
-	private ModelMapper map;
+	private BankAccountService bankServ;
 
-	@BeforeAll
-	static void setUpBeforeClass() throws Exception {
-	}
+	@Mock
+	private UserAccountService accServ;
 
-	@AfterAll
-	static void tearDownAfterClass() throws Exception {
-	}
+	@Mock
+	private Authentication auth;
+
+	@Mock
+	private ModelMapper mapper;
+
+	private AccountController cont;
 
 	@BeforeEach
 	void setUp() throws Exception {
-		aCont = new AccountController(bServ, map, uServ);
+		cont = new AccountController(bankServ, mapper, accServ);
 	}
 
-	@AfterEach
-	void tearDown() throws Exception {
-	}
-	/*
 	@Test
 	void createBankAccountTest() {
-		UserAccount initialTestUser = new UserAccount(
-				1000,
-				"testuseremail@emailprovider.com",
-				"testUserUsername",
-				"testUserFirstName",
-				"testUserLastName",
-				"testUserPassword",
-				null
-				);
-		BankAccount initialBankAccount = new BankAccount(
-				"cbaTest",
-				"cbaTest description",
-				Instant.now(),
-				1,
-				initialTestUser);
-		BankAccountDto initialBankAccountDto = new BankAccountDto(initialBankAccount);
-		
-		String token = "nyaa~";
-		
-		
-		when(serv.createAccount(initialBankAccount)).thenReturn(initialBankAccount);
-		aCont.createBankAccount(initialBankAccountDto, token);
-		verify(serv, times(1)).createAccount(initialBankAccount);
-		
-		assertEquals(initialBankAccount.getName(), initialBankAccount.getName());
-		
-		
-//		fail("Not yet implemented");
-	}
-	*/
+		BankAccount initialAccount = new BankAccount();
+		initialAccount.setName("Awoo");
+		initialAccount.setDescription("backend test account");
+		initialAccount.setAccountTypeId(1);
+		BankAccountDto dtoAccount = new BankAccountDto();
+		dtoAccount.setName("Awoo");
+		dtoAccount.setDescription("backend test account");
+		dtoAccount.setAccountTypeId(1);
+		BankAccountDto expectedAccount = new BankAccountDto();
+		expectedAccount.setName("Awoo");
+		expectedAccount.setDescription("backend test account");
+		expectedAccount.setAccountTypeId(1);
+		UserAccount mockUser = new UserAccount("Awoo", "hasdf");
 
+		when(mapper.map(dtoAccount, BankAccount.class)).thenReturn(initialAccount);
+		when(auth.getName()).thenReturn("^_^");
+		when(accServ.getUserFromUsername("^_^")).thenReturn(mockUser);
+		when(bankServ.createAccount(initialAccount)).thenReturn(initialAccount);
+		when(mapper.map(initialAccount, BankAccountDto.class)).thenReturn(dtoAccount);
+
+		BankAccountDto actualUser = cont.createBankAccount(auth, dtoAccount);
+
+		verify(mapper, times(1)).map(dtoAccount, BankAccount.class);
+		verify(auth, times(1)).getName();
+		verify(accServ, times(1)).getUserFromUsername("^_^");
+		verify(bankServ, times(1)).createAccount(initialAccount);
+		verify(mapper, times(1)).map(initialAccount, BankAccountDto.class);
+
+		assertEquals(actualUser, expectedAccount);
+	}
 }

@@ -53,7 +53,7 @@ class BankAccountRepoTest {
 	@Test
 	void findAllByUserIdTest() {
 
-		List<BankAccount> test = dao.findAllByUserId(1);
+		List<BankAccount> test = dao.findAllByUserId(2);
 		assertTrue(test.size() >= 1);
 
 	}

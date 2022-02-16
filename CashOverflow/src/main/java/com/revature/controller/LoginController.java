@@ -5,6 +5,7 @@ import javax.servlet.http.HttpServletResponse;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -15,7 +16,7 @@ import com.revature.dto.LoginRequestDto;
 import com.revature.model.JwtResponse;
 import com.revature.model.UserAccount;
 import com.revature.service.JwtAuthenticationService;
-import com.revature.service.LoginService;
+import com.revature.service.UserAccountService;
 
 /**
  * This Class is use to handle login functionality
@@ -27,14 +28,15 @@ import com.revature.service.LoginService;
 @CrossOrigin(origins = { "http://localhost:4200", "http://d3nlmo2v0fs5mq.cloudfront.net" })
 public class LoginController {
 
-	private LoginService serv;
-
+	private UserAccountService serv;
+	private PasswordEncoder enc;
 	private JwtAuthenticationService jwtServ;
 
 	@Autowired
-	public LoginController(LoginService serv, JwtAuthenticationService jwtServ) {
+	public LoginController(UserAccountService serv, JwtAuthenticationService jwtServ, PasswordEncoder enc) {
 		this.serv = serv;
 		this.jwtServ = jwtServ;
+		this.enc = enc;
 	}
 
 	/**
@@ -51,12 +53,12 @@ public class LoginController {
 		if (req.getUsername() == null || req.getPassword() == null) {
 			throw new ResponseStatusException(HttpStatus.NOT_ACCEPTABLE, "missing Credential");
 		}
-		UserAccount user = serv.login(req.getUsername(), req.getPassword());
-		if (user == null) {
-			resp.setStatus(406);
+		UserAccount user = serv.getUserFromUsername(req.getUsername());
+		if (user == null || !enc.matches(req.getPassword(), user.getPassword())) {
+			resp.setStatus(420);
 			return null;
 		} else {
-			return jwtServ.createAuthenticationToken(user.getUsername(), user.getPassword());
+			return jwtServ.createAuthenticationToken(user.getUsername(), req.getPassword());
 		}
 	}
 }
