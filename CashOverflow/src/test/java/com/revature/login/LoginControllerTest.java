@@ -1,10 +1,7 @@
 package com.revature.login;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
-<<<<<<< HEAD
-=======
 import static org.junit.jupiter.api.Assertions.assertNull;
->>>>>>> 0665e746a5420b9e011625ac2d8ebd411ab93f56
 import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.mockito.Mockito.when;
 

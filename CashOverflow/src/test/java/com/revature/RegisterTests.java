@@ -64,22 +64,12 @@ class RegisterTests {
 		UserAccount result = regServ.insertUserAccount(test);
 		verify(mockRepo, times(1)).save(test);
 		assertNotNull(result.getCreationDate());
-<<<<<<< HEAD
-
-	}
-	
-	@Test
-	void RegisterControllerTest() {
-		RegUserAccountDto test = new RegUserAccountDto("email@gmail.com", "username", "firstname", "lastname", "password");
-	
-=======
 	}
 
 	@Test
 	void RegisterControllerTest() {
 		RegUserAccountDto test = new RegUserAccountDto("email@gmail.com", "username", "firstname", "lastname",
 				"password");
->>>>>>> 0665e746a5420b9e011625ac2d8ebd411ab93f56
 		UserAccount user = new UserAccount();
 		user.setEmail(test.getEmail());
 		user.setUsername(test.getUsername());
