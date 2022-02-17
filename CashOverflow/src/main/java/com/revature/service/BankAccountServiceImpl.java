@@ -75,7 +75,10 @@ public class BankAccountServiceImpl implements BankAccountService {
 		account2.setBalance(account2.getBalance() + fundTransfer.getTransferAmount());
 
 		// we do this to bundle the db calls for both accounts
-		return bankRepo.saveAll(Arrays.asList(account1, account2));
+		bankRepo.saveAll(accounts);
+		
+		// redundant line for testing purposes
+		return accounts;
 	}
 
 	/**
