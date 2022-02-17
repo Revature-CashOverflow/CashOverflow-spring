@@ -78,7 +78,7 @@ public class AccountController {
 	 * @return List<BankAccountDto>
 	 * 
 	 *         This transaction will fail and do nothing if the user cannot afford
-	 *         the specified tx
+	 *         the specified tx, or if an invalid number is given
 	 * 
 	 * @author Parker Mace
 	 */
