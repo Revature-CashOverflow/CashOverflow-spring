@@ -69,8 +69,11 @@ public class AccountController {
 	}
 
 	/**
-	 * @param FundTransfer { transferFromAccount: String account, transferToAccount:
-	 *                     String account, transferAmount: Double amount }
+	 * @param FundTransfer { 
+	 * 				transferFromAccount: String account,
+	 * 				transferToAccount: String account,
+	 * 				transferAmount: Double amount 
+	 * 			}
 	 * 
 	 * @return List<BankAccountDto>
 	 * 

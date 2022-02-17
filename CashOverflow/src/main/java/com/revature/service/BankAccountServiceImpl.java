@@ -66,8 +66,7 @@ public class BankAccountServiceImpl implements BankAccountService {
 		// if a user tries to be cheeky and enter fractional cents, we will round their request
 		fundTransfer.setTransferAmount(Math.round(fundTransfer.getTransferAmount() * 100.0) / 100.0);
 
-		// if they can't afford the tx or an acc is null,
-		// don't call the db, don't pass go, don't collect $200
+		// if they can't afford the tx or an acc is null, don't call the db, don't pass go, don't collect $200
 		if (account1 == null || account2 == null || account1.getBalance() < fundTransfer.getTransferAmount())
 			return accounts;
 
