@@ -30,7 +30,13 @@ public class BankAccountServiceImpl implements BankAccountService {
 		newAccount.setCreationDate(Instant.now());
 		newAccount.setBalance(0.0);
 
-		return bankRepo.save(newAccount);
+		BankAccount check = bankRepo.findByUserAndName(newAccount.getUser(), newAccount.getName());
+
+		// if this user has an acc with this name already, don't add a new one to the db
+		if (check != null)
+			return newAccount;
+		else
+			return bankRepo.save(newAccount);
 	}
 
 	/**
