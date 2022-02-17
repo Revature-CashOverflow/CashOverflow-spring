@@ -16,6 +16,8 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.revature.dto.BankAccountDto;
 import com.revature.model.BankAccount;
+import com.revature.model.FundTransfer;
+import com.revature.model.UserAccount;
 import com.revature.service.BankAccountService;
 import com.revature.service.UserAccountService;
 
@@ -64,6 +66,30 @@ public class AccountController {
 
 		return bankAccServ.getBankAccounts(userAccServ.getUserFromUsername(auth.getName()).getId()).stream()
 				.map(this::convertToDto).collect(Collectors.toList());
+	}
+
+	/**
+	 * @param FundTransfer { 
+	 * 				transferFromAccount: String account,
+	 * 				transferToAccount: String account,
+	 * 				transferAmount: Double amount 
+	 * 			}
+	 * 
+	 * @return List<BankAccountDto>
+	 * 
+	 *         This transaction will fail and do nothing if the user cannot afford
+	 *         the specified tx
+	 * 
+	 * @author Parker Mace
+	 */
+	@PostMapping("/api/account/transferFunds")
+	@ResponseStatus(HttpStatus.OK)
+	public List<BankAccountDto> transferFunds(Authentication auth, @RequestBody FundTransfer fundTransfer) {
+		UserAccount user = userAccServ.getUserFromUsername(auth.getName());
+
+		return bankAccServ.transferFunds(user, fundTransfer).stream().map(this::convertToDto)
+				.collect(Collectors.toList());
+
 	}
 
 	protected BankAccount convertToEntity(BankAccountDto dtoAccount) {
