@@ -12,7 +12,8 @@ import lombok.Data;
 @AllArgsConstructor
 public class TransactionDto {
 	
-	private int type;
+	private int id;
+	private int txType;
 	private Double amount;
 	private String name;
 	private String description;

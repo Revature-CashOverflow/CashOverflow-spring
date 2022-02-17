@@ -1,28 +1,26 @@
 package com.revature.service;
 
-import java.util.List;
+import org.springframework.stereotype.Service;
 
-import com.revature.model.BankAccount;
+import com.revature.model.Transaction;
 
+
+@Service
 public class TransactionServiceImpl implements TransactionService {
 
 	@Override
-	public boolean addIncome() {
+	public boolean addTransaction(Transaction transaction) {
 		// TODO Auto-generated method stub
 		return false;
 	}
 
 	@Override
-	public boolean addExpense() {
+	public void updateBalance(double newBalance) {
 		// TODO Auto-generated method stub
-		return false;
+		
 	}
-
-	@Override
-	public List<BankAccount> getBankAccounts(int accountId) {
-		// TODO Auto-generated method stub
-		return null;
-	}
+	
+	
 	
 	
 
