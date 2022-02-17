@@ -67,7 +67,7 @@ public class BankAccountServiceImpl implements BankAccountService {
 		fundTransfer.setTransferAmount(Math.round(fundTransfer.getTransferAmount() * 100.0) / 100.0);
 
 		// if they can't afford the tx or an acc is null, don't call the db, don't pass go, don't collect $200
-		if (account1 == null || account2 == null || account1.getBalance() < fundTransfer.getTransferAmount())
+		if (account1 == null || account2 == null || account1.getBalance() < fundTransfer.getTransferAmount() || fundTransfer.getTransferAmount() < 0)
 			return accounts;
 
 		account1.setBalance(account1.getBalance() - fundTransfer.getTransferAmount());
