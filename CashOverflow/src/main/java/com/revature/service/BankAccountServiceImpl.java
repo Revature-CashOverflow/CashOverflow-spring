@@ -34,9 +34,9 @@ public class BankAccountServiceImpl implements BankAccountService {
 		newAccount.setBalance(0.0);
 
 		BankAccount check = bankRepo.findByUserAndName(newAccount.getUser(), newAccount.getName());
-
+		
 		// if this user has an acc with this name already, don't add a new one to the db
-		if (check != null)
+		if (check != null || newAccount.getName().equals("") || newAccount.getName().indexOf(" ") == 0)
 			return newAccount;
 		else
 			return bankRepo.save(newAccount);
