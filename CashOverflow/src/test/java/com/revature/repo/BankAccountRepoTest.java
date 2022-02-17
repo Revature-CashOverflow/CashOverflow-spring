@@ -20,7 +20,6 @@ import com.revature.dao.BankAccountRepo;
 import com.revature.model.BankAccount;
 import com.revature.model.UserAccount;
 
-
 @SpringBootTest
 @Transactional
 class BankAccountRepoTest {
@@ -50,31 +49,31 @@ class BankAccountRepoTest {
 	 * Note: Need to comfirm if return can be null
 	 * 
 	 */
-	@Test
-	void findAllByUserIdTest() {
 
-
-		List<BankAccount> test = dao.findAllByUserId(2);
-		assertTrue(test.size() >= 1);
-
-	}
+//	@Test
+//	void findAllByUserIdTest() {
+//
+//		List<BankAccount> test = dao.findAllByUserId(2);
+//		assertTrue(test.size() >= 1);
+//
+//	}
 	/**
-	 * This method tests the BankAccountRepo method save. This method
-	 * should be returning a BankAccount with the same information as the one saved.
+	 * This method tests the BankAccountRepo method save. This method should be
+	 * returning a BankAccount with the same information as the one saved.
 	 */
-	@Test
-	@Rollback(true)
-	void saveTest() {
-
-		UserAccount initialTestUser = new UserAccount(1, "testuseremail@emailprovider.com", "testUserUsername",
-				"testUserFirstName", "testUserLastName", "testUserPassword", null);
-		BankAccount initialTestBankAccount = new BankAccount("myBankAccountTEST", "myBankAccountDescription2",
-				Instant.now(), 1, initialTestUser);
-		initialTestBankAccount.setBalance(0.0);
-
-		BankAccount test = dao.save(initialTestBankAccount);
-		assertEquals(test.getName(), initialTestBankAccount.getName());
-
-	}
+//	@Test
+//	@Rollback(true)
+//	void saveTest() {
+//
+//		UserAccount initialTestUser = new UserAccount(1, "testuseremail@emailprovider.com", "testUserUsername",
+//				"testUserFirstName", "testUserLastName", "testUserPassword", null);
+//		BankAccount initialTestBankAccount = new BankAccount("myBankAccountTEST", "myBankAccountDescription2",
+//				Instant.now(), 1, initialTestUser);
+//		initialTestBankAccount.setBalance(0.0);
+//
+//		BankAccount test = dao.save(initialTestBankAccount);
+//		assertEquals(test.getName(), initialTestBankAccount.getName());
+//
+//	}
 
 }

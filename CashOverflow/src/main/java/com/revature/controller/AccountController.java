@@ -21,7 +21,7 @@ import com.revature.service.BankAccountService;
 import com.revature.service.UserAccountService;
 
 @RestController
-@CrossOrigin(origins = { "http://localhost:4200", "http://d3nlmo2v0fs5mq.cloudfront.net" })
+@CrossOrigin(origins = { "http://localhost:4200", "http://dostz94b44kp0.cloudfront.net" })
 public class AccountController {
 
 	private BankAccountService bankAccServ;
