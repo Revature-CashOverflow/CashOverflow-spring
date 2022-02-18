@@ -40,15 +40,16 @@ public class IncomeExpenseController {
 	
 	@PostMapping("/transaction")
 	public void addTransaction(Authentication auth, @RequestBody TransactionDto dto) {
-		if (dto.getTxType() == 0 || dto.getAmount() == null || dto.getName() == null
+		if (dto.getId() == 0 || dto.getTxType() == 0 || dto.getAmount() == null || dto.getName() == null
 				|| dto.getDescription() == null) {
 			throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Missing transaction info");
 		}
 		if (dto.getTxType() == 1) {
 			dto.setAmount(-1 * dto.getAmount());
 		}
-	
 		Transaction transaction = convertToEntity(dto);
+		tranServ.addTransaction(transaction);
+		
 		
 		
 		

@@ -12,7 +12,7 @@ import lombok.Data;
 @AllArgsConstructor
 public class TransactionDto {
 	
-	private int id;
+	private int accountId;
 	private int txType;
 	private Double amount;
 	private String name;
