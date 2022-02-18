@@ -1,12 +1,12 @@
 package com.revature.service;
 
-import com.revature.model.Transaction;
+import com.revature.dto.TransactionDto;
 
 public interface TransactionService {
 	
-	public void addTransaction(Transaction transaction);
+	public void addTransaction(TransactionDto dto);
 	
-	public void updateBalance(double newBalance);
+	public void updateBalance(double newBalance, int accountId);
 
 
 }
