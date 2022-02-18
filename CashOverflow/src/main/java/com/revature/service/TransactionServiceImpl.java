@@ -32,13 +32,12 @@ public class TransactionServiceImpl implements TransactionService {
 
 	@Override
 	public void addTransaction(TransactionDto dto) {
-		if (dto.getTxType() == 1) {
+		if (dto.getTxTypeId() == 1) {
 			dto.setAmount(-1 * dto.getAmount());
-		}
+		}	
 		Transaction transaction = convertToEntity(dto);
 		updateBalance(transaction.getAmount(), transaction.getAccountId());
 		transaction.setCreationDate(Instant.now());
-		System.out.println(transaction.getCreationDate());
 		tranRepo.save(transaction);
 	}
 

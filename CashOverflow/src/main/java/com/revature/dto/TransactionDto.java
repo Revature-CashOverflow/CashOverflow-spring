@@ -13,9 +13,10 @@ import lombok.Data;
 public class TransactionDto {
 	
 	private int accountId;
-	private int txType;
+	private int txTypeId;
 	private Double amount;
 	private String description;
+	private int creationDate;
 	
 	
 
