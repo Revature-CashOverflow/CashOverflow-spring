@@ -34,7 +34,7 @@ import com.revature.service.UserAccountService;
 
 @SpringBootTest
 @ExtendWith(MockitoExtension.class)
-public class LoginControllerTest {
+class LoginControllerTest {
 
 	LoginController loginController;
 
