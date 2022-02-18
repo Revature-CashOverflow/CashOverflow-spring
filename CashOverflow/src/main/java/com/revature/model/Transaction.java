@@ -28,7 +28,6 @@ public class Transaction {
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	Integer id;
 	Double amount;
-	String name;
 	String description;
 	Instant creationDate;
 	

@@ -28,8 +28,9 @@ public class IncomeExpenseController {
 	
 	@PostMapping("/transaction")
 	public void addTransaction(Authentication auth, @RequestBody TransactionDto dto) {
-		if (dto.getAccountId() == 0 || dto.getTxType() == 0 || dto.getAmount() == null || dto.getName() == null
-				|| dto.getDescription() == null) {
+		System.out.println("here");
+		System.out.println(dto.getTxType());
+		if (dto.getAccountId() == 0 || dto.getTxType() == 0 || dto.getAmount() == null || dto.getDescription() == null) {
 			throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Missing transaction info");
 		}
 

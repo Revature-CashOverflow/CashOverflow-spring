@@ -38,6 +38,7 @@ public class TransactionServiceImpl implements TransactionService {
 		Transaction transaction = convertToEntity(dto);
 		updateBalance(transaction.getAmount(), transaction.getAccountId());
 		transaction.setCreationDate(Instant.now());
+		System.out.println(transaction.getCreationDate());
 		tranRepo.save(transaction);
 	}
 

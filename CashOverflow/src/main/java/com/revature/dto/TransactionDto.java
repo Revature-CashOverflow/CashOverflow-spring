@@ -15,7 +15,6 @@ public class TransactionDto {
 	private int accountId;
 	private int txType;
 	private Double amount;
-	private String name;
 	private String description;
 	
 	
