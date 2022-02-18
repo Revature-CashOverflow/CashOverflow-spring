@@ -43,8 +43,8 @@ public class LoginControllerTest {
 
 	@Mock
 	JwtAuthenticationService jwtServ;
-	
-	@Mock 
+
+	@Mock
 	PasswordEncoder enc;
 
 	@BeforeEach
@@ -52,7 +52,7 @@ public class LoginControllerTest {
 		loginController = new LoginController(serv, jwtServ, enc);
 	}
 
-	//Null credential failure
+	// Null credential failure
 	@Test
 	void loginFailTest() {
 		LoginRequestDto req = new LoginRequestDto(null, null);
@@ -69,7 +69,7 @@ public class LoginControllerTest {
 		assertEquals(expectedCode, e.getRawStatusCode());
 	}
 
-	//Bad credential failure
+	// Bad credential failure
 	@Test
 	void loginFailureTest() {
 		LoginRequestDto req = new LoginRequestDto("dummy", "padsojgfhldsoajord");
@@ -79,5 +79,21 @@ public class LoginControllerTest {
 		ResponseEntity<JwtResponse> result = loginController.login(req, new MockHttpServletResponse());
 		System.out.println(result);
 		assertNull(result);
+	}
+
+	// Valid credentials login
+	@Test
+	void loginSuccessTest() {
+		LoginRequestDto req = new LoginRequestDto("dummy", "password");
+		UserAccount initial = new UserAccount("dummy", enc.encode("password"));
+		ResponseEntity<JwtResponse> expected = jwtServ.createAuthenticationToken(initial.getUsername(),
+				initial.getPassword());
+
+		when(serv.getUserFromUsername("dummy")).thenReturn(initial);
+
+		ResponseEntity<JwtResponse> actual = loginController.login(req, new MockHttpServletResponse());
+
+		System.out.println(actual);
+		assertEquals(expected, actual);
 	}
 }
