@@ -4,8 +4,6 @@ import static org.springframework.test.web.servlet.request.MockMvcRequestBuilder
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
-import java.util.HashMap;
-
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -17,11 +15,10 @@ import org.springframework.http.MediaType;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.test.web.servlet.MockMvc;
 
-import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.revature.CashOverflowApplication;
 import com.revature.dao.UserAccountRepo;
-import com.revature.dto.LoginRequestDto;
+import com.revature.dto.RegUserAccountDto;
 import com.revature.helper.TestHelper;
 
 /**
@@ -58,7 +55,7 @@ public class RegisterControllerIntegrationTest {
 
 	@Test
 	void testNullValue() throws Exception {
-		mvc.perform(post("/login").content(TestHelper.asJsonString(new LoginRequestDto("username", null), mapper))
+		mvc.perform(post("/login").content(TestHelper.asJsonString(new RegUserAccountDto("email", "username", "first", "last", null), mapper))
 				.contentType(MediaType.APPLICATION_JSON)).andExpect(status().is4xxClientError());
 	}
 }
