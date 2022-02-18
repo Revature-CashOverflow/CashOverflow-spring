@@ -22,7 +22,7 @@ import com.revature.service.BankAccountService;
 import com.revature.service.UserAccountService;
 
 @RestController
-@CrossOrigin(origins = { "http://localhost:4200", "http://d3nlmo2v0fs5mq.cloudfront.net" })
+@CrossOrigin(origins = { "http://localhost:4200", "http://dostz94b44kp0.cloudfront.net" })
 public class AccountController {
 
 	private BankAccountService bankAccServ;
@@ -86,7 +86,6 @@ public class AccountController {
 	@ResponseStatus(HttpStatus.OK)
 	public List<BankAccountDto> transferFunds(Authentication auth, @RequestBody FundTransfer fundTransfer) {
 		UserAccount user = userAccServ.getUserFromUsername(auth.getName());
-
 		return bankAccServ.transferFunds(user, fundTransfer).stream().map(this::convertToDto)
 				.collect(Collectors.toList());
 
