@@ -29,6 +29,11 @@ import com.revature.dao.UserAccountRepo;
 import com.revature.dto.LoginRequestDto;
 import com.revature.model.UserAccount;
 
+/**
+ * Integration tests for the login controller
+ * 
+ * @author Colin Knox
+ */
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.MOCK, classes = CashOverflowApplication.class)
 @AutoConfigureMockMvc
 @AutoConfigureTestDatabase(connection = EmbeddedDatabaseConnection.H2)
@@ -36,16 +41,16 @@ public class LoginControllerIntegrationTest {
 
 	@Autowired
 	private MockMvc mvc;
-	
+
 	@Autowired
 	private ObjectMapper mapper;
-	
+
 	@Autowired
-    private UserAccountRepo repo;
-	
+	private UserAccountRepo repo;
+
 	@Autowired
 	private PasswordEncoder enc;
-		
+
 	@BeforeEach
 	void setUpEach() {
 		repo.deleteAll();
@@ -58,50 +63,46 @@ public class LoginControllerIntegrationTest {
 	void testGetWrongMethod() throws Exception {
 		mvc.perform(get("/login")).andExpect(status().isMethodNotAllowed());
 	}
-	
+
 	@Test
 	void testPostMissingCredentials() throws Exception {
-		mvc.perform(post("/login")
-				.content(asJsonString(new LoginRequestDto("username", null)))
-				.contentType(MediaType.APPLICATION_JSON))
-		.andExpect(status().is4xxClientError());
+		mvc.perform(post("/login").content(asJsonString(new LoginRequestDto("username", null)))
+				.contentType(MediaType.APPLICATION_JSON)).andExpect(status().is4xxClientError());
 	}
-	
+
 	@Test
 	void testLoginUserNotFound() throws Exception {
-		mvc.perform(post("/login")
-				.content(asJsonString(new LoginRequestDto("username", "user1")))
-				.contentType(MediaType.APPLICATION_JSON))
-			.andExpect(status().is4xxClientError());
+		mvc.perform(post("/login").content(asJsonString(new LoginRequestDto("username", "user1")))
+				.contentType(MediaType.APPLICATION_JSON)).andExpect(status().is4xxClientError());
 	}
-	
+
 	@Test
 	void testLoginUserSuccess() throws Exception {
-		MvcResult result = mvc.perform(post("/login")
-				.content(asJsonString(new LoginRequestDto("user1", "user1")))
-				.contentType(MediaType.APPLICATION_JSON))
-			.andExpect(status().isOk())
-			.andExpect(content().contentTypeCompatibleWith(MediaType.APPLICATION_JSON))
-			.andReturn();
-		
+		MvcResult result = mvc
+				.perform(post("/login").content(asJsonString(new LoginRequestDto("user1", "user1")))
+						.contentType(MediaType.APPLICATION_JSON))
+				.andExpect(status().isOk()).andExpect(content().contentTypeCompatibleWith(MediaType.APPLICATION_JSON))
+				.andReturn();
+
 		String responseBody = result.getResponse().getContentAsString();
 		HashMap<String, Object> pairs = asJsonObject(responseBody);
 		assertTrue(pairs.keySet().contains("jwt"));
 		assertNotEquals(pairs.get("jwt"), "");
 	}
-	
+
 	public String asJsonString(final Object obj) {
-	    try {
-	        return mapper.writeValueAsString(obj);
-	    } catch (Exception e) {
-	        throw new RuntimeException(e);
-	    }
+		try {
+			return mapper.writeValueAsString(obj);
+		} catch (Exception e) {
+			throw new RuntimeException(e);
+		}
 	}
-	
+
 	public HashMap<String, Object> asJsonObject(String s) {
 		HashMap<String, Object> map = new HashMap<String, Object>();
 		try {
-			map = mapper.readValue(s, new TypeReference<HashMap<String, Object>>(){});
+			map = mapper.readValue(s, new TypeReference<HashMap<String, Object>>() {
+			});
 			return map;
 		} catch (Exception e) {
 			throw new RuntimeException(e);
