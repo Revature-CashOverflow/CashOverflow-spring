@@ -86,7 +86,6 @@ public class AccountController {
 	@ResponseStatus(HttpStatus.OK)
 	public List<BankAccountDto> transferFunds(Authentication auth, @RequestBody FundTransfer fundTransfer) {
 		UserAccount user = userAccServ.getUserFromUsername(auth.getName());
-
 		return bankAccServ.transferFunds(user, fundTransfer).stream().map(this::convertToDto)
 				.collect(Collectors.toList());
 

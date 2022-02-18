@@ -1,7 +1,5 @@
 package com.revature.controller;
 
-import javax.servlet.http.HttpServletResponse;
-
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -48,15 +46,15 @@ public class LoginController {
 	 * 
 	 * @author Emmanuel Sosa, Liliya Sherstobitova, Delane Chen
 	 */
+	@SuppressWarnings("deprecation")
 	@PostMapping(value = "/login")
-	public ResponseEntity<JwtResponse> login(@RequestBody LoginRequestDto req, HttpServletResponse resp) {
+	public ResponseEntity<JwtResponse> login(@RequestBody LoginRequestDto req) {
 		if (req.getUsername() == null || req.getPassword() == null) {
 			throw new ResponseStatusException(HttpStatus.NOT_ACCEPTABLE, "missing Credential");
 		}
 		UserAccount user = serv.getUserFromUsername(req.getUsername());
 		if (user == null || !enc.matches(req.getPassword(), user.getPassword())) {
-			resp.setStatus(420);
-			return null;
+			throw new ResponseStatusException(HttpStatus.METHOD_FAILURE);
 		} else {
 			return jwtServ.createAuthenticationToken(user.getUsername(), req.getPassword());
 		}
