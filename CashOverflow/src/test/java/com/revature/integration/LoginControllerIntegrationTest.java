@@ -22,11 +22,11 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.MvcResult;
 
-import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.revature.CashOverflowApplication;
 import com.revature.dao.UserAccountRepo;
 import com.revature.dto.LoginRequestDto;
+import com.revature.helper.TestHelper;
 import com.revature.model.UserAccount;
 
 /**
@@ -66,46 +66,27 @@ public class LoginControllerIntegrationTest {
 
 	@Test
 	void testPostMissingCredentials() throws Exception {
-		mvc.perform(post("/login").content(asJsonString(new LoginRequestDto("username", null)))
+		mvc.perform(post("/login").content(TestHelper.asJsonString(new LoginRequestDto("username", null), mapper))
 				.contentType(MediaType.APPLICATION_JSON)).andExpect(status().is4xxClientError());
 	}
 
 	@Test
 	void testLoginUserNotFound() throws Exception {
-		mvc.perform(post("/login").content(asJsonString(new LoginRequestDto("username", "user1")))
+		mvc.perform(post("/login").content(TestHelper.asJsonString(new LoginRequestDto("username", "user1"), mapper))
 				.contentType(MediaType.APPLICATION_JSON)).andExpect(status().is4xxClientError());
 	}
 
 	@Test
 	void testLoginUserSuccess() throws Exception {
 		MvcResult result = mvc
-				.perform(post("/login").content(asJsonString(new LoginRequestDto("user1", "user1")))
+				.perform(post("/login").content(TestHelper.asJsonString(new LoginRequestDto("user1", "user1"), mapper))
 						.contentType(MediaType.APPLICATION_JSON))
 				.andExpect(status().isOk()).andExpect(content().contentTypeCompatibleWith(MediaType.APPLICATION_JSON))
 				.andReturn();
 
 		String responseBody = result.getResponse().getContentAsString();
-		HashMap<String, Object> pairs = asJsonObject(responseBody);
+		HashMap<String, Object> pairs = TestHelper.asJsonObject(responseBody, mapper);
 		assertTrue(pairs.keySet().contains("jwt"));
 		assertNotEquals(pairs.get("jwt"), "");
-	}
-
-	public String asJsonString(final Object obj) {
-		try {
-			return mapper.writeValueAsString(obj);
-		} catch (Exception e) {
-			throw new RuntimeException(e);
-		}
-	}
-
-	public HashMap<String, Object> asJsonObject(String s) {
-		HashMap<String, Object> map = new HashMap<String, Object>();
-		try {
-			map = mapper.readValue(s, new TypeReference<HashMap<String, Object>>() {
-			});
-			return map;
-		} catch (Exception e) {
-			throw new RuntimeException(e);
-		}
 	}
 }
