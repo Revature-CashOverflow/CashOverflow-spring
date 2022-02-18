@@ -9,6 +9,7 @@ import java.time.Instant;
 import java.util.ArrayList;
 import java.util.List;
 
+import org.assertj.core.util.Arrays;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -18,6 +19,7 @@ import org.springframework.boot.test.context.SpringBootTest;
 
 import com.revature.dao.BankAccountRepo;
 import com.revature.model.BankAccount;
+import com.revature.model.FundTransfer;
 import com.revature.model.UserAccount;
 
 
@@ -117,5 +119,42 @@ class BankAccountServiceImplTest {
 		
 		verify(dao, times(1)).findAllByUserId(initialTestBankAccount.getUser().getId());
 		assertEquals(expectedList, test);
+	}
+	
+	/**
+	 * This tests that transactions with fractional cents are being handled properly
+	 * as well as transactions that exceed the account's balance
+	 */
+	@Test
+	void transferFundsTest() {
+		BankAccount initialAccount1 = new BankAccount();
+		initialAccount1.setBalance(100.00);
+		BankAccount initialAccount2 = new BankAccount();
+		initialAccount2.setBalance(0.0);
+		FundTransfer fundTransfer = new FundTransfer();
+		fundTransfer.setTransferFromAccount("account1");
+		fundTransfer.setTransferToAccount("account2");
+		fundTransfer.setTransferAmount(12.3456);
+		BankAccount expectedAccount1 = new BankAccount();
+		expectedAccount1.setBalance(87.65);
+		BankAccount expectedAccount2 = new BankAccount();
+		expectedAccount2.setBalance(12.35);
+		UserAccount user = new UserAccount();
+		List<BankAccount> expectedAccounts = new ArrayList<BankAccount>();
+		expectedAccounts.add(expectedAccount1);
+		expectedAccounts.add(expectedAccount2);
+		
+		when(dao.saveAll(expectedAccounts)).thenReturn(null);
+		when(serv.getBankAccount(user, "account1")).thenReturn(initialAccount1);
+		when(serv.getBankAccount(user, "account2")).thenReturn(initialAccount2);
+		
+		List<BankAccount> test = serv.transferFunds(user, fundTransfer);
+		
+		verify(dao, times(1)).saveAll(expectedAccounts);
+		assertEquals(expectedAccounts, test);
+		
+		fundTransfer.setTransferAmount(101.101);
+		test = serv.transferFunds(user, fundTransfer);
+		assertEquals(expectedAccounts, test);
 	}
 }
