@@ -20,7 +20,8 @@ public class TransactionServiceImpl implements TransactionService {
 	private ModelMapper mapper;
 
 	@Autowired
-	public TransactionServiceImpl(TransactionRepo tranRepo, ModelMapper mapper) {
+	public TransactionServiceImpl(TransactionRepo tranRepo, ModelMapper mapper, BankAccountRepo bankRepo) {
+		this.bankRepo = bankRepo;
 		this.tranRepo = tranRepo;
 		this.mapper = mapper;
 	}
