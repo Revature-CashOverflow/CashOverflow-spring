@@ -1,4 +1,4 @@
-[![Quality Gate Status](https://sonarcloud.io/api/project_badges/measure?project=Revature-CashOverflow_CashOverflow-spring&metric=alert_status)](https://sonarcloud.io/summary/new_code?id=Revature-CashOverflow_CashOverflow-spring)
+[![Quality Gate Status](https://sonarcloud.io/api/project_badges/measure?project=Revature-CashOverflow_CashOverflow-spring&metric=alert_status)](https://sonarcloud.io/summary/new_code?id=Revature-CashOverflow_CashOverflow-spring) [![Build Status](http://ec2-18-233-7-153.compute-1.amazonaws.com:8080/buildStatus/icon?job=cashoverflow-spring%2Fmain)](http://ec2-18-233-7-153.compute-1.amazonaws.com:8080/job/cashoverflow-spring/job/main/)
 
 # CashOverflow-spring  
 This is a Spring Boot stateless resource/authentication server.  It is one part of a multi server application, the other being an Angular front end.  
