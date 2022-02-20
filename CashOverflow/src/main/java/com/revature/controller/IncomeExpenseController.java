@@ -1,11 +1,13 @@
 package com.revature.controller;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.security.core.Authentication;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.server.ResponseStatusException;
 
 import com.revature.dto.TransactionDto;
 import com.revature.service.TransactionService;
@@ -24,9 +26,9 @@ public class IncomeExpenseController {
 	@PostMapping("/transaction")
 	public void addTransaction(Authentication auth, @RequestBody TransactionDto dto) {
 		System.out.println("here");
-//		if (dto.getAccountId() == 0 || dto.getAmount() == null || dto.getDescription() == null) {
-//			throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Missing transaction info");
-//		}
+		if (dto.getAccountId() == 0 || dto.getAmount() == null || dto.getDescription() == null) {
+			throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Missing transaction info");
+		}
 
 		tranServ.addTransaction(dto);
 	}
