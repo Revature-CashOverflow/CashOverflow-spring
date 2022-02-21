@@ -48,7 +48,7 @@ public class AccountController {
 	@PostMapping("/api/account/createBankAccount")
 	@ResponseStatus(HttpStatus.CREATED)
 	public BankAccountDto createBankAccount(Authentication auth, @RequestBody BankAccountDto dtoAccount) {
-
+		System.out.println(dtoAccount);
 		BankAccount account = convertToEntity(dtoAccount);
 
 		account.setUser(userAccServ.getUserFromUsername(auth.getName()));
