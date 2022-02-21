@@ -65,15 +65,15 @@ public class BankAccountServiceImpl implements BankAccountService {
 		// we do this to bundle the db calls for both accounts
 		List<BankAccount> accounts = Arrays.asList(account1, account2);
 
+		// if they can't afford the tx or an acc is null, don't call the db, don't pass
+		// go, don't collect $200
+		if (account1 == null || account2 == null || fundTransfer.getTransferAmount() == null
+				|| account1.getBalance() < fundTransfer.getTransferAmount() || fundTransfer.getTransferAmount() <= 0)
+			throw new ResponseStatusException(HttpStatus.I_AM_A_TEAPOT);
+
 		// if a user tries to be cheeky and enter fractional cents, we will round their
 		// request
 		fundTransfer.setTransferAmount(Math.round(fundTransfer.getTransferAmount() * 100.0) / 100.0);
-
-		// if they can't afford the tx or an acc is null, don't call the db, don't pass
-		// go, don't collect $200
-		if (account1 == null || account2 == null || account1.getBalance() < fundTransfer.getTransferAmount()
-				|| fundTransfer.getTransferAmount() <= 0)
-			throw new ResponseStatusException(HttpStatus.I_AM_A_TEAPOT);
 
 		account1.setBalance(account1.getBalance() - fundTransfer.getTransferAmount());
 		account2.setBalance(account2.getBalance() + fundTransfer.getTransferAmount());

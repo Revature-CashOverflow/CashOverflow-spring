@@ -30,6 +30,7 @@ import com.revature.dao.BankAccountRepo;
 import com.revature.dao.UserAccountRepo;
 import com.revature.dto.BankAccountDto;
 import com.revature.model.BankAccount;
+import com.revature.model.FundTransfer;
 import com.revature.model.UserAccount;
 
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.MOCK, classes = CashOverflowApplication.class)
@@ -57,17 +58,21 @@ public class AccountControllerIntegrationTest {
 		userRepo.deleteAll();
 		
 		UserAccount user = new UserAccount(0, "user1@gmail.com", "user1", "user", "1", enc.encode("user1"), Instant.now());
+		UserAccount user2 = new UserAccount(0, "user2@gmail.com", "user2", "user", "2", enc.encode("user2"), Instant.now());
 		userRepo.save(user);
+		userRepo.save(user2);
 		user = userRepo.findByUsername("user1");
+		user2 = userRepo.findByUsername("user2");
 		
-		bankRepo.save(new BankAccount(0, "name1", 0.0, "description1", Instant.now(), 1, user, null));
+		bankRepo.save(new BankAccount(0, "name1", 100.0, "description1", Instant.now(), 1, user, null));
 		bankRepo.save(new BankAccount(0, "name2", 0.0, "description2", Instant.now(), 1, user, null));
 		bankRepo.save(new BankAccount(0, "name3", 0.0, "description3", Instant.now(), 2, user, null));
+		bankRepo.save(new BankAccount(0, "name1u2", 100.0, "description1u2", Instant.now(), 2, user2, null));
 	}
 	
 	@Test
-	@WithMockUser(value = "user1")
-	void testNullAccountName() throws Exception {
+	@WithMockUser("user1")
+	void testCreateNullAccountName() throws Exception {
 		BankAccountDto dto = new BankAccountDto();
 		dto.setDescription("description");
 		dto.setName(null);
@@ -79,7 +84,7 @@ public class AccountControllerIntegrationTest {
 	
 	@Test
 	@WithMockUser("user1")
-	void testBlankAccountName() throws Exception {
+	void testCreateBlankAccountName() throws Exception {
 		BankAccountDto dto = new BankAccountDto();
 		dto.setDescription("description");
 		dto.setName("");
@@ -97,8 +102,32 @@ public class AccountControllerIntegrationTest {
 		dto.setName("name");
 		dto.setAccountTypeId(1);
 		
+		MvcResult result = mvc.perform(post("/api/account/createBankAccount").content(mapper.writeValueAsString(dto))
+				.contentType(MediaType.APPLICATION_JSON)).andExpect(status().isCreated()).andReturn();
+		
+		String responseBody = result.getResponse().getContentAsString();
+		BankAccountDto actualDto = mapper.readValue(responseBody, BankAccountDto.class);
+		BankAccountDto expectedDto = new BankAccountDto();
+		expectedDto.setId(actualDto.getId());
+		expectedDto.setBalance(0.0);
+		expectedDto.setName("name");
+		expectedDto.setAccountTypeId(1);
+		expectedDto.setCreationDate(actualDto.getCreationDate());
+		expectedDto.setDescription("description");
+		
+		assertEquals(expectedDto, actualDto);
+	}
+	
+	@Test
+	@WithMockUser("user1")
+	void testCreateSameNameAccount() throws Exception {
+		BankAccountDto dto = new BankAccountDto();
+		dto.setDescription("description");
+		dto.setName("name1");
+		dto.setAccountTypeId(1);
+		
 		mvc.perform(post("/api/account/createBankAccount").content(mapper.writeValueAsString(dto))
-				.contentType(MediaType.APPLICATION_JSON)).andExpect(status().isCreated());
+				.contentType(MediaType.APPLICATION_JSON)).andExpect(status().isBadRequest());
 	}
 	
 	@Test
@@ -115,4 +144,117 @@ public class AccountControllerIntegrationTest {
 		
 		assertEquals(dtos.size(), 3);
 	}
+	
+	@Test
+	@WithMockUser("user1")
+	void testTransferFundsNull() throws Exception {
+		FundTransfer ft = new FundTransfer(null, "name2", 1.0);
+		
+		mvc.perform(post("/api/account/transferFunds").content(mapper.writeValueAsString(ft)).contentType(MediaType.APPLICATION_JSON))
+			.andExpect(status().isIAmATeapot());
+	}
+	
+	@Test
+	@WithMockUser("user1")
+	void testTransferFundsNotEnough() throws Exception {
+		FundTransfer ft = new FundTransfer("name1", "name2", 100.01);
+		
+		mvc.perform(post("/api/account/transferFunds").content(mapper.writeValueAsString(ft)).contentType(MediaType.APPLICATION_JSON))
+			.andExpect(status().isIAmATeapot());
+	}
+	
+	@Test
+	@WithMockUser("user1")
+	void testTransferFundsNotYourBankAccount() throws Exception {
+		FundTransfer ft = new FundTransfer("name1u2", "name2", 50.0);
+
+		mvc.perform(post("/api/account/transferFunds").content(mapper.writeValueAsString(ft)).contentType(MediaType.APPLICATION_JSON))
+			.andExpect(status().isIAmATeapot());
+	}
+	
+	@Test
+	@WithMockUser("user1")
+	void testTransferFundsNonexistentFromAccount() throws Exception {
+		FundTransfer ft = new FundTransfer("xddd", "name2", 50.0);
+		
+		mvc.perform(post("/api/account/transferFunds").content(mapper.writeValueAsString(ft)).contentType(MediaType.APPLICATION_JSON))
+			.andExpect(status().isIAmATeapot());
+	}
+	
+	@Test
+	@WithMockUser("user1")
+	void testTransferFundsNonexistentToAccount() throws Exception {
+		FundTransfer ft = new FundTransfer("name1", "xddd", 50.0);
+		
+		mvc.perform(post("/api/account/transferFunds").content(mapper.writeValueAsString(ft)).contentType(MediaType.APPLICATION_JSON))
+			.andExpect(status().isIAmATeapot());
+	}
+	
+	@Test
+	@WithMockUser("user1")
+	void testTransferSuccess() throws Exception {
+		FundTransfer ft = new FundTransfer("name1", "name2", 99.0);
+		
+		MvcResult result = mvc.perform(post("/api/account/transferFunds").content(mapper.writeValueAsString(ft)).contentType(MediaType.APPLICATION_JSON))
+			.andExpect(status().isOk())
+			.andExpect(content().contentTypeCompatibleWith(MediaType.APPLICATION_JSON))
+			.andExpect(authenticated().withAuthenticationName("user1"))
+			.andReturn();
+		
+		String responseBody = result.getResponse().getContentAsString();
+		List<BankAccountDto> actualAccts = mapper.readValue(responseBody, new TypeReference<List<BankAccountDto>>() {});
+		
+		assertEquals(actualAccts.size(), 2);
+		assertEquals(actualAccts.get(0).getBalance(), 1.0);
+		assertEquals(actualAccts.get(1).getBalance(), 99.0);
+	}
+	
+	@Test
+	@WithMockUser("user1")
+	void testTransferFundsNegativeAmount() throws Exception {
+		FundTransfer ft = new FundTransfer("name1", "name2", -50.0);
+		
+		mvc.perform(post("/api/account/transferFunds").content(mapper.writeValueAsString(ft)).contentType(MediaType.APPLICATION_JSON))
+			.andExpect(status().isIAmATeapot());
+	}
+	
+	@Test
+	@WithMockUser("user1")
+	void testTransferFundsZeroAmount() throws Exception {
+		FundTransfer ft = new FundTransfer("name1", "name2", 0.0);
+		
+		mvc.perform(post("/api/account/transferFunds").content(mapper.writeValueAsString(ft)).contentType(MediaType.APPLICATION_JSON))
+			.andExpect(status().isIAmATeapot());
+	}
+	
+	@Test
+	@WithMockUser("user1")
+	void testTransferFundsNullAmount() throws Exception {
+		FundTransfer ft = new FundTransfer("name1", "name2", null);
+		
+		mvc.perform(post("/api/account/transferFunds").content(mapper.writeValueAsString(ft)).contentType(MediaType.APPLICATION_JSON))
+			.andExpect(status().isIAmATeapot());
+	}
+	
+	@Test
+	@WithMockUser("user1")
+	void testTransferFundsFractionalPennies() throws Exception {
+		FundTransfer ft = new FundTransfer("name1", "name2", 50.006);
+		
+		MvcResult result = mvc.perform(post("/api/account/transferFunds").content(mapper.writeValueAsString(ft)).contentType(MediaType.APPLICATION_JSON))
+			.andExpect(status().isOk())
+			.andExpect(content().contentTypeCompatibleWith(MediaType.APPLICATION_JSON))
+			.andExpect(authenticated().withAuthenticationName("user1"))
+			.andReturn();
+		
+		String responseBody = result.getResponse().getContentAsString();
+		List<BankAccountDto> actualAccts = mapper.readValue(responseBody, new TypeReference<List<BankAccountDto>>() {});
+		
+		assertEquals(actualAccts.size(), 2);
+		assertEquals(100.0, actualAccts.get(0).getBalance() + actualAccts.get(1).getBalance());
+		assertEquals(actualAccts.get(0).getBalance(), 49.99);
+		assertEquals(actualAccts.get(1).getBalance(), 50.01);
+	}
+	
+	
 }
