@@ -60,8 +60,6 @@ public class JwtAuthenticationService {
 	private void authenticate(String username, String password) throws DisabledException, BadCredentialsException {
 		try {
 			manager.authenticate(new UsernamePasswordAuthenticationToken(username, password));
-		} catch (DisabledException e) {
-			throw new DisabledException("USER_DISABLED", e);
 		} catch (BadCredentialsException e) {
 			throw new BadCredentialsException("INVALID_CREDENTIALS", e);
 		}
