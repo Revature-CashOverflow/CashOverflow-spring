@@ -36,14 +36,15 @@ public class TransactionServiceImpl implements TransactionService {
 	@Override
 	public void addTransaction(TransactionDto dto) {
 		BankAccount acc = bankRepo.getById(dto.getAccountId());
-		if (dto.getTxTypeId() == 1) {
-			if (dto.getAmount() > acc.getBalance()) {
-				throw new ResponseStatusException(HttpStatus.EXPECTATION_FAILED, "Insufficient account balance");
-			}
-			dto.setAmount(-1 * dto.getAmount());
+		if (dto.getAmount() > acc.getBalance()) {
+			throw new ResponseStatusException(HttpStatus.EXPECTATION_FAILED, "Insufficient account balance");
 		}
 		Transaction transaction = convertToEntity(dto);
-		updateBalance(transaction.getAmount(), acc);
+		if (transaction.getTxTypeId() == 1) {
+			updateBalance(-1 * transaction.getAmount(), acc);
+		} else {
+			updateBalance(transaction.getAmount(), acc);
+		}
 		transaction.setCreationDate(Instant.now());
 		tranRepo.save(transaction);
 	}
@@ -59,7 +60,4 @@ public class TransactionServiceImpl implements TransactionService {
 	public List<Transaction> getTransactions(Integer bkId) {
 		return tranRepo.findAllByAccountIdOrderByCreationDateDesc(bkId);
 	}
-	
-	
-
 }
