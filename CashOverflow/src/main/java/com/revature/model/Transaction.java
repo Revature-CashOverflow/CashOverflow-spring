@@ -6,8 +6,6 @@ import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
-import javax.persistence.JoinColumn;
-import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 
 import lombok.AllArgsConstructor;
@@ -16,7 +14,8 @@ import lombok.NoArgsConstructor;
 
 /**
  * Model for transactions
- * @author Colin Knox, Parker Mace, Tyler Rondeau
+ * 
+ * @author Cameron, Colin Knox, Parker Mace, Tyler Rondeau
  */
 @Entity
 @Table(name = "transactions")
@@ -28,13 +27,8 @@ public class Transaction {
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	Integer id;
 	Double amount;
-	String name;
 	String description;
 	Instant creationDate;
-	
-	@ManyToOne
-	@JoinColumn(referencedColumnName = "id")
-	TransactionType txType;
-	
+	Integer txTypeId;
 	Integer accountId;
 }
