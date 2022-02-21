@@ -123,4 +123,9 @@ class BankAccountServiceImplTest {
 		fundTransfer.setTransferAmount(101.101);
 		assertThrows(ResponseStatusException.class, () -> serv.transferFunds(user, fundTransfer));
 	}
+	
+	@Test
+	void createAccountTest2() {
+		
+	}
 }
