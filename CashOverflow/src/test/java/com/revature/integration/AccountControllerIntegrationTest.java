@@ -12,6 +12,9 @@ import java.util.List;
 
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.params.ParameterizedTest;
+import org.junit.jupiter.params.provider.NullSource;
+import org.junit.jupiter.params.provider.ValueSource;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.jdbc.EmbeddedDatabaseConnection;
 import org.springframework.boot.test.autoconfigure.jdbc.AutoConfigureTestDatabase;
@@ -38,7 +41,7 @@ import com.revature.model.UserAccount;
 @AutoConfigureMockMvc
 @AutoConfigureTestDatabase(connection = EmbeddedDatabaseConnection.H2)
 @Transactional
-public class AccountControllerIntegrationTest {
+class AccountControllerIntegrationTest {
 	@Autowired
 	private MockMvc mvc;
 
@@ -72,24 +75,14 @@ public class AccountControllerIntegrationTest {
 		bankRepo.save(new BankAccount(0, "name1u2", 100.0, "description1u2", Instant.now(), 2, user2, null));
 	}
 	
-	@Test
+	@ParameterizedTest
 	@WithMockUser("user1")
-	void testCreateNullAccountName() throws Exception {
+	@NullSource
+	@ValueSource(strings = { "", "name1" })
+	void testCreateAccountName(String arg) throws Exception {
 		BankAccountDto dto = new BankAccountDto();
 		dto.setDescription("description");
-		dto.setName(null);
-		dto.setAccountTypeId(1);
-		
-		mvc.perform(post("/api/account/createBankAccount").content(mapper.writeValueAsString(dto))
-				.contentType(MediaType.APPLICATION_JSON)).andExpect(status().isBadRequest());
-	}
-	
-	@Test
-	@WithMockUser("user1")
-	void testCreateBlankAccountName() throws Exception {
-		BankAccountDto dto = new BankAccountDto();
-		dto.setDescription("description");
-		dto.setName("");
+		dto.setName(arg);
 		dto.setAccountTypeId(1);
 		
 		mvc.perform(post("/api/account/createBankAccount").content(mapper.writeValueAsString(dto))
@@ -122,18 +115,6 @@ public class AccountControllerIntegrationTest {
 	
 	@Test
 	@WithMockUser("user1")
-	void testCreateSameNameAccount() throws Exception {
-		BankAccountDto dto = new BankAccountDto();
-		dto.setDescription("description");
-		dto.setName("name1");
-		dto.setAccountTypeId(1);
-		
-		mvc.perform(post("/api/account/createBankAccount").content(mapper.writeValueAsString(dto))
-				.contentType(MediaType.APPLICATION_JSON)).andExpect(status().isBadRequest());
-	}
-	
-	@Test
-	@WithMockUser("user1")
 	void testGetBankAccounts() throws Exception {
 		MvcResult result = mvc.perform(get("/api/account/getBankAccounts"))
 			.andExpect(status().isOk())
@@ -144,7 +125,7 @@ public class AccountControllerIntegrationTest {
 		String responseBody = result.getResponse().getContentAsString();
 		List<BankAccountDto> dtos = mapper.readValue(responseBody, new TypeReference<List<BankAccountDto>>() {});
 		
-		assertEquals(dtos.size(), 3);
+		assertEquals(3, dtos.size());
 	}
 	
 	@Test
@@ -206,9 +187,9 @@ public class AccountControllerIntegrationTest {
 		String responseBody = result.getResponse().getContentAsString();
 		List<BankAccountDto> actualAccts = mapper.readValue(responseBody, new TypeReference<List<BankAccountDto>>() {});
 		
-		assertEquals(actualAccts.size(), 2);
-		assertEquals(actualAccts.get(0).getBalance(), 1.0);
-		assertEquals(actualAccts.get(1).getBalance(), 99.0);
+		assertEquals(2, actualAccts.size());
+		assertEquals(1.0, actualAccts.get(0).getBalance());
+		assertEquals(99.0, actualAccts.get(1).getBalance());
 	}
 	
 	@Test
@@ -252,10 +233,10 @@ public class AccountControllerIntegrationTest {
 		String responseBody = result.getResponse().getContentAsString();
 		List<BankAccountDto> actualAccts = mapper.readValue(responseBody, new TypeReference<List<BankAccountDto>>() {});
 		
-		assertEquals(actualAccts.size(), 2);
+		assertEquals(2, actualAccts.size());
 		assertEquals(100.0, actualAccts.get(0).getBalance() + actualAccts.get(1).getBalance());
-		assertEquals(actualAccts.get(0).getBalance(), 49.99);
-		assertEquals(actualAccts.get(1).getBalance(), 50.01);
+		assertEquals(49.99, actualAccts.get(0).getBalance());
+		assertEquals(50.01, actualAccts.get(1).getBalance());
 	}
 	
 	
