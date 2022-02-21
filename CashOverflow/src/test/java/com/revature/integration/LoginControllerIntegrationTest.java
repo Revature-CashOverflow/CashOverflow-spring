@@ -37,7 +37,7 @@ import com.revature.model.UserAccount;
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.MOCK, classes = CashOverflowApplication.class)
 @AutoConfigureMockMvc
 @AutoConfigureTestDatabase(connection = EmbeddedDatabaseConnection.H2)
-public class LoginControllerIntegrationTest {
+class LoginControllerIntegrationTest {
 
 	@Autowired
 	private MockMvc mvc;
@@ -87,6 +87,6 @@ public class LoginControllerIntegrationTest {
 		String responseBody = result.getResponse().getContentAsString();
 		HashMap<String, Object> pairs = TestHelper.asJsonObject(responseBody, mapper);
 		assertTrue(pairs.keySet().contains("jwt"));
-		assertNotEquals(pairs.get("jwt"), "");
+		assertNotEquals("", pairs.get("jwt"));
 	}
 }
