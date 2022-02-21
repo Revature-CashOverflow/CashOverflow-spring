@@ -38,7 +38,7 @@ import com.revature.model.UserAccount;
 @AutoConfigureMockMvc
 @AutoConfigureTestDatabase(connection = EmbeddedDatabaseConnection.H2)
 @Transactional
-public class AccountControllerIntegrationTest {
+class AccountControllerIntegrationTest {
 	@Autowired
 	private MockMvc mvc;
 
@@ -144,7 +144,7 @@ public class AccountControllerIntegrationTest {
 		String responseBody = result.getResponse().getContentAsString();
 		List<BankAccountDto> dtos = mapper.readValue(responseBody, new TypeReference<List<BankAccountDto>>() {});
 		
-		assertEquals(dtos.size(), 3);
+		assertEquals(3, dtos.size());
 	}
 	
 	@Test
@@ -206,9 +206,9 @@ public class AccountControllerIntegrationTest {
 		String responseBody = result.getResponse().getContentAsString();
 		List<BankAccountDto> actualAccts = mapper.readValue(responseBody, new TypeReference<List<BankAccountDto>>() {});
 		
-		assertEquals(actualAccts.size(), 2);
-		assertEquals(actualAccts.get(0).getBalance(), 1.0);
-		assertEquals(actualAccts.get(1).getBalance(), 99.0);
+		assertEquals(2, actualAccts.size());
+		assertEquals(1.0, actualAccts.get(0).getBalance());
+		assertEquals(99.0, actualAccts.get(1).getBalance());
 	}
 	
 	@Test
@@ -252,10 +252,10 @@ public class AccountControllerIntegrationTest {
 		String responseBody = result.getResponse().getContentAsString();
 		List<BankAccountDto> actualAccts = mapper.readValue(responseBody, new TypeReference<List<BankAccountDto>>() {});
 		
-		assertEquals(actualAccts.size(), 2);
+		assertEquals(2, actualAccts.size());
 		assertEquals(100.0, actualAccts.get(0).getBalance() + actualAccts.get(1).getBalance());
-		assertEquals(actualAccts.get(0).getBalance(), 49.99);
-		assertEquals(actualAccts.get(1).getBalance(), 50.01);
+		assertEquals(49.99, actualAccts.get(0).getBalance());
+		assertEquals(50.01, actualAccts.get(1).getBalance());
 	}
 	
 	
