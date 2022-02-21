@@ -21,12 +21,13 @@ import org.springframework.http.MediaType;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.MvcResult;
+import org.springframework.transaction.annotation.Transactional;
 
+import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.revature.CashOverflowApplication;
 import com.revature.dao.UserAccountRepo;
 import com.revature.dto.LoginRequestDto;
-import com.revature.helper.TestHelper;
 import com.revature.model.UserAccount;
 
 /**
@@ -37,6 +38,7 @@ import com.revature.model.UserAccount;
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.MOCK, classes = CashOverflowApplication.class)
 @AutoConfigureMockMvc
 @AutoConfigureTestDatabase(connection = EmbeddedDatabaseConnection.H2)
+@Transactional
 class LoginControllerIntegrationTest {
 
 	@Autowired
@@ -66,26 +68,26 @@ class LoginControllerIntegrationTest {
 
 	@Test
 	void testPostMissingCredentials() throws Exception {
-		mvc.perform(post("/login").content(TestHelper.asJsonString(new LoginRequestDto("username", null), mapper))
+		mvc.perform(post("/login").content(mapper.writeValueAsString(new LoginRequestDto("username", null)))
 				.contentType(MediaType.APPLICATION_JSON)).andExpect(status().is4xxClientError());
 	}
 
 	@Test
 	void testLoginUserNotFound() throws Exception {
-		mvc.perform(post("/login").content(TestHelper.asJsonString(new LoginRequestDto("username", "user1"), mapper))
+		mvc.perform(post("/login").content(mapper.writeValueAsString(new LoginRequestDto("username", "user1")))
 				.contentType(MediaType.APPLICATION_JSON)).andExpect(status().is4xxClientError());
 	}
 
 	@Test
 	void testLoginUserSuccess() throws Exception {
 		MvcResult result = mvc
-				.perform(post("/login").content(TestHelper.asJsonString(new LoginRequestDto("user1", "user1"), mapper))
+				.perform(post("/login").content(mapper.writeValueAsString(new LoginRequestDto("user1", "user1")))
 						.contentType(MediaType.APPLICATION_JSON))
 				.andExpect(status().isOk()).andExpect(content().contentTypeCompatibleWith(MediaType.APPLICATION_JSON))
 				.andReturn();
 
 		String responseBody = result.getResponse().getContentAsString();
-		HashMap<String, Object> pairs = TestHelper.asJsonObject(responseBody, mapper);
+		HashMap<String, Object> pairs = mapper.readValue(responseBody, new TypeReference<HashMap<String, Object>>(){});
 		assertTrue(pairs.keySet().contains("jwt"));
 		assertNotEquals("", pairs.get("jwt"));
 	}
