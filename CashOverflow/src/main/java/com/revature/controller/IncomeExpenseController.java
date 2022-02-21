@@ -26,10 +26,13 @@ public class IncomeExpenseController {
 	public IncomeExpenseController(TransactionService tranServ) {
 		this.tranServ = tranServ;
 	}
-	
+
 	/**
-	 * Endpoint that takes a transaction and puts it into a dto object, checks for valid amount and whether any fields 
-	 * @param Takes the transaction object from the frontend and puts it into a DTO object
+	 * Endpoint that takes a transaction and puts it into a dto object, checks for
+	 * valid amount and whether any fields
+	 * 
+	 * @param Takes the transaction object from the frontend and puts it into a DTO
+	 *              object
 	 * @author Cameron, Amir, Chandra
 	 */
 	@PostMapping("/transaction")
@@ -38,13 +41,15 @@ public class IncomeExpenseController {
 			throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Missing transaction info");
 		} else if (dto.getAmount() < 0) {
 			throw new ResponseStatusException(HttpStatus.EXPECTATION_FAILED, "Cant have have negative transaction");
-		} 
+		}
 
 		tranServ.addTransaction(dto);
 	}
-	
+
 	/**
-	 * Endpoint for getting a list of transactions associated with a single bank account
+	 * Endpoint for getting a list of transactions associated with a single bank
+	 * account
+	 * 
 	 * @param takes a bank account's id through the path variable
 	 * @return List of transactions
 	 * @author Cameron, Amir, Chandra

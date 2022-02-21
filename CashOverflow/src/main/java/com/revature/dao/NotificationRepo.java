@@ -7,6 +7,7 @@ import com.revature.model.Notification;
 
 /**
  * Repo for interacting with bank accounts in the database.
+ * 
  * @author Colin Knox, Parker Mace, Tyler Rondeau
  */
 @Repository

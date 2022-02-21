@@ -39,7 +39,8 @@ public class JwtAuthenticationService {
 	 * @return - Response to front-end
 	 * @throws Exception
 	 */
-	public ResponseEntity<JwtResponse> createAuthenticationToken(String username, String password) throws DisabledException, BadCredentialsException {
+	public ResponseEntity<JwtResponse> createAuthenticationToken(String username, String password)
+			throws DisabledException, BadCredentialsException {
 
 		authenticate(username, password);
 

@@ -42,7 +42,7 @@ public class JwtRequestFilter extends OncePerRequestFilter {
 	@Override
 	protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain)
 			throws ServletException, IOException {
-		
+
 		final String requestTokenHeader = request.getHeader("Authorization");
 
 		String username = null;
@@ -77,7 +77,7 @@ public class JwtRequestFilter extends OncePerRequestFilter {
 				// that the current user is authenticated. So it passes the
 				// Spring Security Configurations successfully.
 				SecurityContextHolder.getContext().setAuthentication(usernamePasswordAuthenticationToken);
-			}else {
+			} else {
 				logger.warn("uh?");
 			}
 		}

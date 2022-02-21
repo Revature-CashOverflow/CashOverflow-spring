@@ -20,7 +20,6 @@ import com.revature.service.UserAccountService;
  * This Class is use to handle login functionality
  * 
  * @author Emmanuel Sosa, Liliya Sherstobitova, Delane Chen
- *
  */
 @RestController
 @CrossOrigin(origins = { "http://localhost:4200", "http://dostz94b44kp0.cloudfront.net" })

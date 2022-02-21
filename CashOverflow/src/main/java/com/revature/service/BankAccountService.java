@@ -13,7 +13,7 @@ public interface BankAccountService {
 	public BankAccount getBankAccount(UserAccount user, String name);
 	
 	public List<BankAccount> getBankAccounts(int id);
-	
+
 	public List<BankAccount> transferFunds(UserAccount user, FundTransfer fundTransfer);
 
 }
