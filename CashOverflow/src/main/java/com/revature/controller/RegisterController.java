@@ -1,5 +1,7 @@
 package com.revature.controller;
 
+import java.util.regex.Pattern;
+
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -10,7 +12,6 @@ import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.ResponseStatus;
-import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.server.ResponseStatusException;
 
 import com.revature.dto.RegUserAccountDto;
@@ -18,7 +19,11 @@ import com.revature.model.UserAccount;
 import com.revature.service.RegisterService;
 
 
-@CrossOrigin(value = {"http://localhost:4200", "http://dostz94b44kp0.cloudfront.net"})
+//<<<<<<< HEAD
+//@CrossOrigin(origins = { "http://localhost:4200", "http://d3nlmo2v0fs5mq.cloudfront.net" })
+//@RestController
+//=======
+@CrossOrigin(value = { "http://localhost:4200", "http://dostz94b44kp0.cloudfront.net" })
 @Controller
 public class RegisterController {
 
@@ -47,8 +52,13 @@ public class RegisterController {
 	@PostMapping("/register")
 	@ResponseStatus(HttpStatus.CREATED)
 	public void newUser(@RequestBody RegUserAccountDto dto) {
-		if (dto.getEmail() == null || dto.getUsername() == null || dto.getFirstName() == null
-				|| dto.getLastName() == null || dto.getPassword() == null) {
+
+		Pattern ptr = Pattern.compile("^[a-zA-Z0-9_!#$%&'*+/=?`{|}~^.-]+@[a-zA-Z0-9.-]+$");		
+		if (dto.getEmail() == null || dto.getEmail().isBlank() || dto.getUsername() == null
+				|| dto.getUsername().isBlank() || dto.getFirstName() == null || dto.getFirstName().isBlank()
+				|| dto.getLastName() == null || dto.getLastName().isBlank() || dto.getPassword() == null
+				|| dto.getPassword().isBlank() || !ptr.matcher(dto.getEmail()).matches()) {
+
 			throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Missing registration info");
 		}
 		dto.setPassword(enc.encode(dto.getPassword()));

@@ -1,7 +1,6 @@
 package com.revature.login;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertNull;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.mockito.Mockito.when;
 
@@ -12,14 +11,11 @@ import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseEntity;
-import org.springframework.mock.web.MockHttpServletResponse;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.web.server.ResponseStatusException;
 
 import com.revature.controller.LoginController;
 import com.revature.dto.LoginRequestDto;
-import com.revature.model.JwtResponse;
 import com.revature.model.UserAccount;
 import com.revature.service.JwtAuthenticationService;
 import com.revature.service.UserAccountService;
@@ -34,7 +30,7 @@ import com.revature.service.UserAccountService;
 
 @SpringBootTest
 @ExtendWith(MockitoExtension.class)
-public class LoginControllerTest {
+class LoginControllerTest {
 
 	LoginController loginController;
 
@@ -57,7 +53,7 @@ public class LoginControllerTest {
 	void loginFailTest() {
 		LoginRequestDto req = new LoginRequestDto(null, null);
 		ResponseStatusException e = assertThrows(ResponseStatusException.class, () -> {
-			loginController.login(req, null);
+			loginController.login(req);
 		});
 
 		String expectedReason = "missing Credential";
@@ -76,8 +72,6 @@ public class LoginControllerTest {
 		UserAccount initial = new UserAccount("dummy", enc.encode("password"));
 
 		when(serv.getUserFromUsername("dummy")).thenReturn(initial);
-		ResponseEntity<JwtResponse> result = loginController.login(req, new MockHttpServletResponse());
-		System.out.println(result);
-		assertNull(result);
+		assertThrows(ResponseStatusException.class, () -> loginController.login(req));
 	}
 }
