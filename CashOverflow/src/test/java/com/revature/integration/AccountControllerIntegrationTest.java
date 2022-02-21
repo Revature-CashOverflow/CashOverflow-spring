@@ -12,6 +12,9 @@ import java.util.List;
 
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.params.ParameterizedTest;
+import org.junit.jupiter.params.provider.NullSource;
+import org.junit.jupiter.params.provider.ValueSource;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.jdbc.EmbeddedDatabaseConnection;
 import org.springframework.boot.test.autoconfigure.jdbc.AutoConfigureTestDatabase;
@@ -72,24 +75,14 @@ class AccountControllerIntegrationTest {
 		bankRepo.save(new BankAccount(0, "name1u2", 100.0, "description1u2", Instant.now(), 2, user2, null));
 	}
 	
-	@Test
+	@ParameterizedTest
 	@WithMockUser("user1")
-	void testCreateNullAccountName() throws Exception {
+	@NullSource
+	@ValueSource(strings = { "", "name1" })
+	void testCreateAccountName(String arg) throws Exception {
 		BankAccountDto dto = new BankAccountDto();
 		dto.setDescription("description");
-		dto.setName(null);
-		dto.setAccountTypeId(1);
-		
-		mvc.perform(post("/api/account/createBankAccount").content(mapper.writeValueAsString(dto))
-				.contentType(MediaType.APPLICATION_JSON)).andExpect(status().isBadRequest());
-	}
-	
-	@Test
-	@WithMockUser("user1")
-	void testCreateBlankAccountName() throws Exception {
-		BankAccountDto dto = new BankAccountDto();
-		dto.setDescription("description");
-		dto.setName("");
+		dto.setName(arg);
 		dto.setAccountTypeId(1);
 		
 		mvc.perform(post("/api/account/createBankAccount").content(mapper.writeValueAsString(dto))
@@ -118,18 +111,6 @@ class AccountControllerIntegrationTest {
 		expectedDto.setDescription("description");
 		
 		assertEquals(expectedDto, actualDto);
-	}
-	
-	@Test
-	@WithMockUser("user1")
-	void testCreateSameNameAccount() throws Exception {
-		BankAccountDto dto = new BankAccountDto();
-		dto.setDescription("description");
-		dto.setName("name1");
-		dto.setAccountTypeId(1);
-		
-		mvc.perform(post("/api/account/createBankAccount").content(mapper.writeValueAsString(dto))
-				.contentType(MediaType.APPLICATION_JSON)).andExpect(status().isBadRequest());
 	}
 	
 	@Test
