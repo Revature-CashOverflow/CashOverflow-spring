@@ -35,7 +35,7 @@ import com.revature.model.UserAccount;
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.MOCK, classes = CashOverflowApplication.class)
 @AutoConfigureMockMvc
 @AutoConfigureTestDatabase(connection = EmbeddedDatabaseConnection.H2)
-public class RegisterControllerIntegrationTest {
+class RegisterControllerIntegrationTest {
 
 	@Autowired
 	private MockMvc mvc;
