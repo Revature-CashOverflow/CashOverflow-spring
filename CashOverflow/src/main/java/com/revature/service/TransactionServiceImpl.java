@@ -35,7 +35,8 @@ public class TransactionServiceImpl implements TransactionService {
 	
 	/**
 	 * Takes the dto object checks for transaction type and account overdraft, throws necessary errors and calls update balance.
-	 * @authors Cameron, Amir, Chandra
+	 * @param Takes the DTO object from the endpoint
+	 * @author Cameron, Amir, Chandra
 	 */
 	@Override
 	public void addTransaction(TransactionDto dto) {
@@ -55,7 +56,8 @@ public class TransactionServiceImpl implements TransactionService {
 	
 	/**
 	 * Takes the amount and bank account to adjust the new balance then writes to the database.
-	 * @authors Cameron, Amir, Chandra
+	 * @param Takes the amount of a transaction and the bank account object to adjust
+	 * @author Cameron, Amir, Chandra
 	 */
 	@Override
 	public void updateBalance(double adjustment, BankAccount acc) {
@@ -66,7 +68,9 @@ public class TransactionServiceImpl implements TransactionService {
 	
 	/**
 	 * Gets a list of transactions associated with a specific bank account.
-	 * @authors Cameron, Amir, Chandra
+	 * @return List of transactions
+	 * @param a bank account's id
+	 * @author Cameron, Amir, Chandra
 	 */
 	@Override
 	public List<Transaction> getTransactions(Integer bkId) {
