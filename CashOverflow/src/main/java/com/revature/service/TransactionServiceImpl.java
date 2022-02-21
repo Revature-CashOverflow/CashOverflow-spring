@@ -59,7 +59,4 @@ public class TransactionServiceImpl implements TransactionService {
 	public List<Transaction> getTransactions(Integer bkId) {
 		return tranRepo.findAllByAccountIdOrderByCreationDateDesc(bkId);
 	}
-	
-	
-
 }
