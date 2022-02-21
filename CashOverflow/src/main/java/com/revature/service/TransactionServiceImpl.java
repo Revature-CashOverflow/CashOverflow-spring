@@ -1,6 +1,7 @@
 package com.revature.service;
 
 import java.time.Instant;
+import java.util.List;
 
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -53,5 +54,12 @@ public class TransactionServiceImpl implements TransactionService {
 		acc.setBalance(newBalance);
 		bankRepo.save(acc);
 	}
+
+	@Override
+	public List<Transaction> getTransactions(Integer bkId) {
+		return tranRepo.findAllByAccountIdOrderByCreationDateDesc(bkId);
+	}
+	
+	
 
 }
