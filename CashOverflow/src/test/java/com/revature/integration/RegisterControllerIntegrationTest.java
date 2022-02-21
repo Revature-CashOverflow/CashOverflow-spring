@@ -1,5 +1,8 @@
 package com.revature.integration;
 
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.delete;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
@@ -22,6 +25,7 @@ import com.revature.CashOverflowApplication;
 import com.revature.dao.UserAccountRepo;
 import com.revature.dto.RegUserAccountDto;
 import com.revature.helper.TestHelper;
+import com.revature.model.UserAccount;
 
 /**
  * Integration tests for the register controller
@@ -64,16 +68,53 @@ public class RegisterControllerIntegrationTest {
 		mvc.perform(post("/register").content(TestHelper.asJsonString(new RegUserAccountDto(null, "username", "first", "last", "password"), mapper))
 				.contentType(MediaType.APPLICATION_JSON)).andExpect(status().isBadRequest());
 		
-		mvc.perform(post("/register").content(TestHelper.asJsonString(new RegUserAccountDto("email", null, "first", "last", "password"), mapper))
+		mvc.perform(post("/register").content(TestHelper.asJsonString(new RegUserAccountDto("email@gmail.com", null, "first", "last", "password"), mapper))
 				.contentType(MediaType.APPLICATION_JSON)).andExpect(status().isBadRequest());
 		
-		mvc.perform(post("/register").content(TestHelper.asJsonString(new RegUserAccountDto("email", "username", null, "last", "password"), mapper))
+		mvc.perform(post("/register").content(TestHelper.asJsonString(new RegUserAccountDto("email@gmail.com", "username", null, "last", "password"), mapper))
 				.contentType(MediaType.APPLICATION_JSON)).andExpect(status().isBadRequest());
 		
-		mvc.perform(post("/register").content(TestHelper.asJsonString(new RegUserAccountDto("email", "username", "first", null, "password"), mapper))
+		mvc.perform(post("/register").content(TestHelper.asJsonString(new RegUserAccountDto("email@gmail.com", "username", "first", null, "password"), mapper))
 				.contentType(MediaType.APPLICATION_JSON)).andExpect(status().isBadRequest());
 		
-		mvc.perform(post("/register").content(TestHelper.asJsonString(new RegUserAccountDto("email", "username", "first", "last", null), mapper))
+		mvc.perform(post("/register").content(TestHelper.asJsonString(new RegUserAccountDto("email@gmail.com", "username", "first", "last", null), mapper))
 				.contentType(MediaType.APPLICATION_JSON)).andExpect(status().isBadRequest());
+	}
+	
+	@Test
+	void testBlankInputValue() throws Exception {
+		mvc.perform(post("/register").content(TestHelper.asJsonString(new RegUserAccountDto("", "username", "first", "last", "password"), mapper))
+				.contentType(MediaType.APPLICATION_JSON)).andExpect(status().isBadRequest());
+		
+		mvc.perform(post("/register").content(TestHelper.asJsonString(new RegUserAccountDto("email@gmail.com", "", "first", "last", "password"), mapper))
+				.contentType(MediaType.APPLICATION_JSON)).andExpect(status().isBadRequest());
+		
+		mvc.perform(post("/register").content(TestHelper.asJsonString(new RegUserAccountDto("email@gmail.com", "username", "", "last", "password"), mapper))
+				.contentType(MediaType.APPLICATION_JSON)).andExpect(status().isBadRequest());
+		
+		mvc.perform(post("/register").content(TestHelper.asJsonString(new RegUserAccountDto("email@gmail.com", "username", "first", "", "password"), mapper))
+				.contentType(MediaType.APPLICATION_JSON)).andExpect(status().isBadRequest());
+		
+		mvc.perform(post("/register").content(TestHelper.asJsonString(new RegUserAccountDto("email@gmail.com", "username", "first", "last", ""), mapper))
+				.contentType(MediaType.APPLICATION_JSON)).andExpect(status().isBadRequest());
+	}
+	
+	@Test
+	void testInvalidEmailString() throws Exception {
+		mvc.perform(post("/register").content(TestHelper.asJsonString(new RegUserAccountDto("email", "username", "first", "last", "password"), mapper))
+				.contentType(MediaType.APPLICATION_JSON)).andExpect(status().isBadRequest());
+	}
+	
+	@Test
+	void testRegisterSuccess() throws Exception {
+		mvc.perform(post("/register").content(TestHelper.asJsonString(new RegUserAccountDto("email@gmail.com", "username", "first", "last", "password"), mapper))
+				.contentType(MediaType.APPLICATION_JSON)).andExpect(status().isCreated());
+		
+		UserAccount actualUser = repo.findByUsername("username");
+		UserAccount expectedUser = new UserAccount(actualUser.getId(), "email@gmail.com", "username", "first", "last", actualUser.getPassword(), actualUser.getCreationDate());
+		
+		assertTrue(enc.matches("password", actualUser.getPassword()));
+		assertNotNull(actualUser.getCreationDate());
+		assertEquals(expectedUser, actualUser);
 	}
 }
