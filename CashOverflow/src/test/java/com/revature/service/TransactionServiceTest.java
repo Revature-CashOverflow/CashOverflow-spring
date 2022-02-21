@@ -53,12 +53,7 @@ class TransactionServiceTest {
 		TransactionDto dto = new TransactionDto(1, 1, 100.00, "SOS", Instant.now()); 
 		when(bankRepo.getById(1)).thenReturn(acc);
 		assertThrows(ResponseStatusException.class, () -> serv.addTransaction(dto));
-//		TransactionDto dto2 = new TransactionDto(1, 2, 9.00, "SOS", Instant.now());
-//		Transaction transaction = convertToEntity(dto2);
-//		when(txRepo.save(transaction)).thenReturn(transaction);
-//		when(bankRepo.save(acc)).thenReturn(acc);
-//		serv.addTransaction(dto2);
-//		verify(txRepo, times(1)).save(transaction);
+
 	}
 
 }
