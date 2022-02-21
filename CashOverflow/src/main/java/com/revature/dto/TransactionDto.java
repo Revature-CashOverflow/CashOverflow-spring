@@ -1,5 +1,7 @@
 package com.revature.dto;
 
+import java.time.Instant;
+
 import lombok.AllArgsConstructor;
 import lombok.Data;
 
@@ -16,5 +18,5 @@ public class TransactionDto {
 	private int txTypeId;
 	private Double amount;
 	private String description;
-	private int creationDate;
+	private Instant creationDate;
 }
