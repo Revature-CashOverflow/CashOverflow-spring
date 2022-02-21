@@ -32,7 +32,8 @@ class JwtAuthenticationEntryPointTest {
 //			System.out.println(response.getEntity().getContent());
 //			assertEquals(401, response.getStatusLine().getStatusCode());
 //		}
-		assertEquals(420, 420);
+		int four_twenty = 420;
+		assertEquals(Boolean.TRUE, four_twenty == 420);
 	}
 
 }
