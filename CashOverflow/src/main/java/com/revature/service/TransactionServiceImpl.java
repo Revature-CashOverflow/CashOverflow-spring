@@ -1,6 +1,7 @@
 package com.revature.service;
 
 import java.time.Instant;
+import java.util.List;
 
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -27,7 +28,7 @@ public class TransactionServiceImpl implements TransactionService {
 		this.tranRepo = tranRepo;
 		this.mapper = mapper;
 	}
-	
+
 	private Transaction convertToEntity(TransactionDto dto) {
 		return mapper.map(dto, Transaction.class);
 	}
@@ -40,7 +41,7 @@ public class TransactionServiceImpl implements TransactionService {
 				throw new ResponseStatusException(HttpStatus.EXPECTATION_FAILED, "Insufficient account balance");
 			}
 			dto.setAmount(-1 * dto.getAmount());
-		}	
+		}
 		Transaction transaction = convertToEntity(dto);
 		updateBalance(transaction.getAmount(), acc);
 		transaction.setCreationDate(Instant.now());
@@ -53,5 +54,12 @@ public class TransactionServiceImpl implements TransactionService {
 		acc.setBalance(newBalance);
 		bankRepo.save(acc);
 	}
+
+	@Override
+	public List<Transaction> getTransactions(Integer bkId) {
+		return tranRepo.findAllByAccountIdOrderByCreationDateDesc(bkId);
+	}
+	
+	
 
 }
