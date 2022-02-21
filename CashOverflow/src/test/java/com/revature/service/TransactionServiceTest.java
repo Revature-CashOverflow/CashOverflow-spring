@@ -1,8 +1,6 @@
 package com.revature.service;
 
 import static org.junit.jupiter.api.Assertions.assertThrows;
-import static org.mockito.Mockito.times;
-import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
 import java.time.Instant;
@@ -21,7 +19,6 @@ import com.revature.dao.BankAccountRepo;
 import com.revature.dao.TransactionRepo;
 import com.revature.dto.TransactionDto;
 import com.revature.model.BankAccount;
-import com.revature.model.Transaction;
 
 @SpringBootTest
 @ExtendWith(MockitoExtension.class)
@@ -38,9 +35,6 @@ class TransactionServiceTest {
 	@Autowired
 	private ModelMapper mapper;
 
-	private Transaction convertToEntity(TransactionDto dto) {
-		return mapper.map(dto, Transaction.class);
-	}
 
 	@BeforeEach
 	void setUpBeforeClass() throws Exception {
