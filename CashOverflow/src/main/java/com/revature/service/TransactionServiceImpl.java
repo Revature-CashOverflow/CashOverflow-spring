@@ -32,7 +32,11 @@ public class TransactionServiceImpl implements TransactionService {
 	private Transaction convertToEntity(TransactionDto dto) {
 		return mapper.map(dto, Transaction.class);
 	}
-
+	
+	/**
+	 * Takes the dto object checks for transaction type and account overdraft, throws necessary errors and calls update balance.
+	 * @authors Cameron, Amir, Chandra
+	 */
 	@Override
 	public void addTransaction(TransactionDto dto) {
 		BankAccount acc = bankRepo.getById(dto.getAccountId());
@@ -48,14 +52,22 @@ public class TransactionServiceImpl implements TransactionService {
 		transaction.setCreationDate(Instant.now());
 		tranRepo.save(transaction);
 	}
-
+	
+	/**
+	 * Takes the amount and bank account to adjust the new balance then writes to the database.
+	 * @authors Cameron, Amir, Chandra
+	 */
 	@Override
 	public void updateBalance(double adjustment, BankAccount acc) {
 		double newBalance = acc.getBalance() + adjustment;
 		acc.setBalance(newBalance);
 		bankRepo.save(acc);
 	}
-
+	
+	/**
+	 * Gets a list of transactions associated with a specific bank account.
+	 * @authors Cameron, Amir, Chandra
+	 */
 	@Override
 	public List<Transaction> getTransactions(Integer bkId) {
 		return tranRepo.findAllByAccountIdOrderByCreationDateDesc(bkId);

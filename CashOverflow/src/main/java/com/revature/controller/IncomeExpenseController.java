@@ -26,7 +26,11 @@ public class IncomeExpenseController {
 	public IncomeExpenseController(TransactionService tranServ) {
 		this.tranServ = tranServ;
 	}
-
+	
+	/**
+	 * Endpoint that takes a transaction and puts it into a dto object, checks for valid amount and whether any fields 
+	 * @author Cameron, Amir, Chandra
+	 */
 	@PostMapping("/transaction")
 	public void addTransaction(@RequestBody TransactionDto dto) {
 		if (dto.getAccountId() == 0 || dto.getAmount() == null || dto.getDescription() == null) {
@@ -38,6 +42,10 @@ public class IncomeExpenseController {
 		tranServ.addTransaction(dto);
 	}
 	
+	/**
+	 * Endpoint for getting a list of transactions associated with a single bank account
+	 * @author Cameron, Amir, Chandra
+	 */
 	@GetMapping("/getTransactions/{bkId}")
 	public List<Transaction> getTransactions(@PathVariable Integer bkId) {
 		return tranServ.getTransactions(bkId);
