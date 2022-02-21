@@ -27,7 +27,7 @@ public class TransactionServiceImpl implements TransactionService {
 		this.tranRepo = tranRepo;
 		this.mapper = mapper;
 	}
-	
+
 	private Transaction convertToEntity(TransactionDto dto) {
 		return mapper.map(dto, Transaction.class);
 	}
@@ -40,7 +40,7 @@ public class TransactionServiceImpl implements TransactionService {
 				throw new ResponseStatusException(HttpStatus.EXPECTATION_FAILED, "Insufficient account balance");
 			}
 			dto.setAmount(-1 * dto.getAmount());
-		}	
+		}
 		Transaction transaction = convertToEntity(dto);
 		updateBalance(transaction.getAmount(), acc);
 		transaction.setCreationDate(Instant.now());
