@@ -38,7 +38,7 @@ public class BankAccountServiceImpl implements BankAccountService {
 		BankAccount check = bankRepo.findByUserAndName(newAccount.getUser(), newAccount.getName());
 
 		// if this user has an acc with this name already, don't add a new one to the db
-		if (check != null || newAccount.getName().isBlank())
+		if (check != null || newAccount.getName() == null || newAccount.getName().isBlank())
 			throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "I can't read or write.");
 		else
 			return bankRepo.save(newAccount);
