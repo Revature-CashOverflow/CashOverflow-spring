@@ -1,13 +1,18 @@
 package com.revature.service;
 
 import java.time.Instant;
+import java.util.Arrays;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
+import org.springframework.web.server.ResponseStatusException;
 
 import com.revature.dao.BankAccountRepo;
 import com.revature.model.BankAccount;
+import com.revature.model.FundTransfer;
+import com.revature.model.UserAccount;
 
 @Service
 public class BankAccountServiceImpl implements BankAccountService {
@@ -30,7 +35,54 @@ public class BankAccountServiceImpl implements BankAccountService {
 		newAccount.setCreationDate(Instant.now());
 		newAccount.setBalance(0.0);
 
-		return bankRepo.save(newAccount);
+		BankAccount check = bankRepo.findByUserAndName(newAccount.getUser(), newAccount.getName());
+
+		// if this user has an acc with this name already, don't add a new one to the db
+		if (check != null || newAccount.getName() == null || newAccount.getName().isBlank())
+			throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "I can't read or write.");
+		else
+			return bankRepo.save(newAccount);
+	}
+
+	/**
+	 * @return BankAccount
+	 * 
+	 * @author Parker Mace
+	 */
+	public BankAccount getBankAccount(UserAccount user, String name) {
+		return bankRepo.findByUserAndName(user, name);
+	}
+
+	/**
+	 * @return FundTransfer
+	 * 
+	 * @author Parker mace
+	 */
+	public List<BankAccount> transferFunds(UserAccount user, FundTransfer fundTransfer) {
+		BankAccount account1 = getBankAccount(user, fundTransfer.getTransferFromAccount());
+		BankAccount account2 = getBankAccount(user, fundTransfer.getTransferToAccount());
+
+		// we do this to bundle the db calls for both accounts
+		List<BankAccount> accounts = Arrays.asList(account1, account2);
+
+		// if they can't afford the tx or an acc is null, don't call the db, don't pass
+		// go, don't collect $200
+		if (account1 == null || account2 == null || fundTransfer.getTransferAmount() == null
+				|| account1.getBalance() < fundTransfer.getTransferAmount() || fundTransfer.getTransferAmount() <= 0)
+			throw new ResponseStatusException(HttpStatus.I_AM_A_TEAPOT);
+
+		// if a user tries to be cheeky and enter fractional cents, we will round their
+		// request
+		fundTransfer.setTransferAmount(Math.round(fundTransfer.getTransferAmount() * 100.0) / 100.0);
+
+		account1.setBalance(account1.getBalance() - fundTransfer.getTransferAmount());
+		account2.setBalance(account2.getBalance() + fundTransfer.getTransferAmount());
+
+		// we do this to bundle the db calls for both accounts
+		bankRepo.saveAll(accounts);
+
+		// redundant line for testing purposes
+		return accounts;
 	}
 
 	/**

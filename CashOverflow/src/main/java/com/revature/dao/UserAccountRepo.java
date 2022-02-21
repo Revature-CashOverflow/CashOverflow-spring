@@ -21,6 +21,7 @@ public interface UserAccountRepo extends JpaRepository<UserAccount, Integer> {
 	 * @return - User object
 	 */
 	public UserAccount findByUsernameAndPassword(String username, String password);
+
 	/**
 	 * Find a user by their username only
 	 * 

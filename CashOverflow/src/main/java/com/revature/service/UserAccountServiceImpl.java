@@ -8,19 +8,19 @@ import com.revature.model.UserAccount;
 
 /**
  * This be a service class for UserAccounts
+ * 
  * @author Tyler Rondeau, Luis Estevez, Luis Rivera
- *
  */
 @Service
 public class UserAccountServiceImpl implements UserAccountService {
-	
+
 	UserAccountRepo repo;
 
 	@Autowired
 	public UserAccountServiceImpl(UserAccountRepo repo) {
 		this.repo = repo;
 	}
-	
+
 	@Override
 	public UserAccount getUserFromUsername(String username) {
 		return repo.findByUsername(username);
