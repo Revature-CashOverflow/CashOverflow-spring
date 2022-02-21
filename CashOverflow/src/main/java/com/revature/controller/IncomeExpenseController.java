@@ -25,7 +25,9 @@ public class IncomeExpenseController {
 
 	@PostMapping("/transaction")
 	public void addTransaction(Authentication auth, @RequestBody TransactionDto dto) {
-		System.out.println("here");
+		if (dto.getAmount() < 0) {
+			throw new ResponseStatusException(HttpStatus.EXPECTATION_FAILED, "Cant have have negative transaction");
+		}
 		if (dto.getAccountId() == 0 || dto.getAmount() == null || dto.getDescription() == null) {
 			throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Missing transaction info");
 		}
