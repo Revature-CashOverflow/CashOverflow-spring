@@ -1,7 +1,9 @@
 package com.revature.integration;
 
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.delete;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.put;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 import org.junit.jupiter.api.BeforeEach;
@@ -49,13 +51,29 @@ public class RegisterControllerIntegrationTest {
 	}
 
 	@Test
-	void testGetWrongMethod() throws Exception {
+	void testWrongMethod() throws Exception {
 		mvc.perform(get("/register")).andExpect(status().isMethodNotAllowed());
+		
+		mvc.perform(put("/register")).andExpect(status().isMethodNotAllowed());
+		
+		mvc.perform(delete("/register")).andExpect(status().isMethodNotAllowed());
 	}
 
 	@Test
-	void testNullValue() throws Exception {
-		mvc.perform(post("/login").content(TestHelper.asJsonString(new RegUserAccountDto("email", "username", "first", "last", null), mapper))
-				.contentType(MediaType.APPLICATION_JSON)).andExpect(status().is4xxClientError());
+	void testNullInputValue() throws Exception {
+		mvc.perform(post("/register").content(TestHelper.asJsonString(new RegUserAccountDto(null, "username", "first", "last", "password"), mapper))
+				.contentType(MediaType.APPLICATION_JSON)).andExpect(status().isBadRequest());
+		
+		mvc.perform(post("/register").content(TestHelper.asJsonString(new RegUserAccountDto("email", null, "first", "last", "password"), mapper))
+				.contentType(MediaType.APPLICATION_JSON)).andExpect(status().isBadRequest());
+		
+		mvc.perform(post("/register").content(TestHelper.asJsonString(new RegUserAccountDto("email", "username", null, "last", "password"), mapper))
+				.contentType(MediaType.APPLICATION_JSON)).andExpect(status().isBadRequest());
+		
+		mvc.perform(post("/register").content(TestHelper.asJsonString(new RegUserAccountDto("email", "username", "first", null, "password"), mapper))
+				.contentType(MediaType.APPLICATION_JSON)).andExpect(status().isBadRequest());
+		
+		mvc.perform(post("/register").content(TestHelper.asJsonString(new RegUserAccountDto("email", "username", "first", "last", null), mapper))
+				.contentType(MediaType.APPLICATION_JSON)).andExpect(status().isBadRequest());
 	}
 }
