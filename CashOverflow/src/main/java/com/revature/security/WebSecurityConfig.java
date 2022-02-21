@@ -62,6 +62,18 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
 	public AuthenticationManager authenticationManagerBean() throws Exception {
 		return super.authenticationManagerBean();
 	}
+	
+//	@Bean
+//    CorsConfigurationSource corsConfigurationSource() {
+//        CorsConfiguration configuration = new CorsConfiguration();
+//        configuration.setAllowedOrigins(Arrays.asList(new String[] {"https://example.com"}));
+//        configuration.setAllowedMethods(Arrays.asList(new String[] {"GET","POST"}));
+//        UrlBasedCorsConfigurationSource source = new UrlBasedCorsConfigurationSource();
+//        source.registerCorsConfiguration("/**", configuration);
+//        return (CorsConfigurationSource) source;
+//    }
+
+
 
 	@Override
 	protected void configure(HttpSecurity httpSecurity) throws Exception {
@@ -74,6 +86,7 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
 				// store user's state.
 				.and().exceptionHandling().authenticationEntryPoint(entry).and().sessionManagement()
 				.sessionCreationPolicy(SessionCreationPolicy.STATELESS);
+		
 
 		// Add a filter to validate the tokens with every request
 		httpSecurity.addFilterBefore(filter, UsernamePasswordAuthenticationFilter.class);
