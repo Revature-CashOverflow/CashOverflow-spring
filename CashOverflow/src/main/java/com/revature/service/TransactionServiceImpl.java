@@ -36,11 +36,11 @@ public class TransactionServiceImpl implements TransactionService {
 	@Override
 	public void addTransaction(TransactionDto dto) {
 		BankAccount acc = bankRepo.getById(dto.getAccountId());
+		if (dto.getAmount() > acc.getBalance()) {
+			throw new ResponseStatusException(HttpStatus.EXPECTATION_FAILED, "Insufficient account balance");
+		}
 		Transaction transaction = convertToEntity(dto);
 		if (transaction.getTxTypeId() == 1) {
-			if (dto.getAmount() > acc.getBalance()) {
-				throw new ResponseStatusException(HttpStatus.EXPECTATION_FAILED, "Insufficient account balance");
-			}
 			updateBalance(-1 * transaction.getAmount(), acc);
 		} else {
 			updateBalance(transaction.getAmount(), acc);
