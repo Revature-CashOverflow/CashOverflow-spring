@@ -14,6 +14,7 @@ public class CashOverflowApplication {
 	
 	/**
 	 * Spring requires this Bean to run
+	 * 
 	 * @author Cameron, Amir, Chandra
 	 */
 	@Bean

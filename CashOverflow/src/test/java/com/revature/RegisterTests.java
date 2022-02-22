@@ -108,6 +108,6 @@ class RegisterTests {
 
 		verify(mockServ, times(0)).insertUserAccount(user);
 		verify(mockMapper, times(0)).map(test, UserAccount.class);
-
+	
 	}
 }

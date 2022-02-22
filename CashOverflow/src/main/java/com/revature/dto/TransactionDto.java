@@ -1,5 +1,7 @@
 package com.revature.dto;
 
+import java.time.Instant;
+
 import lombok.AllArgsConstructor;
 import lombok.Data;
 
@@ -10,12 +12,12 @@ import lombok.Data;
  */
 @Data
 @AllArgsConstructor
-public class RegUserAccountDto {
+public class TransactionDto {
 
-	String email;
-	String username;
-	String firstName;
-	String lastName;
-	String password;
+	private int accountId;
+	private int txTypeId;
+	private Double amount;
+	private String description;
+	private Instant creationDate;
 
 }

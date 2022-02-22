@@ -39,7 +39,8 @@ public class JwtAuthenticationService {
 	 * @return - Response to front-end
 	 * @throws Exception
 	 */
-	public ResponseEntity<JwtResponse> createAuthenticationToken(String username, String password) throws DisabledException, BadCredentialsException {
+	public ResponseEntity<JwtResponse> createAuthenticationToken(String username, String password)
+			throws DisabledException, BadCredentialsException {
 
 		authenticate(username, password);
 
@@ -60,8 +61,6 @@ public class JwtAuthenticationService {
 	private void authenticate(String username, String password) throws DisabledException, BadCredentialsException {
 		try {
 			manager.authenticate(new UsernamePasswordAuthenticationToken(username, password));
-		} catch (DisabledException e) {
-			throw new DisabledException("USER_DISABLED", e);
 		} catch (BadCredentialsException e) {
 			throw new BadCredentialsException("INVALID_CREDENTIALS", e);
 		}

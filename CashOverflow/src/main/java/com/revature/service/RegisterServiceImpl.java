@@ -10,16 +10,18 @@ import com.revature.model.UserAccount;
 
 @Service
 public class RegisterServiceImpl implements RegisterService {
-	
+
 	UserAccountRepo userAccountRepo;
-	
+
 	@Autowired
 	public RegisterServiceImpl(UserAccountRepo userAccountRepo) {
 		this.userAccountRepo = userAccountRepo;
 	}
-	
+
 	/**
-	 * Uses the Java Instant class to add the creation date to the new UserAccount object.
+	 * Uses the Java Instant class to add the creation date to the new UserAccount
+	 * object.
+	 * 
 	 * @authors Cameron, Amir, Chandra
 	 */
 	@Override
@@ -27,7 +29,5 @@ public class RegisterServiceImpl implements RegisterService {
 		user.setCreationDate(Instant.now());
 		return userAccountRepo.save(user);
 	}
-	
-	
 
 }
