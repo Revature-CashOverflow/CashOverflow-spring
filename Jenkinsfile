@@ -17,8 +17,8 @@ pipeline {
         AWS_PASSWORD = credentials('AWS_PASSWORD')
         AWS_ENV = credentials('aws-env')
         SONAR_TOKEN = credentials('SONAR_TOKEN')
-        DOCKER_REPO = 'cashoverflow-spring'
-        DOCKER_USER = 'rasc0l'
+        DOCKER_REPO = credentials('DOCKER_REPO')
+        DOCKER_USER = credentials('DOCKER_USER')
     }
 
     stages {
@@ -26,9 +26,6 @@ pipeline {
             steps {
                 cleanWs()
                 checkout scm
-                // git branch: 'main',
-                //     credentialsId: 'jenkins-integration-user',
-                //     url: 'https://github.com/Revature-CashOverflow/CashOverflow-spring.git'
                 echo "Building ${env.BRANCH_NAME}..."
             }
         }
