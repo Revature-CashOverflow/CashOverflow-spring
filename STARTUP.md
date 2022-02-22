@@ -36,15 +36,17 @@ The application should now be running on localhost:9001 unless you change the po
 
 1. Make sure you setup a multibranch pipeline in Jenkins.
 2. Point it to the Github repository
-3. Let Jenkins and the Jenkinsfile do the rest  
+3. Set up a Maven installation in Jenkins and call it maven-default
+4. Let Jenkins and the Jenkinsfile do the rest
 
-The Jenkinsfile will build your application using Maven with the SonarCloud and Jacoco plugins. If the branch being built is "main" it will also deploy the application on your machine inside of a Docker container mapped to port 9001. You need to set the environment variables found in the Jenkinsfile in your Jenkins credentials with an ID matching the strings you see in the credentials() function calls. Credentials that need to be set in Jenkins are:
+The Jenkinsfile will build your application using Maven with the SonarCloud and Jacoco plugins. If the branch being built is main, it will also deploy the application on your machine inside of a Docker container mapped to port 9001. You need to set the environment variables found in the Jenkinsfile in your Jenkins credentials with an ID matching the strings you see in the credentials() function calls. Credentials that need to be set in Jenkins are:
 
 1. aws-env (secret file) - this should be a secrets file with 3 lines and they're the same env variables you set on your machine to run the applicaion, this gets passed in to the docker containter
 2. SONAR_TOKEN (secret text) - this should be a personal access token you generate in SonarCloud
 3. DOCKER_REPO - the name of the docker repo to push the images to after they are built
 4. docker-creds - a username password credential with the password being a generated personal access token from Docker.
 5. DOCKER_USER - your Docker username
-6. Finally, add your github credentials in the form of username/personal access token in Jenkins.
+6. DOCKER_REPO - your Docker repo you want to push the images to
+7. Finally, add your github credentials in the form of username/personal access token in Jenkins.
 
 If you're running into issues make sure your secret IDs in your Jenkins credentials are matching the strings being passed into credentials() in the Jenkinsfile. Also be sure your github webhooks and credentials are properly configured.
