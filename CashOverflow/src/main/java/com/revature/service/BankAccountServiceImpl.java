@@ -10,18 +10,22 @@ import org.springframework.stereotype.Service;
 import org.springframework.web.server.ResponseStatusException;
 
 import com.revature.dao.BankAccountRepo;
+import com.revature.dao.TransactionRepo;
 import com.revature.model.BankAccount;
 import com.revature.model.FundTransfer;
+import com.revature.model.Transaction;
 import com.revature.model.UserAccount;
 
 @Service
 public class BankAccountServiceImpl implements BankAccountService {
 
 	private BankAccountRepo bankRepo;
+	private TransactionRepo txRepo;
 
 	@Autowired
-	protected BankAccountServiceImpl(BankAccountRepo bankRepo) {
+	protected BankAccountServiceImpl(BankAccountRepo bankRepo, TransactionRepo txRepo) {
 		this.bankRepo = bankRepo;
+		this.txRepo = txRepo;
 	}
 
 	/**
@@ -67,6 +71,7 @@ public class BankAccountServiceImpl implements BankAccountService {
 
 		// if they can't afford the tx or an acc is null, don't call the db, don't pass
 		// go, don't collect $200
+		
 		if (account1 == null || account2 == null || fundTransfer.getTransferAmount() == null
 				|| account1.getBalance() < fundTransfer.getTransferAmount() || fundTransfer.getTransferAmount() <= 0)
 			throw new ResponseStatusException(HttpStatus.I_AM_A_TEAPOT);
@@ -74,6 +79,15 @@ public class BankAccountServiceImpl implements BankAccountService {
 		// if a user tries to be cheeky and enter fractional cents, we will round their
 		// request
 		fundTransfer.setTransferAmount(Math.round(fundTransfer.getTransferAmount() * 100.0) / 100.0);
+
+		Transaction txExpense = new Transaction(0, fundTransfer.getTransferAmount(),
+				"Money transfer from " + account1.getName() + " to " + account2.getName(), Instant.now(), 1,
+				account1.getId());
+		Transaction txIncome = new Transaction(0, fundTransfer.getTransferAmount(),
+				"Money transfer from " + account1.getName() + " to " + account2.getName(), Instant.now(), 2,
+				account2.getId());
+
+		txRepo.saveAll(Arrays.asList(txExpense, txIncome));
 
 		account1.setBalance(account1.getBalance() - fundTransfer.getTransferAmount());
 		account2.setBalance(account2.getBalance() + fundTransfer.getTransferAmount());
