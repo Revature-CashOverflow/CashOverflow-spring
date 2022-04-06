@@ -46,6 +46,8 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
 		// Use BCryptPasswordEncoder
 		auth.userDetailsService(serv).passwordEncoder(passwordEncoder());
 	}
+	
+
 
 	/**
 	 * Password encoding for the application using BCryptPasswordEncoder
@@ -65,6 +67,12 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
 
 	@Override
 	protected void configure(HttpSecurity httpSecurity) throws Exception {
+		httpSecurity.authorizeRequests().antMatchers("/").permitAll().antMatchers("/h2-console/**").permitAll();
+		httpSecurity.csrf().disable();
+		httpSecurity.headers().frameOptions().disable();
+		
+		
+		
 		httpSecurity.cors().and().csrf().disable()
 				// dont authenticate this particular request
 				.authorizeRequests().antMatchers("/login", "/register").permitAll().
@@ -74,6 +82,10 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
 				// store user's state.
 				.and().exceptionHandling().authenticationEntryPoint(entry).and().sessionManagement()
 				.sessionCreationPolicy(SessionCreationPolicy.STATELESS);
+		
+		//httpSecurity.authorizeRequests().antMatchers("/").permitAll().antMatchers("/h2-console/**").permitAll();
+		httpSecurity.csrf().disable();
+		httpSecurity.headers().frameOptions().disable();
 
 		// Add a filter to validate the tokens with every request
 		httpSecurity.addFilterBefore(filter, UsernamePasswordAuthenticationFilter.class);
