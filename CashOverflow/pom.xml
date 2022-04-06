@@ -15,7 +15,7 @@
 	<name>CashOverflow</name>
 	<description>CashOverflow banking application</description>
 	<properties>
-		<java.version>11</java.version>
+		<java.version>8</java.version>
  		<sonar.organization>revature-cashoverflow-2</sonar.organization>
   		<sonar.host.url>https://sonarcloud.io</sonar.host.url>
 	</properties>
