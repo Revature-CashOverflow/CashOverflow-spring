@@ -9,7 +9,7 @@ This is a Spring Boot stateless resource/authentication server. It is the back e
 ### Software
 
 1. Maven
-2. Java 11
+2. Java 8
 3. Preferrably an IDE like STS/Eclipse, IntelliJ
 4. DBeaver for intializing the database and running the SQL script
 
