@@ -30,7 +30,7 @@ public class BankAccountServiceImpl implements BankAccountService {
 
 	/**
 	 * @return BankAccount
-	 * 
+	 *
 	 * @author Parker Mace, Henry Harvil, Andre Long
 	 */
 	@Override
@@ -42,26 +42,29 @@ public class BankAccountServiceImpl implements BankAccountService {
 		BankAccount check = bankRepo.findByUserAndName(newAccount.getUser(), newAccount.getName());
 
 		// if this user has an acc with this name already, don't add a new one to the db
-		if (check != null || newAccount.getName() == null || newAccount.getName().isBlank())
+		if ((check != null) || (newAccount.getName() == null) || newAccount.getName().isEmpty()) {
 			throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "I can't read or write.");
-		else
+		} else {
 			return bankRepo.save(newAccount);
+		}
 	}
 
 	/**
 	 * @return BankAccount
-	 * 
+	 *
 	 * @author Parker Mace
 	 */
+	@Override
 	public BankAccount getBankAccount(UserAccount user, String name) {
 		return bankRepo.findByUserAndName(user, name);
 	}
 
 	/**
 	 * @return FundTransfer
-	 * 
+	 *
 	 * @author Parker mace
 	 */
+	@Override
 	public List<BankAccount> transferFunds(UserAccount user, FundTransfer fundTransfer) {
 		BankAccount account1 = getBankAccount(user, fundTransfer.getTransferFromAccount());
 		BankAccount account2 = getBankAccount(user, fundTransfer.getTransferToAccount());
@@ -71,10 +74,11 @@ public class BankAccountServiceImpl implements BankAccountService {
 
 		// if they can't afford the tx or an acc is null, don't call the db, don't pass
 		// go, don't collect $200
-		
-		if (account1 == null || account2 == null || fundTransfer.getTransferAmount() == null
-				|| account1.getBalance() < fundTransfer.getTransferAmount() || fundTransfer.getTransferAmount() <= 0)
+
+		if ((account1 == null) || (account2 == null) || (fundTransfer.getTransferAmount() == null)
+				|| (account1.getBalance() < fundTransfer.getTransferAmount()) || (fundTransfer.getTransferAmount() <= 0)) {
 			throw new ResponseStatusException(HttpStatus.I_AM_A_TEAPOT);
+		}
 
 		// if a user tries to be cheeky and enter fractional cents, we will round their
 		// request
@@ -101,9 +105,10 @@ public class BankAccountServiceImpl implements BankAccountService {
 
 	/**
 	 * @return List<BankAccount>
-	 * 
+	 *
 	 * @author Parker Mace, Henry Harvil, Andre Long
 	 */
+	@Override
 	public List<BankAccount> getBankAccounts(int id) {
 
 		return bankRepo.findAllByUserId(id);
