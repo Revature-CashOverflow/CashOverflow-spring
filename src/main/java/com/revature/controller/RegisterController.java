@@ -42,18 +42,18 @@ public class RegisterController {
 	 * Takes the data from angular puts it into a dto object, throws a 400 exception
 	 * if any values are null. Then passes the data to the service layer to write to
 	 * the database.
-	 * 
+	 *
 	 * @authors Cameron, Amir, Chandra
 	 */
 	@PostMapping("/register")
 	@ResponseStatus(HttpStatus.CREATED)
 	public void newUser(@RequestBody RegUserAccountDto dto) {
 
-		Pattern ptr = Pattern.compile("^[a-zA-Z0-9_!#$%&'*+/=?`{|}~^.-]+@[a-zA-Z0-9.-]+$");		
-		if (dto.getEmail() == null || dto.getEmail().isBlank() || dto.getUsername() == null
-				|| dto.getUsername().isBlank() || dto.getFirstName() == null || dto.getFirstName().isBlank()
-				|| dto.getLastName() == null || dto.getLastName().isBlank() || dto.getPassword() == null
-				|| dto.getPassword().isBlank() || !ptr.matcher(dto.getEmail()).matches()) {
+		Pattern ptr = Pattern.compile("^[a-zA-Z0-9_!#$%&'*+/=?`{|}~^.-]+@[a-zA-Z0-9.-]+$");
+		if ((dto.getEmail() == null) || dto.getEmail().isEmpty() || (dto.getUsername() == null)
+				|| dto.getUsername().isEmpty() || (dto.getFirstName() == null) || dto.getFirstName().isEmpty()
+				|| (dto.getLastName() == null) || dto.getLastName().isEmpty() || (dto.getPassword() == null)
+				|| dto.getPassword().isEmpty() || !ptr.matcher(dto.getEmail()).matches()) {
 
 			throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Missing registration info");
 		}
