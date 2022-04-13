@@ -12,6 +12,7 @@ import org.springframework.web.server.ResponseStatusException;
 import com.revature.dao.BankAccountRepo;
 import com.revature.dao.TransactionRepo;
 import com.revature.model.BankAccount;
+import com.revature.model.BetweenUsers;
 import com.revature.model.FundTransfer;
 import com.revature.model.Transaction;
 import com.revature.model.UserAccount;
@@ -21,6 +22,7 @@ public class BankAccountServiceImpl implements BankAccountService {
 
 	private BankAccountRepo bankRepo;
 	private TransactionRepo txRepo;
+	private UserAccountService userAccServ;
 
 	@Autowired
 	protected BankAccountServiceImpl(BankAccountRepo bankRepo, TransactionRepo txRepo) {
@@ -76,7 +78,8 @@ public class BankAccountServiceImpl implements BankAccountService {
 		// go, don't collect $200
 
 		if ((account1 == null) || (account2 == null) || (fundTransfer.getTransferAmount() == null)
-				|| (account1.getBalance() < fundTransfer.getTransferAmount()) || (fundTransfer.getTransferAmount() <= 0)) {
+				|| (account1.getBalance() < fundTransfer.getTransferAmount())
+				|| (fundTransfer.getTransferAmount() <= 0)) {
 			throw new ResponseStatusException(HttpStatus.I_AM_A_TEAPOT);
 		}
 
@@ -101,6 +104,20 @@ public class BankAccountServiceImpl implements BankAccountService {
 
 		// redundant line for testing purposes
 		return accounts;
+	}
+
+	@Override
+	public void betweenUsers(UserAccount user, BetweenUsers between) {
+		UserAccount otherUser = userAccServ.getUserFromUsername(between.getUsername());
+		BankAccount originBank = getBankAccount(user, between.getTransferAccount());
+		if (otherUser == null) {
+			throw new ResponseStatusException(HttpStatus.NO_CONTENT);
+		}
+		
+		if (between.getSendOrReceive() == 1) {
+			
+		}
+		
 	}
 
 	/**
