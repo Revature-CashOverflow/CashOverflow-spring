@@ -16,6 +16,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.revature.dto.BankAccountDto;
 import com.revature.model.BankAccount;
+import com.revature.model.BetweenUsers;
 import com.revature.model.FundTransfer;
 import com.revature.model.UserAccount;
 import com.revature.service.BankAccountService;
@@ -88,6 +89,16 @@ public class AccountController {
 		UserAccount user = userAccServ.getUserFromUsername(auth.getName());
 		return bankAccServ.transferFunds(user, fundTransfer).stream().map(this::convertToDto)
 				.collect(Collectors.toList());
+
+	}
+	
+	@PostMapping("/api/account/betweenUsers")
+	@ResponseStatus(HttpStatus.OK)
+	public void transferFundsBetweenUsers(Authentication auth, @RequestBody BetweenUsers between) {
+		UserAccount user = userAccServ.getUserFromUsername(auth.getName());
+		
+		
+		bankAccServ.betweenUsers(user, between);
 
 	}
 
