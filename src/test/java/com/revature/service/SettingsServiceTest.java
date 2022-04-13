@@ -19,7 +19,7 @@ public class SettingsServiceTest {
 	private SettingsService settingsService;
 	
 	@Test
-	public void testSettingsController() {
+	public void testSettingsService() {
 		
 		SettingsDto settingsDto = new SettingsDto("mbaileyfuturist", "12!@QW44");
 		
@@ -27,7 +27,27 @@ public class SettingsServiceTest {
 		
 		int value = settingsService.changePassword(settingsDto.getUsername(), settingsDto.getNewPassword());
 		
-		assertEquals(value, 1);
+		assertEquals(1, value);
+		
+		settingsDto.setUsername("Spiderman");
+		settingsDto.setNewPassword("11!!QQww");
+		
+		when(settingsService.changePassword(settingsDto.getUsername(), settingsDto.getNewPassword())).thenReturn(1);
+		
+		value = settingsService.changePassword(settingsDto.getUsername(), settingsDto.getNewPassword());
+		
+		assertEquals(1, value);
+		
+		SettingsDto settingsDtoTwo = new SettingsDto();
+		
+		when(settingsService.changePassword(settingsDtoTwo.getUsername(), settingsDtoTwo.getNewPassword())).thenReturn(0);
+
+		value = settingsService.changePassword(settingsDtoTwo.getUsername(), settingsDtoTwo.getNewPassword());
+
+		assertEquals(0, value);
+
+		
+
 
 	}
 

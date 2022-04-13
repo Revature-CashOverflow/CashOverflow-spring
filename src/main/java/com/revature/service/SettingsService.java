@@ -12,8 +12,12 @@ public class SettingsService {
 	private SettingsRepo settingsRepo;
 	
 	public int changePassword(String username, String password) {
-		int value = settingsRepo.changePassword(username, password);
-		return value;
+		if(username == null || password == null) {
+			return 0;
+		}else {
+			return settingsRepo.changePassword(username, password);
+		}
+		
 	}
 
 }
