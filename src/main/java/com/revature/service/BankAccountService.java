@@ -19,4 +19,6 @@ public interface BankAccountService {
 
 	public void betweenUsers(UserAccount user, BetweenUsers between);
 
+	public List<BetweenUsers> getBetweenUsers(UserAccount user);
+
 }
