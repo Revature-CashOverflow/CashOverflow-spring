@@ -95,11 +95,28 @@ public class AccountController {
 	@PostMapping("/api/account/betweenUsers")
 	@ResponseStatus(HttpStatus.OK)
 	public void transferFundsBetweenUsers(Authentication auth, @RequestBody BetweenUsers between) {
+		
 		UserAccount user = userAccServ.getUserFromUsername(auth.getName());
-		
-		
+				
 		bankAccServ.betweenUsers(user, between);
 
+	}
+	
+	@PostMapping("/api/account/completeTransfer")
+	@ResponseStatus(HttpStatus.OK)
+	public void completeTransfer(Authentication auth, @RequestBody BetweenUsers between) {
+		
+		
+				
+		bankAccServ.completeTransfer(between);
+
+	}
+	
+	@GetMapping("/api/account/retrieveRequest")
+	@ResponseStatus(HttpStatus.OK)
+	public List<BetweenUsers> retrieveRequests(Authentication auth) {
+		UserAccount user = userAccServ.getUserFromUsername(auth.getName());
+		return bankAccServ.getBetweenUsers(user);
 	}
 
 	protected BankAccount convertToEntity(BankAccountDto dtoAccount) {
