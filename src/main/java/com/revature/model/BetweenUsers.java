@@ -23,6 +23,7 @@ public class BetweenUsers {
 	Integer sendOrReceive;
 	String user;
 	String originUser;
+	Integer receiveAccount;
 	Integer transferAccount;
 	Double transferAmount;
 	

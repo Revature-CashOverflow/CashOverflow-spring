@@ -102,7 +102,17 @@ public class AccountController {
 
 	}
 	
-	@PostMapping("/api/account/retrieveRequest")
+	@PostMapping("/api/account/completeTransfer")
+	@ResponseStatus(HttpStatus.OK)
+	public void completeTransfer(Authentication auth, @RequestBody BetweenUsers between) {
+		
+		
+				
+		bankAccServ.completeTransfer(between);
+
+	}
+	
+	@GetMapping("/api/account/retrieveRequest")
 	@ResponseStatus(HttpStatus.OK)
 	public List<BetweenUsers> retrieveRequests(Authentication auth) {
 		UserAccount user = userAccServ.getUserFromUsername(auth.getName());

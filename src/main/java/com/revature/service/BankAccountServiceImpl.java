@@ -130,6 +130,24 @@ public class BankAccountServiceImpl implements BankAccountService {
 	}
 	
 	@Override
+	public void completeTransfer(BetweenUsers between) {
+		BankAccount account1 = bankRepo.getById(between.getTransferAccount());
+		BankAccount account2 = bankRepo.getById(between.getReceiveAccount());
+		
+		List<BankAccount> accounts = Arrays.asList(account1, account2);
+		
+		if (between.getSendOrReceive() == 1) {
+			account1.setBalance(account1.getBalance() - between.getTransferAmount());
+			account2.setBalance(account2.getBalance() + between.getTransferAmount());
+		} else if (between.getSendOrReceive() == 2) {
+			account2.setBalance(account2.getBalance() - between.getTransferAmount());
+			account1.setBalance(account1.getBalance() + between.getTransferAmount());
+		}
+		bankRepo.saveAll(accounts);
+		
+	}
+	
+	@Override
 	public List<BetweenUsers> getBetweenUsers(UserAccount user) {
 		return reqRepo.findAllByUser(user.getUsername());
 	}
