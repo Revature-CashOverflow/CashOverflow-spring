@@ -164,12 +164,21 @@ public class BankAccountServiceImpl implements BankAccountService {
 		
 		txRepo.saveAll(Arrays.asList(requestAcc, recipient));
 		reqRepo.deleteById(between.getId());
+
 		bankRepo.saveAll(accounts);
 	}
 	
 	@Override
 	public List<BetweenUsers> getBetweenUsers(UserAccount user) {
 		return reqRepo.findAllByUser(user.getUsername());
+	}
+	
+	@Override
+	public void removeRequest(BetweenUsers between) {
+		
+		reqRepo.deleteById(between.getId());
+		
+		
 	}
 
 	/**
