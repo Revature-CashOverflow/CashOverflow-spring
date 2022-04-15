@@ -119,10 +119,8 @@ public class BankAccountServiceImpl implements BankAccountService {
 			throw new ResponseStatusException(HttpStatus.NO_CONTENT);
 		}
 
-		if (between.getSendOrReceive() == 1) {
-			if (originBank.getBalance() < between.getTransferAmount()) {
+		if (between.getSendOrReceive() == 1 && originBank.getBalance() < between.getTransferAmount()) {
 				throw new ResponseStatusException(HttpStatus.I_AM_A_TEAPOT);
-			}
 		}
 		between.setOriginUser(user.getUsername());
 		reqRepo.save(between);

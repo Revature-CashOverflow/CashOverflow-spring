@@ -13,13 +13,13 @@ import com.revature.dto.SettingsDto;
 
 @SpringBootTest
 @ExtendWith(MockitoExtension.class)
-public class SettingsServiceTest {
+class SettingsServiceTest {
 	
 	@Mock
 	private SettingsService settingsService;
 	
 	@Test
-	public void testSettingsService() {
+	void testSettingsService() {
 		
 		SettingsDto settingsDto = new SettingsDto("mbaileyfuturist", "12!@QW44");
 		
