@@ -11,6 +11,7 @@ import lombok.Data;
  */
 @Data
 public class BankAccountDto {
+	
 	Integer id;
 	String name;
 	Double balance;
