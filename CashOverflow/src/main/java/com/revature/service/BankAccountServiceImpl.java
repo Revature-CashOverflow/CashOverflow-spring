@@ -10,10 +10,8 @@ import org.springframework.stereotype.Service;
 import org.springframework.web.server.ResponseStatusException;
 
 import com.revature.dao.BankAccountRepo;
-import com.revature.dao.RequestRepo;
 import com.revature.dao.TransactionRepo;
 import com.revature.model.BankAccount;
-import com.revature.model.BetweenUsers;
 import com.revature.model.FundTransfer;
 import com.revature.model.Transaction;
 import com.revature.model.UserAccount;
@@ -23,15 +21,11 @@ public class BankAccountServiceImpl implements BankAccountService {
 
 	private BankAccountRepo bankRepo;
 	private TransactionRepo txRepo;
-	private UserAccountService userAccServ;
-	private RequestRepo reqRepo;
 
 	@Autowired
-	protected BankAccountServiceImpl(BankAccountRepo bankRepo, TransactionRepo txRepo, UserAccountService userAccServ, RequestRepo reqRepo) {
+	protected BankAccountServiceImpl(BankAccountRepo bankRepo, TransactionRepo txRepo) {
 		this.bankRepo = bankRepo;
 		this.txRepo = txRepo;
-		this.reqRepo = reqRepo;
-		this.userAccServ = userAccServ;
 	}
 
 	/**
@@ -82,8 +76,7 @@ public class BankAccountServiceImpl implements BankAccountService {
 		// go, don't collect $200
 
 		if ((account1 == null) || (account2 == null) || (fundTransfer.getTransferAmount() == null)
-				|| (account1.getBalance() < fundTransfer.getTransferAmount())
-				|| (fundTransfer.getTransferAmount() <= 0)) {
+				|| (account1.getBalance() < fundTransfer.getTransferAmount()) || (fundTransfer.getTransferAmount() <= 0)) {
 			throw new ResponseStatusException(HttpStatus.I_AM_A_TEAPOT);
 		}
 
@@ -108,50 +101,6 @@ public class BankAccountServiceImpl implements BankAccountService {
 
 		// redundant line for testing purposes
 		return accounts;
-	}
-
-	@Override
-	public void betweenUsers(UserAccount user, BetweenUsers between) {
-		
-		UserAccount otherUser = userAccServ.getUserFromUsername(between.getUser());
-		BankAccount originBank = bankRepo.getById(between.getTransferAccount());
-		if (otherUser == null) {
-			throw new ResponseStatusException(HttpStatus.NO_CONTENT);
-		}
-
-		if (between.getSendOrReceive() == 1) {
-			if (originBank.getBalance() < between.getTransferAmount()) {
-				throw new ResponseStatusException(HttpStatus.I_AM_A_TEAPOT);
-			}
-		}
-		between.setOriginUser(user.getUsername());
-		reqRepo.save(between);
-		
-	}
-	
-	@Override
-	public List<BankAccount> completeTransfer(BetweenUsers between) {
-		BankAccount account1 = bankRepo.getById(between.getTransferAccount());
-		BankAccount account2 = bankRepo.getById(between.getReceiveAccount());
-		
-		List<BankAccount> accounts = Arrays.asList(account1, account2);
-		
-		if (between.getSendOrReceive() == 1) {
-			account1.setBalance(account1.getBalance() - between.getTransferAmount());
-			account2.setBalance(account2.getBalance() + between.getTransferAmount());
-		} else if (between.getSendOrReceive() == 2) {
-			account2.setBalance(account2.getBalance() - between.getTransferAmount());
-			account1.setBalance(account1.getBalance() + between.getTransferAmount());
-		}
-		bankRepo.saveAll(accounts);
-		
-		//redundant line for testing purposes
-		return accounts;
-	}
-	
-	@Override
-	public List<BetweenUsers> getBetweenUsers(UserAccount user) {
-		return reqRepo.findAllByUser(user.getUsername());
 	}
 
 	/**
