@@ -7,6 +7,7 @@ import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.security.core.Authentication;
+import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -119,6 +120,13 @@ public class AccountController {
 		return bankAccServ.getBetweenUsers(user);
 	}
 
+	@PostMapping("/api/account/removeRequest")
+	@ResponseStatus(HttpStatus.OK)
+	public void removeRequests(Authentication auth, @RequestBody BetweenUsers between) {
+		
+		bankAccServ.removeRequest(between);
+	}
+	
 	protected BankAccount convertToEntity(BankAccountDto dtoAccount) {
 		return mapper.map(dtoAccount, BankAccount.class);
 	}

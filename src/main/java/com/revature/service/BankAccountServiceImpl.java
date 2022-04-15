@@ -143,6 +143,9 @@ public class BankAccountServiceImpl implements BankAccountService {
 			account2.setBalance(account2.getBalance() - between.getTransferAmount());
 			account1.setBalance(account1.getBalance() + between.getTransferAmount());
 		}
+		
+		reqRepo.deleteById(between.getId());
+
 		bankRepo.saveAll(accounts);
 		
 	}
@@ -150,6 +153,14 @@ public class BankAccountServiceImpl implements BankAccountService {
 	@Override
 	public List<BetweenUsers> getBetweenUsers(UserAccount user) {
 		return reqRepo.findAllByUser(user.getUsername());
+	}
+	
+	@Override
+	public void removeRequest(BetweenUsers between) {
+		
+		reqRepo.deleteById(between.getId());
+		
+		
 	}
 
 	/**
