@@ -136,13 +136,33 @@ public class BankAccountServiceImpl implements BankAccountService {
 		
 		List<BankAccount> accounts = Arrays.asList(account1, account2);
 		
+		Transaction requestAcc = new Transaction(0, between.getTransferAmount(), null, Instant.now(), 1,
+				account1.getId());
+		Transaction recipient = new Transaction(0, between.getTransferAmount(), null, Instant.now(), 2,
+				account2.getId());
+		
 		if (between.getSendOrReceive() == 1) {
+			if (account1.getBalance() < between.getTransferAmount()) {
+				throw new ResponseStatusException(HttpStatus.I_AM_A_TEAPOT);
+			}
 			account1.setBalance(account1.getBalance() - between.getTransferAmount());
 			account2.setBalance(account2.getBalance() + between.getTransferAmount());
+			
+			requestAcc.setDescription("Money sent to " + between.getUser());
+			recipient.setDescription("Money received from " + between.getOriginUser());
 		} else if (between.getSendOrReceive() == 2) {
+			if (account2.getBalance() < between.getTransferAmount()) {
+				throw new ResponseStatusException(HttpStatus.I_AM_A_TEAPOT);
+			}
+			
 			account2.setBalance(account2.getBalance() - between.getTransferAmount());
 			account1.setBalance(account1.getBalance() + between.getTransferAmount());
+			
+			recipient.setDescription("Money sent to " + between.getUser());
+			requestAcc.setDescription("Money received from " + between.getOriginUser());
 		}
+		
+		txRepo.saveAll(Arrays.asList(requestAcc, recipient));
 		reqRepo.deleteById(between.getId());
 		bankRepo.saveAll(accounts);
 	}
