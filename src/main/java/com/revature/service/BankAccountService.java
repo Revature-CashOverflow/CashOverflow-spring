@@ -23,4 +23,6 @@ public interface BankAccountService {
 
 	public List<BankAccount> completeTransfer(BetweenUsers between);
 
+	void removeRequest(BetweenUsers between);
+
 }

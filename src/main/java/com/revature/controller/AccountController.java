@@ -7,6 +7,7 @@ import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.security.core.Authentication;
+import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -15,6 +16,7 @@ import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.revature.dto.BankAccountDto;
+import com.revature.dto.BetweenUsersDto;
 import com.revature.model.BankAccount;
 import com.revature.model.BetweenUsers;
 import com.revature.model.FundTransfer;
@@ -94,8 +96,9 @@ public class AccountController {
 	
 	@PostMapping("/api/account/betweenUsers")
 	@ResponseStatus(HttpStatus.OK)
-	public void transferFundsBetweenUsers(Authentication auth, @RequestBody BetweenUsers between) {
+	public void transferFundsBetweenUsers(Authentication auth, @RequestBody BetweenUsersDto betweenDto) {
 		
+		BetweenUsers between = convertToBetweenUsers(betweenDto);
 		UserAccount user = userAccServ.getUserFromUsername(auth.getName());
 				
 		bankAccServ.betweenUsers(user, between);
@@ -104,10 +107,10 @@ public class AccountController {
 	
 	@PostMapping("/api/account/completeTransfer")
 	@ResponseStatus(HttpStatus.OK)
-	public void completeTransfer(Authentication auth, @RequestBody BetweenUsers between) {
+	public void completeTransfer(Authentication auth, @RequestBody BetweenUsersDto betweenDto) {
 		
-		
-				
+		BetweenUsers between = convertToBetweenUsers(betweenDto);
+					
 		bankAccServ.completeTransfer(between);
 
 	}
@@ -119,6 +122,14 @@ public class AccountController {
 		return bankAccServ.getBetweenUsers(user);
 	}
 
+	@PostMapping("/api/account/removeRequest")
+	@ResponseStatus(HttpStatus.OK)
+	public void removeRequests(Authentication auth, @RequestBody BetweenUsersDto betweenDto) {
+		
+		BetweenUsers between = convertToBetweenUsers(betweenDto);
+		bankAccServ.removeRequest(between);
+	}
+	
 	protected BankAccount convertToEntity(BankAccountDto dtoAccount) {
 		return mapper.map(dtoAccount, BankAccount.class);
 	}
@@ -127,4 +138,7 @@ public class AccountController {
 		return mapper.map(account, BankAccountDto.class);
 	}
 
+	protected BetweenUsers convertToBetweenUsers(BetweenUsersDto dtoBetween) {
+		return mapper.map(dtoBetween, BetweenUsers.class);
+	}
 }
