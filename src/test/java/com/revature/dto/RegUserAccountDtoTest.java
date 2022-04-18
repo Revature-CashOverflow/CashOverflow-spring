@@ -5,7 +5,7 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 import org.junit.jupiter.api.Test;
 import org.mockito.Mock;
 
-public class RegUserAccountDtoTest {
+class RegUserAccountDtoTest {
 	
 	@Mock
 	RegUserAccountDto dto = new RegUserAccountDto(null, null, null, null, null);
@@ -14,14 +14,14 @@ public class RegUserAccountDtoTest {
 	void testEmail() {
 		String email = "dog@gmail.com";
 		dto.setEmail("cat@gmail.com");
-		assertEquals(dto.getEmail(), "cat@gmail.com");
+		assertEquals("cat@gmail.com", dto.getEmail());
 	}
 	
 	@Test
 	void testUsername() {
 		String username = "bigBenz";
 		dto.setUsername("biggerBenz");
-		assertEquals(dto.getUsername(), "biggerBenz");
+		assertEquals("biggerBenz", dto.getUsername());
 	}
 	
 	@Test
@@ -35,14 +35,14 @@ public class RegUserAccountDtoTest {
 	void testLastName() {
 		String lastName = "Johnson";
 		dto.setLastName("Jefferson");
-		assertEquals(dto.getLastName(), "Jefferson");
+		assertEquals("Jefferson", dto.getLastName());
 	}
 	
 	@Test
 	void testPassword() {
 		String password = "letsgo";
 		dto.setPassword("NoGo");
-		assertEquals(dto.getPassword(), "NoGo");
+		assertEquals("NoGo", dto.getPassword());
 	}
 
 

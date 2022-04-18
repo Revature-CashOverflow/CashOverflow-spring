@@ -7,7 +7,7 @@ import org.mockito.Mock;
 
 import com.revature.model.UserAccount;
 
-public class UserAccountDtoTest {
+class UserAccountDtoTest {
 	
 	@Mock
 	UserAccount uAcc = new UserAccount();
@@ -19,35 +19,35 @@ public class UserAccountDtoTest {
 	void testId() {
 		int id = 12;
 		dto.setId(13);
-		assertEquals(dto.getId(), 13);
+		assertEquals(13, dto.getId());
 	}
 	
 	@Test
 	void testUsername()	 {
 		String username = "hudsonalec";
 		dto.setUsername("ahhudson");
-		assertEquals(dto.getUsername(), "ahhudson");
+		assertEquals("ahhudson", dto.getUsername());
 	}
 	
 	@Test
 	void testFirstName() {
 		String firstName = "Alec";
 		dto.setFirstName("joe");
-		assertEquals(dto.getFirstName(), "joe");
+		assertEquals("joe", dto.getFirstName());
 	}
 	
 	@Test
 	void testLastName() {
 		String lastName = "flo";
 		dto.setLastName("rida");
-		assertEquals(dto.getLastName(), "rida");
+		assertEquals("rida", dto.getLastName());
 	}
 	
 	@Test 
 	void testPassword() {
 		String password = "pass";
 		dto.setPassword("word");
-		assertEquals(dto.getPassword(), "word");
+		assertEquals("word", dto.getPassword());
 	}
 	
 //	@Test

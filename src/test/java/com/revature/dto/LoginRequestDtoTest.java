@@ -5,7 +5,7 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 import org.junit.jupiter.api.Test;
 import org.mockito.Mock;
 
-public class LoginRequestDtoTest {
+class LoginRequestDtoTest {
 	
 	@Mock
 	LoginRequestDto dto = new LoginRequestDto(null, null);
@@ -14,14 +14,14 @@ public class LoginRequestDtoTest {
 	void testUsername() {
 		String username = "Alec";
 		dto.setUsername("Alex");
-		assertEquals(dto.getUsername(), "Alex");
+		assertEquals("Alex", dto.getUsername());
 	}
 	
 	@Test
 	void testPassword() {
 		String password = "password";
 		dto.setPassword("not password");
-		assertEquals(dto.getPassword(), "not password");
+		assertEquals("not password", dto.getPassword());
 	}
 
 }

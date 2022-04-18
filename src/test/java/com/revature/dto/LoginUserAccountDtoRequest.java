@@ -5,7 +5,7 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 import org.junit.jupiter.api.Test;
 import org.mockito.Mock;
 
-public class LoginUserAccountDtoRequest {
+class LoginUserAccountDtoRequest {
 	
 	@Mock
 	LoginUserAccountDto dto = new LoginUserAccountDto();
@@ -14,28 +14,28 @@ public class LoginUserAccountDtoRequest {
 	void testId() {
 		int id = 2;
 		dto.setId(3);
-		assertEquals(dto.getId(), 3);
+		assertEquals(3, dto.getId());
 	}
 	
 	@Test
 	void testUsername() {
 		String username = "hudson_alec";
 		dto.setUsername("ahhudson");
-		assertEquals(dto.getUsername(), "ahhudson");
+		assertEquals("ahhudson", dto.getUsername());
 	}
 	
 	@Test 
 	void testFirstName() {
 		String firstName = "Alec";
 		dto.setFirstName("Collin");
-		assertEquals(dto.getFirstName(), "Collin");
+		assertEquals("Collin", dto.getFirstName());
 	}
 	
 	@Test
 	void testLastName() {
 		String lastName = "Hudson";
 		dto.setLastName("Jackson");
-		assertEquals(dto.getLastName(), "Jackson");
+		assertEquals("Jackson", dto.getLastName());
 	}
 	
 	@Test
