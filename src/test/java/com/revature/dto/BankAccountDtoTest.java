@@ -12,42 +12,42 @@ public class BankAccountDtoTest {
 	@Mock BankAccountDto dto = new BankAccountDto();
 	
 	@Test
-	public void testId() {
+	void testId() {
 		int id = 2;
 		dto.setId(1);
 		assertEquals(dto.getId(), 1);		
 	}
 	
 	@Test
-	public void testName() {
+	void testName() {
 		String name = "Chuck Norris";
 		dto.setName("Worst nightmare");
 		assertEquals(dto.getName(), "Worst nightmare");			
 	}
 	
 	@Test
-	public void testBalance() {
+	void testBalance() {
 		Double balance = 68.99;
 		dto.setBalance(21.00);
 		assertEquals(dto.getBalance(), 21.00);
 	}
 	
 	@Test
-	public void testDescription() {
+	void testDescription() {
 		String description = "Money to ball";
 		dto.setDescription("Rent");
 		assertEquals(dto.getDescription(), "Rent");
 	}
 	
 	@Test
-	public void testSetterCreationDate() {
+	void testSetterCreationDate() {
 		/**
 		 * TODO: Test Instant type?
 		 */
 	}
 	
 	@Test
-	public void testAccountTypeId() {
+	void testAccountTypeId() {
 		int accountTypeId = 1;
 		dto.setAccountTypeId(2);
 		assertEquals(dto.getAccountTypeId(), 2);

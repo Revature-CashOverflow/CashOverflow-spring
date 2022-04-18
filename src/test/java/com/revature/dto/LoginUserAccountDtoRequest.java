@@ -11,35 +11,35 @@ public class LoginUserAccountDtoRequest {
 	LoginUserAccountDto dto = new LoginUserAccountDto();
 	
 	@Test
-	public void testId() {
+	void testId() {
 		int id = 2;
 		dto.setId(3);
 		assertEquals(dto.getId(), 3);
 	}
 	
 	@Test
-	public void testUsername() {
+	void testUsername() {
 		String username = "hudson_alec";
 		dto.setUsername("ahhudson");
 		assertEquals(dto.getUsername(), "ahhudson");
 	}
 	
 	@Test 
-	public void testFirstName() {
+	void testFirstName() {
 		String firstName = "Alec";
 		dto.setFirstName("Collin");
 		assertEquals(dto.getFirstName(), "Collin");
 	}
 	
 	@Test
-	public void testLastName() {
+	void testLastName() {
 		String lastName = "Hudson";
 		dto.setLastName("Jackson");
 		assertEquals(dto.getLastName(), "Jackson");
 	}
 	
 	@Test
-	public void testCreationDate() {
+	void testCreationDate() {
 		/**
 		 * TODO: test Instant type?
 		 */

@@ -11,28 +11,28 @@ public class TransactionDtoTest {
 	TransactionDto dto = new TransactionDto(0, 0, null, null, null);
 	
 	@Test
-	public void testAccountId() {
+	void testAccountId() {
 		int accountId = 1;
 		dto.setAccountId(2);
 		assertEquals(dto.getAccountId(), 2);
 	}
 	
 	@Test
-	public void testTxTypeId() {
+	void testTxTypeId() {
 		int txTypeId = 1;
 		dto.setTxTypeId(2);
 		assertEquals(dto.getTxTypeId(), 2);	
 	}
 	
 	@Test
-	public void testAmount() {
+	void testAmount() {
 		double amount = 10.00;
 		dto.setAmount(20.00);
 		assertEquals(dto.getAmount(), 20.00);
 	}
 	
 	@Test
-	public void testDescription() {
+	void testDescription() {
 		String description = "beer money";
 		dto.setDescription("fun money");
 		assertEquals(dto.getDescription(), "fun money");

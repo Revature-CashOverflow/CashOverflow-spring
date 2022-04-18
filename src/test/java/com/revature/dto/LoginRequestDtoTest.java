@@ -11,14 +11,14 @@ public class LoginRequestDtoTest {
 	LoginRequestDto dto = new LoginRequestDto(null, null);
 	
 	@Test
-	public void testUsername() {
+	void testUsername() {
 		String username = "Alec";
 		dto.setUsername("Alex");
 		assertEquals(dto.getUsername(), "Alex");
 	}
 	
 	@Test
-	public void testPassword() {
+	void testPassword() {
 		String password = "password";
 		dto.setPassword("not password");
 		assertEquals(dto.getPassword(), "not password");

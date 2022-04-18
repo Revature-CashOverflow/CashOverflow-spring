@@ -11,14 +11,14 @@ public class SettingsDtoTest {
 	SettingsDto dto = new SettingsDto();
 	
 	@Test
-	public void testUsername() {
+	void testUsername() {
 		String username = "jimjohn";
 		dto.setUsername("JimmyJohn");
 		assertEquals(dto.getUsername(), "JimmyJohn");
 	}
 	
 	@Test
-	public void testNewPassword() {
+	 void testNewPassword() {
 		String newPassword = "newpassword";
 		dto.setNewPassword("badpassword");
 		assertEquals(dto.getNewPassword(), "badpassword");

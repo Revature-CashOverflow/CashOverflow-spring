@@ -16,35 +16,35 @@ public class UserAccountDtoTest {
 	UserAccountDto dto = new UserAccountDto(uAcc);
 	
 	@Test
-	public void testId() {
+	void testId() {
 		int id = 12;
 		dto.setId(13);
 		assertEquals(dto.getId(), 13);
 	}
 	
 	@Test
-	public void testUsername() {
+	void testUsername()	 {
 		String username = "hudsonalec";
 		dto.setUsername("ahhudson");
 		assertEquals(dto.getUsername(), "ahhudson");
 	}
 	
 	@Test
-	public void testFirstName() {
+	void testFirstName() {
 		String firstName = "Alec";
 		dto.setFirstName("joe");
 		assertEquals(dto.getFirstName(), "joe");
 	}
 	
 	@Test
-	public void testLastName() {
+	void testLastName() {
 		String lastName = "flo";
 		dto.setLastName("rida");
 		assertEquals(dto.getLastName(), "rida");
 	}
 	
 	@Test 
-	public void testPassword() {
+	void testPassword() {
 		String password = "pass";
 		dto.setPassword("word");
 		assertEquals(dto.getPassword(), "word");
